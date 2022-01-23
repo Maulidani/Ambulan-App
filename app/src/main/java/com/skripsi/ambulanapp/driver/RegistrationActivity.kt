@@ -1,16 +1,15 @@
-package com.skripsi.ambulanapp.customer
+package com.skripsi.ambulanapp.driver
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.skripsi.ambulanapp.R
 
-class MainCustomerActivity : AppCompatActivity() {
+class RegistrationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_customer)
+        setContentView(R.layout.activity_registration)
 
         supportActionBar?.hide()
-
     }
 }
