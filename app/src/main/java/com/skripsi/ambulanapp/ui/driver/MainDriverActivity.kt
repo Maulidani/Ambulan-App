@@ -1,4 +1,4 @@
-package com.skripsi.ambulanapp.driver
+package com.skripsi.ambulanapp.ui.driver
 
 import android.annotation.SuppressLint
 import android.content.IntentSender

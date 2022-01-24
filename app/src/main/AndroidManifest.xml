@@ -28,11 +28,11 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanApp">
-        <activity android:name=".driver.RegistrationActivity"></activity>
-        <activity android:name=".driver.LoginActivity" />
-        <activity android:name=".driver.MainDriverActivity" />
-        <activity android:name=".customer.MainCustomerActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name="com.skripsi.ambulanapp.ui.driver.RegistrationActivity"></activity>
+        <activity android:name="com.skripsi.ambulanapp.ui.driver.LoginActivity" />
+        <activity android:name="com.skripsi.ambulanapp.ui.driver.MainDriverActivity" />
+        <activity android:name="com.skripsi.ambulanapp.ui.customer.MainCustomerActivity" />
+        <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
