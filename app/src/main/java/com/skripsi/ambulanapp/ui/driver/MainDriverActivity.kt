@@ -15,10 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
@@ -27,6 +24,7 @@ import com.skripsi.ambulanapp.directionModules.DirectionFinderListener
 import com.skripsi.ambulanapp.directionModules.Route
 import com.skripsi.ambulanapp.util.GoogleMapHelper.*
 import java.io.UnsupportedEncodingException
+
 
 class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapReadyCallback {
 
@@ -63,8 +61,11 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                 myMap.addMarker(MarkerOptions().position(myLocation).title("Lokasi Saya"))
             }
 
+            //clientLocation, clientDestination
             val origin = LatLng(-5.139740893754784, 119.45001968809942)
             val destination = LatLng(-5.1347215426505946, 119.43516105772933)
+
+            // direction from clientLocation to clientDestination
             if (isReady) {
                 if (!cameraZoom) {
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
@@ -75,7 +76,16 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                 }
                 mMap.addMarker(MarkerOptions().position(origin).title("Lokasi Jemput"))
                 mMap.addMarker(MarkerOptions().position(destination).title("Lokasi Drop Off"))
-                fetchDirections(origin, destination)
+//                fetchDirections(origin, destination)
+            }
+
+            // direction from myLocation to clientLocation/clientDestination
+            if (isReady) {
+                fetchDirections(myLocation, origin)
+
+                //if client location to destination
+//                fetchDirections(myLocation, origin)
+
             }
         }
     }
@@ -144,8 +154,9 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         try {
             if (routes != null) {
                 for (route in routes) {
-                    var polylineOptions = getDefaultPolyLines(route.points)
+                    val polylineOptions = getDottedPolylines(route.points)
                     polyline = mMap.addPolyline(polylineOptions!!)
+
                 }
             }
         } catch (e: Exception) {
