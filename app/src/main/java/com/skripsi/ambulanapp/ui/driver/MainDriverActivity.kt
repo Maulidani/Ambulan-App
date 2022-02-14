@@ -1,6 +1,7 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -121,9 +122,8 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navProfile -> Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
-                R.id.navOrderHistory -> Toast.makeText(this, "Riwayat Order", Toast.LENGTH_SHORT)
-                    .show()
+                R.id.navProfile -> startActivity(Intent(applicationContext, ProfileActivity::class.java))
+                R.id.navOrderHistory -> startActivity(Intent(applicationContext, OrderHistoryActivity::class.java))
                 R.id.navLogout -> finish()
             }
             true

@@ -25,13 +25,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AmbulanApp">
-        <activity android:name="com.skripsi.ambulanapp.ui.driver.RegistrationActivity"></activity>
-        <activity android:name="com.skripsi.ambulanapp.ui.driver.LoginActivity" />
-        <activity android:name="com.skripsi.ambulanapp.ui.driver.MainDriverActivity" />
-        <activity android:name="com.skripsi.ambulanapp.ui.customer.MainCustomerActivity" />
+        android:theme="@style/Theme.AmbulanApp"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.driver.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.driver.ProfileActivity"
+            android:exported="false" />
+        <activity android:name=".ui.driver.RegistrationActivity" />
+        <activity android:name=".ui.driver.LoginActivity" />
+        <activity android:name=".ui.driver.MainDriverActivity" />
+        <activity android:name=".ui.customer.MainCustomerActivity" />
         <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +53,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
+
 </manifest>
