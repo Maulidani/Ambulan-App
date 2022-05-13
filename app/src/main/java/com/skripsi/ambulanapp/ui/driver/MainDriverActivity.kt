@@ -68,13 +68,13 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
             // direction from clientLocation to clientDestination
             if (isReady) {
-                if (!cameraZoom) {
-                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
-                        CameraPosition.builder().target(origin).zoom(13.5f).build()
-                    )
-                    mMap.animateCamera(cameraUpdate)
-                    cameraZoom = true
-                }
+//                if (!cameraZoom) {
+//                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
+//                        CameraPosition.builder().target(origin).zoom(13.5f).build()
+//                    )
+//                    mMap.animateCamera(cameraUpdate)
+//                    cameraZoom = true
+//                }
                 mMap.addMarker(MarkerOptions().position(origin).title("Lokasi Jemput"))
                 mMap.addMarker(MarkerOptions().position(destination).title("Lokasi Drop Off"))
 //                fetchDirections(origin, destination)
@@ -82,10 +82,14 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
             // direction from myLocation to clientLocation/clientDestination
             if (isReady) {
+                if (!cameraZoom) {
+                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
+                        CameraPosition.builder().target(myLocation).zoom(13.5f).build()
+                    )
+                    mMap.animateCamera(cameraUpdate)
+                    cameraZoom = true
+                }
                 fetchDirections(myLocation, origin)
-
-                //if client location to destination
-//                fetchDirections(myLocation, origin)
 
             }
         }
@@ -122,8 +126,18 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navProfile -> startActivity(Intent(applicationContext, ProfileActivity::class.java))
-                R.id.navOrderHistory -> startActivity(Intent(applicationContext, OrderHistoryActivity::class.java))
+                R.id.navProfile -> startActivity(
+                    Intent(
+                        applicationContext,
+                        ProfileActivity::class.java
+                    )
+                )
+                R.id.navOrderHistory -> startActivity(
+                    Intent(
+                        applicationContext,
+                        OrderHistoryActivity::class.java
+                    )
+                )
                 R.id.navLogout -> finish()
             }
             true
@@ -148,15 +162,17 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     }
 
     override fun onDirectionFinderSuccess(routes: MutableList<Route>?) {
+
         if (routes != null) {
-            if (!routes.isEmpty() && polyline != null) polyline?.remove()
+            if (routes.isNotEmpty() && polyline != null) polyline?.remove()
         }
+
         try {
             if (routes != null) {
                 for (route in routes) {
+
                     val polylineOptions = getDottedPolylines(route.points)
                     polyline = mMap.addPolyline(polylineOptions!!)
-
                 }
             }
         } catch (e: Exception) {

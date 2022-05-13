@@ -1,9 +1,5 @@
 package com.skripsi.ambulanapp.directionModules;
 
-/**
- * Created by Ahsen Saeed on 5/15/2017.
- */
-
 class Duration {
 
     private String text;
