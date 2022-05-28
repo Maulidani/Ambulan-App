@@ -1,4 +1,4 @@
-package com.skripsi.ambulanapp.ui.driver
+package com.skripsi.ambulanapp.ui.admin
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.ui.driver.MainDriverActivity
 
 class LoginActivity : AppCompatActivity() {
 

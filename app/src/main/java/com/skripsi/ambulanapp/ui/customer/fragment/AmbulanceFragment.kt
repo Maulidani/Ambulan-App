@@ -39,10 +39,6 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     lateinit var cameraUpdate: CameraUpdate
     private var cameraZoom: Boolean = false
 
-    private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultCallback: LocationResult) {
             super.onLocationResult(locationResultCallback)

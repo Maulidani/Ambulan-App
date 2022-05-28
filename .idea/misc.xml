@@ -6,10 +6,12 @@
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_customer.xml" value="0.13451086956521738" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_driver.xml" value="0.18667679837892603" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_order_history.xml" value="0.32065217391304346" />
-        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_profile.xml" value="0.3729166666666667" />
-        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/fragment_ambulance.xml" value="0.13451086956521738" />
-        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/fragment_home.xml" value="0.32065217391304346" />
+        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_profile.xml" value="0.22" />
+        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_registration.xml" value="0.11458333333333333" />
+        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/fragment_ambulance.xml" value="0.18" />
+        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/fragment_profile.xml" value="0.32065217391304346" />
+        <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/item_artikel.xml" value="0.33" />
       </map>
     </option>
   </component>

@@ -5,7 +5,9 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.CancellationSignal
 import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -25,6 +27,7 @@ import com.skripsi.ambulanapp.directionModules.DirectionFinderListener
 import com.skripsi.ambulanapp.directionModules.Route
 import com.skripsi.ambulanapp.util.GoogleMapHelper.*
 import java.io.UnsupportedEncodingException
+import java.util.function.Consumer
 
 
 class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapReadyCallback {
@@ -89,6 +92,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     mMap.animateCamera(cameraUpdate)
                     cameraZoom = true
                 }
+
                 fetchDirections(myLocation, origin)
 
             }
@@ -152,28 +156,43 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                 "${origin.latitude},${origin.longitude}",
                 "${destination.latitude},${destination.longitude}"
             ).execute()
+
+            Log.e("direction", "FetchDirection")
+
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
+            Log.e("direction", "FetchDirection Failed")
+
+            Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onDirectionFinderStart() {
         //loading here
+        Log.e("direction", "FinderStart...")
+
     }
 
     override fun onDirectionFinderSuccess(routes: MutableList<Route>?) {
 
-        if (routes != null) {
-            if (routes.isNotEmpty() && polyline != null) polyline?.remove()
-        }
+        Log.e("direction", "FinderSuccess")
+        Log.e("direction", "Route : "+routes.toString())
 
+        if (routes != null) {
+            if (routes.isNotEmpty() && polyline != null) {
+                polyline?.remove()
+            }
+
+        }
         try {
             if (routes != null) {
                 for (route in routes) {
-
                     val polylineOptions = getDottedPolylines(route.points)
                     polyline = mMap.addPolyline(polylineOptions!!)
+                    Log.e("direction", "Add Polyline")
                 }
+
+
             }
         } catch (e: Exception) {
             Toast.makeText(this, "Error occurred on finding the directions...", Toast.LENGTH_SHORT)

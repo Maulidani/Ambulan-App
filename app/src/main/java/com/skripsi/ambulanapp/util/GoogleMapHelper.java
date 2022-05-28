@@ -15,12 +15,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Ahsen Saeed}
- * ahsansaeed067@gmail.com}
- * 5/25/19}
- */
-
 public class GoogleMapHelper {
 
     private static final int ZOOM_LEVEL = 13;
