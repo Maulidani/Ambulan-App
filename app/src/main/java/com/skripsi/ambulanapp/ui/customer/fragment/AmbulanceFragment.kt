@@ -5,14 +5,13 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
@@ -21,13 +20,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
-import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
 
 class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var myMap: GoogleMap
     private var isReady = false
     private var polyline: Polyline? = null
 
@@ -60,6 +57,16 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                     )
                     mMap.animateCamera(cameraUpdate)
                     cameraZoom = true
+                }
+
+
+                mMap.setOnMapClickListener {
+
+                    Toast.makeText(
+                        requireContext().applicationContext,
+                        "${it.latitude}, ${it.longitude}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -107,11 +114,6 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
         } else {
             askLocationPermission()
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
     }
 

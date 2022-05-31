@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvRegistration.setOnClickListener {
-            startActivity(Intent(this, RegistrationActivity::class.java))
+            startActivity(Intent(this, AddDriverActivity::class.java))
         }
     }
 }
