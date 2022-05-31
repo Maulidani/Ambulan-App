@@ -93,7 +93,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     cameraZoom = true
                 }
 
-                fetchDirections(myLocation, origin)
+//                fetchDirections(myLocation, origin)
 
             }
         }
