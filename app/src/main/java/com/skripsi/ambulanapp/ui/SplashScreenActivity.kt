@@ -1,5 +1,6 @@
 package com.skripsi.ambulanapp.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.customer.MainCustomerActivity
 import com.skripsi.ambulanapp.ui.admin.LoginActivity
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
     private val orderAmbulan: MaterialButton by lazy { findViewById(R.id.btnOrderAmbulan) }
     private val loginDriver: MaterialButton by lazy { findViewById(R.id.btnLoginDriver) }
