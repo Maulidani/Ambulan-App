@@ -1,6 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.skripsi.ambulanapp.ui.customer.fragment
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -8,6 +11,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,7 +24,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
+import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+
 
 class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
@@ -35,6 +41,10 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationResult: LocationResult
     lateinit var cameraUpdate: CameraUpdate
     private var cameraZoom: Boolean = false
+
+    private var progressDialog: ProgressDialog? = null
+
+    private val btnPesan :MaterialButton by lazy { requireActivity().findViewById(R.id.btnPesan) }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultCallback: LocationResult) {
@@ -94,12 +104,21 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        progressDialog = ProgressDialog(requireContext())
+        progressDialog!!.setMessage("Mencari ambulan...")
+
         mFusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
         locationRequest = LocationRequest.create()
         locationRequest.interval = 4000
         locationRequest.fastestInterval = 2000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        btnPesan.setOnClickListener {
+            progressDialog!!.dismiss()
+            progressDialog!!.show()
+
+        }
     }
 
 

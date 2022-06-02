@@ -50,6 +50,8 @@ class Controller
         {
             $orders = new Order;
             $orders->note = $request->note;
+            $orders->pick_up = $request->pick_up;
+            $orders->drop_off = $request->drop_off;
             $orders->pick_up_latitude = $request->pick_up_latitude;
             $orders->pick_up_longitude = $request->pick_up_longitude;
             $orders->drop_off_latitude = $request->drop_off_latitude;
@@ -322,6 +324,27 @@ class Controller
     {
         $add = User::find($request->id_user);
         $add->status = $request->status;
+        $add->save();
+
+        if ($add) {
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+    public function addEditCarUsers(Request $request)
+    {
+        $add = User::find($request->id_user);
+        $add->car_type = $request->car_type;
+        $add->car_number = $request->car_number;
         $add->save();
 
         if ($add) {

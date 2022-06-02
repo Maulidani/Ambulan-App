@@ -14,6 +14,8 @@ class Model {
 
         // orders
         val note: String,
+        val pick_up: String,
+        val drop_off: String,
         val pick_up_latitude: String,
         val pick_up_longitude: String,
         val drop_off_latitude: String,
@@ -34,6 +36,8 @@ class Model {
         val longitude: String,
         val type: String,
 
+        val car_type: String,
+        val car_number: String,
 
     )
 }

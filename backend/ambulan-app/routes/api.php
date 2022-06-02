@@ -28,3 +28,4 @@ Route::post('login-users', 'App\Http\Controllers\Controller@loginUsers');
 Route::post('add-latlng-driver-users', 'App\Http\Controllers\Controller@addLatlngUsers');
 Route::get('get-driver-users', 'App\Http\Controllers\Controller@getDriverUsers');
 Route::post('add-status-users', 'App\Http\Controllers\Controller@addStatusUsers');
+Route::post('add-edit-car-users', 'App\Http\Controllers\Controller@addEditCarUsers');

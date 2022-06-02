@@ -84,10 +84,20 @@ interface ApiService {
         @Field("id_orders") idOrder: String, //status = loading,finish,cancel
         @Field("id_user_driver") idDriverUser: String, //status = loading
         @Field("note") note: String,
+        @Field("pick_up") pickUp: String,
+        @Field("drop_off") dropOff: String,
         @Field("pick_up_latitude") pickUpLatitude: String,
         @Field("pick_up_longitude") pickUpLongitude: String,
         @Field("drop_off_latitude") dropOffLatitude: String,
         @Field("drop_off_longitude") dropOffLongitude: String,
         @Field("status") status: String, //status = loading,finish,cancel
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("add-edit-car-users")
+    fun addEditCarUser(
+        @Field("id_user") iduser: String,
+        @Field("car_type") car_type: String,
+        @Field("car_number") car_number: String,
     ): Call<Model.ResponseModel>
 }
