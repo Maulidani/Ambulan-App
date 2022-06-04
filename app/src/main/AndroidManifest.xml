@@ -29,6 +29,9 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MainAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.driver.OrderHistoryActivity"
             android:exported="false" />
         <activity
@@ -38,7 +41,8 @@
         <activity android:name=".ui.admin.LoginActivity" />
         <activity android:name=".ui.driver.MainDriverActivity" />
         <activity android:name=".ui.customer.MainCustomerActivity" />
-        <activity android:name=".ui.SplashScreenActivity"
+        <activity
+            android:name=".ui.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
