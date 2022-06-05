@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        android:text="Info Mobil"
+        android:text="Info Kendaraan"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -42,7 +42,7 @@
             android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,17 +74,17 @@
             android:id="@+id/inputNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number" />
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRegistration"
+        android:id="@+id/btnAddCarInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:backgroundTint="@color/red"
-        android:text="Tambah" />
+        android:text="Tambah Info Kendaraan" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
 

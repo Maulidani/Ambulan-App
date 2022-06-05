@@ -102,39 +102,51 @@ class Controller
 
     public function addUsers(Request $request)
     {
-        $files = $request->image;
-        $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
-        if ($request->hasfile('image')) {
+        $exist = User::where([
+            ['username', '=', $request->username],
+        ])->exists();
 
-            $filename = time() . '.' . $files->getClientOriginalName();
-            $extension = $files->getClientOriginalExtension();
+        if(!$exist){
 
-            $check = in_array($extension, $allowedfileExtension);
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
 
-            if ($check) {
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
 
-                $files->move(public_path() . '/image/user/', $filename);
+                $check = in_array($extension, $allowedfileExtension);
 
-                $users = new User;
-                $users->name = $request->name;
-                $users->phone = $request->phone;
-                $users->image = $filename;
-                $users->username = $request->username;
-                $users->password = $request->password;
-                $users->type = $request->type;
-                $users->status = 0;
-                $users->save();
+                if ($check) {
 
-                if ($users) {
+                    $files->move(public_path() . '/image/user/', $filename);
 
-                    return response()->json([
-                        'message' => 'Success',
-                        'errors' => false,
-                        'data' => $users
-                    ]);
+                    $users = new User;
+                    $users->name = $request->name;
+                    $users->phone = $request->phone;
+                    $users->image = $filename;
+                    $users->username = $request->username;
+                    $users->password = $request->password;
+                    $users->type = $request->type;
+                    $users->status = 0;
+                    $users->save();
 
+                    if ($users) {
+
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                            'data' => $users
+                        ]);
+
+                    } else {
+
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
                 } else {
-
                     return response()->json([
                         'message' => 'Failed',
                         'errors' => true,
@@ -146,13 +158,13 @@ class Controller
                     'errors' => true,
                 ]);
             }
+
         } else {
             return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
+                    'message' => 'Exist',
+                    'errors' => true,
+                ]);
         }
-
     }
 
     public function editUsers(Request $request)

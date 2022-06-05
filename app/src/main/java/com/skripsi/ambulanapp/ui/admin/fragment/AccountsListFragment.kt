@@ -28,4 +28,10 @@ class AccountsListFragment : Fragment() {
             startActivity(Intent(requireContext(), AddEditDriverActivity::class.java))
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        //refresh
+    }
 }

@@ -45,6 +45,7 @@ class AddEditDriverActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Loading...")
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setCancelable(false)
 
@@ -54,11 +55,11 @@ class AddEditDriverActivity : AppCompatActivity() {
             val username = inputUsername.text.toString()
             val password = inputPassword.text.toString()
 
-            if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
+            if (partImage == null) {
+                Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
+            } else if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
                 addAkun(name, phone, username, password)
 
-            } else if (partImage == null) {
-                Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Lengkapi data", Toast.LENGTH_SHORT).show()
 
@@ -124,6 +125,14 @@ class AddEditDriverActivity : AppCompatActivity() {
                             )
 
                             finish()
+                        } else if (message == "Exist") {
+                            Toast.makeText(
+                                applicationContext,
+                                "Akun username ini sudah ada",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+
                         } else {
                             Toast.makeText(applicationContext, "gagal", Toast.LENGTH_SHORT).show()
                         }

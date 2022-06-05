@@ -59,8 +59,12 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        orderAmbulan.visibility = View.VISIBLE
-        loginDriver.visibility = View.VISIBLE
+        if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
+
+            orderAmbulan.visibility = View.VISIBLE
+            loginDriver.visibility = View.VISIBLE
+
+        }
 
     }
 
