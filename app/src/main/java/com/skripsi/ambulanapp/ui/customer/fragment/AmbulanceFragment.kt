@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.skripsi.ambulanapp.ui.customer.fragment
 
 import android.annotation.SuppressLint
@@ -26,23 +24,25 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.util.PreferencesHelper
 
 
 class AmbulanceFragment : Fragment(), OnMapReadyCallback {
+    private lateinit var sharedPref: PreferencesHelper
+    private lateinit var progressDialog: ProgressDialog
 
     private lateinit var mMap: GoogleMap
     private var isReady = false
+
     private var polyline: Polyline? = null
 
     private val locationRequestCode = 1001
-
     private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationResult: LocationResult
     lateinit var cameraUpdate: CameraUpdate
-    private var cameraZoom: Boolean = false
 
-    private var progressDialog: ProgressDialog? = null
+    private var cameraZoom: Boolean = false
 
     private val btnPesan :MaterialButton by lazy { requireActivity().findViewById(R.id.btnPesan) }
 
@@ -61,6 +61,8 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             if (isReady) {
                 mMap.clear()
                 if (!cameraZoom) {
+                    progressDialog.dismiss()
+
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
                         CameraPosition.builder().target(myLocation).zoom(13.5f).build()
                     )
@@ -105,8 +107,10 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        sharedPref = PreferencesHelper(requireContext())
         progressDialog = ProgressDialog(requireContext())
-        progressDialog!!.setMessage("Mencari ambulan...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.setCancelable(false)
 
         mFusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -119,6 +123,11 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             progressDialog!!.dismiss()
             progressDialog!!.show()
 
+        }
+
+        if (isAdded){
+            progressDialog.setMessage("Memuat lokasi...")
+            progressDialog.show()
         }
     }
 

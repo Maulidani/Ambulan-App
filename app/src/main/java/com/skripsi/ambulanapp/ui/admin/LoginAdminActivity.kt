@@ -32,6 +32,8 @@ class LoginAdminActivity : AppCompatActivity() {
         supportActionBar?.hide()
         sharedPref = PreferencesHelper(this)
         progressDialog = ProgressDialog(this)
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.setCancelable(false)
 
         btnLogin.setOnClickListener {
 

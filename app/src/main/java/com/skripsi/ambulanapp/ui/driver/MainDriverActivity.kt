@@ -121,6 +121,8 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Loading...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val mapFragment = supportFragmentManager
