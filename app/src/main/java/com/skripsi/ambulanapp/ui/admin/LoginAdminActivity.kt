@@ -20,14 +20,15 @@ class LoginAdminActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         btnLogin.setOnClickListener {
+            startActivity(Intent(this, MainAdminActivity::class.java))
 
-            if (inputUsername.text.toString().isNotEmpty() && inputPassword.text.toString()
-                    .isNotEmpty()
-            ) {
-                startActivity(Intent(this, MainDriverActivity::class.java))
-            } else {
-                Toast.makeText(this, "Lengkapi data untuk login", Toast.LENGTH_SHORT).show()
-            }
+//            if (inputUsername.text.toString().isNotEmpty() && inputPassword.text.toString()
+//                    .isNotEmpty()
+//            ) {
+//                startActivity(Intent(this, MainAdminActivity::class.java))
+//            } else {
+//                Toast.makeText(this, "Lengkapi data untuk login", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }

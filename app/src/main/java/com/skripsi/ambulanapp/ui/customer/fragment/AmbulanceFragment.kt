@@ -60,7 +60,6 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
             if (isReady) {
                 mMap.clear()
-                mMap.addMarker(MarkerOptions().position(myLocation).title("Lokasi Saya"))
                 if (!cameraZoom) {
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
                         CameraPosition.builder().target(myLocation).zoom(13.5f).build()
@@ -82,10 +81,12 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
         if (isAdded) {
             mMap = p0
             isReady = true
+            mMap.isMyLocationEnabled = true
         }
     }
 

@@ -29,7 +29,7 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".AddEditCarActivity"
+            android:name=".ui.admin.AddEditCarActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.LoginAdminActivity"
@@ -52,10 +52,10 @@
             android:name=".ui.SplashScreenActivity"
             android:exported="true" >
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
 

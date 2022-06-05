@@ -1,17 +1,15 @@
 package com.skripsi.ambulanapp.ui.admin
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
-import com.skripsi.ambulanapp.ui.customer.fragment.HomeFragment
-import com.skripsi.ambulanapp.ui.customer.fragment.ProfileFragment
-import com.skripsi.ambulanapp.ui.driver.OrderHistoryActivity
-import com.skripsi.ambulanapp.ui.driver.ProfileActivity
+import com.skripsi.ambulanapp.ui.admin.fragment.AccountsListFragment
+import com.skripsi.ambulanapp.ui.admin.fragment.OrderHistoryFragment
 
 class MainAdminActivity : AppCompatActivity() {
 
@@ -32,11 +30,11 @@ class MainAdminActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        loadFragment(HomeFragment())
+        loadFragment(OrderHistoryFragment())
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navAkunDriver -> loadFragment(HomeFragment())
-                R.id.navLogout ->  loadFragment(ProfileFragment())
+                R.id.navAkunDriver -> loadFragment(OrderHistoryFragment())
+                R.id.navLogout -> loadFragment(AccountsListFragment())
             }
             true
         }
@@ -48,5 +46,15 @@ class MainAdminActivity : AppCompatActivity() {
             commit()
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
 
 }

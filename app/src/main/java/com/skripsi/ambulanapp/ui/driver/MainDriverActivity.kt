@@ -33,7 +33,6 @@ import java.util.function.Consumer
 class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var myMap: GoogleMap
     private var isReady = false
     private var polyline: Polyline? = null
 
@@ -60,10 +59,6 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     locationResult.locations[0].latitude,
                     locationResult.locations[0].longitude
                 )
-            if (isReady) {
-                myMap.clear()
-                myMap.addMarker(MarkerOptions().position(myLocation).title("Lokasi Saya"))
-            }
 
             //clientLocation, clientDestination
             val origin = LatLng(-5.139740893754784, 119.45001968809942)
@@ -99,10 +94,13 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
-        myMap = p0
         isReady = true
+
+        mMap.isMyLocationEnabled = true
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
