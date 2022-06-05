@@ -36,8 +36,9 @@ class LoginAdminActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
 
             val username = inputUsername.text.toString()
-            val password = inputPassword.text.toString().toString()
+            val password = inputPassword.text.toString()
             val type = "admin"
+
             if (username.isNotEmpty() && password.isNotEmpty()) {
 
                 login(username, password, type)
@@ -62,16 +63,14 @@ class LoginAdminActivity : AppCompatActivity() {
 
                     val message = response.body()?.message
                     val error = response.body()?.errors
-                    val data = response.body()?.data
+                    val dataUser = response.body()?.user
 
                     if (response.isSuccessful) {
                         if (error == false) {
 
-                            saveSession(data!!)
+                            saveSession(dataUser!!)
                         } else {
-
                             Toast.makeText(this@LoginAdminActivity, "gagal", Toast.LENGTH_SHORT).show()
-
                         }
                     } else {
                         Toast.makeText(this@LoginAdminActivity, "gagal", Toast.LENGTH_SHORT).show()

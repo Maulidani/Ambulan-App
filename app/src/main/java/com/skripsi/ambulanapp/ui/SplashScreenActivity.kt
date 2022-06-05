@@ -64,6 +64,10 @@ class SplashScreenActivity : AppCompatActivity() {
             orderAmbulan.visibility = View.VISIBLE
             loginDriver.visibility = View.VISIBLE
 
+        } else if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN) && sharedPref.getString(Constant.PREF_TYPE) == "admin") {
+
+            orderAmbulan.visibility = View.INVISIBLE
+            loginDriver.visibility = View.INVISIBLE
         }
 
     }

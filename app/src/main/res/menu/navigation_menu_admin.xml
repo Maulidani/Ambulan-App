@@ -4,9 +4,20 @@
     <item
         android:id="@+id/navOrderHistory"
         android:title="Riwayat Order" />
+
     <item
         android:id="@+id/navAkunDriver"
         android:title="Akun Driver" />
+
+    <group>
+        <item
+            android:id="@+id/navRSTerdekat"
+            android:title="Artikel Rumah Sakit terdekat" />
+        <item
+            android:id="@+id/navPertolonganPertama"
+            android:title="Artikel Pertolongan Pertama" />
+    </group>
+
     <item
         android:id="@+id/navLogout"
         android:title="Keluar" />

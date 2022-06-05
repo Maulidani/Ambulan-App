@@ -105,7 +105,7 @@ class AddEditDriverActivity : AppCompatActivity() {
                     response: Response<Model.ResponseModel>
                 ) {
                     val message = response.body()?.message
-                    val data = response.body()?.data
+                    val dataUser = response.body()?.user
 
                     if (response.isSuccessful) {
                         if (message == "Success") {
@@ -120,8 +120,8 @@ class AddEditDriverActivity : AppCompatActivity() {
                                     this@AddEditDriverActivity,
                                     AddEditCarActivity::class.java
                                 )
-                                    .putExtra("id", data?.id.toString())
-                                    .putExtra("name", data?.name)
+                                    .putExtra("id", dataUser?.id.toString())
+                                    .putExtra("name", dataUser?.name)
                             )
 
                             finish()

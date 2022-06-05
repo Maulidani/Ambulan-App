@@ -13,20 +13,40 @@ class Controller
 {
     public function showOrders(Request $request)
     {
-
         $status = $request->status;
-        $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
-        ->where('orders.status' , '=',$status)
-               ->get(
-                   [
-                       'orders.id as id_orders',
-                       'orders.*',
-                       'users.id as id_users',
-                       'users.status as status_users',
-                       'orders.status as status_orders',
-                       'users.*'
-                   ]
-               );
+        $id = $request->id_driver;
+
+        if($id == "0"){
+            $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
+            ->where('orders.status' , '=',$status)
+            ->orderBy('orders.updated_at', 'DESC')
+                   ->get(
+                       [
+                           'orders.id as id_orders',
+                           'orders.*',
+                           'users.id as id_users',
+                           'users.status as status_users',
+                           'orders.status as status_orders',
+                           'users.*'
+                       ]
+                   );
+        } else {
+            $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
+            ->where('users.id' , '=',$id)
+            ->where('orders.status' , '=',$status)
+            ->orderBy('orders.updated_at', 'DESC')
+                   ->get(
+                       [
+                           'orders.id as id_orders',
+                           'orders.*',
+                           'users.id as id_users',
+                           'users.status as status_users',
+                           'orders.status as status_orders',
+                           'users.*'
+                       ]
+                   );
+        }
+
 
         if ($orders->isEmpty()) {
             return response()->json([
@@ -136,7 +156,7 @@ class Controller
                         return response()->json([
                             'message' => 'Success',
                             'errors' => false,
-                            'data' => $users
+                            'user' => $users
                         ]);
 
                     } else {
@@ -281,7 +301,7 @@ class Controller
             return response()->json([
                 'message' => 'Success',
                 'errors' => false,
-                'data' => $data
+                'user' => $data
             ]);
 
         } else {
@@ -316,7 +336,10 @@ class Controller
 
     public function getDriverUsers()
     {
-        $drivers = User::where('status' , '=', true)
+        $drivers = User::where(
+            'type',
+            'driver'
+        )->orderBy('updated_at', 'DESC')
                ->get();
 
         if ($drivers->isEmpty()) {

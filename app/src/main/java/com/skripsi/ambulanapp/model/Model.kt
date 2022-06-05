@@ -5,7 +5,8 @@ class Model {
     data class ResponseModel(
         val message: String,
         val errors: Boolean,
-        val data: DataModel
+        val data: List<DataModel>,
+        val user: DataModel
     )
 
     data class DataModel(
@@ -24,7 +25,7 @@ class Model {
         val id_orders: Int,
         val id_user_driver: Int,
         val status_users: Int,
-        val status_orders: Int,
+        val status_orders: String,
 
         //users
         val name: String,

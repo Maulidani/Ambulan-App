@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.admin.fragment.AccountsListFragment
+import com.skripsi.ambulanapp.ui.admin.fragment.ArtikelFragment
 import com.skripsi.ambulanapp.ui.admin.fragment.OrderHistoryFragment
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.PreferencesHelper
@@ -43,6 +44,8 @@ class MainAdminActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navOrderHistory -> loadFragment(OrderHistoryFragment())
                 R.id.navAkunDriver -> loadFragment(AccountsListFragment())
+                R.id.navRSTerdekat -> loadFragment(ArtikelFragment("rumah_sakit_terdekat"))
+                R.id.navPertolonganPertama -> loadFragment(ArtikelFragment("pertolongan_pertama"))
                 R.id.navLogout -> {
                     sharedPref.logout()
                     finish()

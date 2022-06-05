@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     //load image
+    implementation("io.coil-kt:coil:2.0.0-rc03")
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Cirle Image

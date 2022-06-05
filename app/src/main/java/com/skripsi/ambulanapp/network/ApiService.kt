@@ -59,7 +59,6 @@ interface ApiService {
         @Field("longitude") longitude: String,
     ): Call<Model.ResponseModel>
 
-    @FormUrlEncoded
     @GET("get-driver-users")
     fun getDriverUser(
     ): Call<Model.ResponseModel>
@@ -71,11 +70,21 @@ interface ApiService {
         @Field("status") latitude: Int,
     ): Call<Model.ResponseModel>
 
+    @FormUrlEncoded
+    @POST("add-edit-car-users")
+    fun addEditCarUser(
+        @Field("id_user") iduser: String,
+        @Field("car_type") car_type: String,
+        @Field("car_number") car_number: String,
+    ): Call<Model.ResponseModel>
+
+
     //order
     @FormUrlEncoded
     @POST("show-orders")
     fun showOrder(
-        @Field("status") status: String,
+        @Field("status") statusOrder: String,
+        @Field("id_driver") idDriver: String,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
@@ -93,11 +102,4 @@ interface ApiService {
         @Field("status") status: String, //status = loading,finish,cancel
     ): Call<Model.ResponseModel>
 
-    @FormUrlEncoded
-    @POST("add-edit-car-users")
-    fun addEditCarUser(
-        @Field("id_user") iduser: String,
-        @Field("car_type") car_type: String,
-        @Field("car_number") car_number: String,
-    ): Call<Model.ResponseModel>
 }

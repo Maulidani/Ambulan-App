@@ -24,7 +24,7 @@
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOrder"
+            android:id="@+id/rvOrders"
             app:layout_constraintTop_toBottomOf="@+id/tvOrderan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -69,12 +69,12 @@ class LoginActivity : AppCompatActivity() {
 
                     val message = response.body()?.message
                     val error = response.body()?.errors
-                    val data = response.body()?.data
+                    val dataUser = response.body()?.user
 
                     if (response.isSuccessful) {
                         if (error == false) {
 
-                            saveSession(data!!)
+                            saveSession(dataUser!!)
                         } else {
 
                             Toast.makeText(this@LoginActivity, "gagal", Toast.LENGTH_SHORT).show()
