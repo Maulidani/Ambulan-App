@@ -40,8 +40,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 delay(2500)
 
                 startActivity(Intent(this@SplashScreenActivity, MainAdminActivity::class.java))
-
-                finish()
             }
         }
 
@@ -56,6 +54,14 @@ class SplashScreenActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        orderAmbulan.visibility = View.VISIBLE
+        loginDriver.visibility = View.VISIBLE
+
     }
 
 }
