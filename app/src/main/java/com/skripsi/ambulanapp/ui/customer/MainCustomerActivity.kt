@@ -7,7 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.customer.fragment.AmbulanceFragment
 import com.skripsi.ambulanapp.ui.customer.fragment.HomeFragment
-import com.skripsi.ambulanapp.ui.customer.fragment.ProfileFragment
+import com.skripsi.ambulanapp.ui.customer.fragment.AboutFragment
 
 class MainCustomerActivity : AppCompatActivity() {
 
@@ -22,7 +22,7 @@ class MainCustomerActivity : AppCompatActivity() {
             when (id.itemId) {
                 R.id.navHome -> loadFragment(HomeFragment())
                 R.id.navAmbulance -> loadFragment(AmbulanceFragment())
-                R.id.navProfile -> loadFragment(ProfileFragment())
+                R.id.navInfo -> loadFragment(AboutFragment())
             }
             true
         }

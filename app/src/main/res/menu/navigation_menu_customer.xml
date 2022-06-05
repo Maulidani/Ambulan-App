@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_ambulan"
         android:title="Ambulan" />
     <item
-        android:id="@+id/navProfile"
-        android:icon="@drawable/ic_profile"
-        android:title="Profil" />
+        android:id="@+id/navAbout"
+        android:icon="@drawable/ic_info"
+        android:title="Tentang" />
 </menu>
