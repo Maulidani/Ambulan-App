@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:drawableEnd="@drawable/ic_right"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"
         android:text="Nama"
@@ -34,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:drawableEnd="@drawable/ic_right"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"
         android:text="Telepon"
@@ -43,30 +41,40 @@
         app:layout_constraintTop_toBottomOf="@+id/tvInfoName" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvInfoEmail"
+        android:id="@+id/tvInfoUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:drawableEnd="@drawable/ic_right"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"
-        android:text="Email"
+        android:text="Username"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@+id/tvInfoPhone" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvInfoAddress"
+        android:id="@+id/tvInfoCar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:drawableEnd="@drawable/ic_right"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"
-        android:text="Alamat"
+        android:text="Tipe Mobil"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoUsername" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvInfoCarNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:text="Nomor Polisi"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoCar" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
@@ -91,26 +99,39 @@
         app:layout_constraintTop_toTopOf="@+id/tvInfoPhone" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvEmail"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="60dp"
-        android:text="andi@gmail.com"
+        android:text="username"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvInfoEmail"
-        app:layout_constraintRight_toRightOf="@id/tvInfoEmail"
-        app:layout_constraintTop_toTopOf="@+id/tvInfoEmail" />
+        app:layout_constraintBottom_toBottomOf="@id/tvInfoUsername"
+        app:layout_constraintRight_toRightOf="@id/tvInfoUsername"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoUsername" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvAddress"
+        android:id="@+id/tvCar"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="60dp"
         android:gravity="end"
         android:lines="1"
-        android:text="andiandi@gmail.com"
+        android:text="Ambulance"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvInfoAddress"
-        app:layout_constraintRight_toRightOf="@id/tvInfoAddress"
-        app:layout_constraintTop_toTopOf="@+id/tvInfoAddress" />
+        app:layout_constraintBottom_toBottomOf="@id/tvInfoCar"
+        app:layout_constraintRight_toRightOf="@id/tvInfoCar"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoCar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCarNumber"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
+        android:gravity="end"
+        android:lines="1"
+        android:text="dd 9999 dd"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvInfoCarNumber"
+        app:layout_constraintRight_toRightOf="@id/tvInfoCarNumber"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoCarNumber" />
 </androidx.constraintlayout.widget.ConstraintLayout>

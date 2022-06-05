@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.skripsi.ambulanapp"
     android:targetSandboxVersion="1"
-    tools:ignore="UnusedAttribute">
+    tools:ignore="UnusedAttribute" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -27,28 +27,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanApp"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
         <activity
-            android:name=".MainAdminActivity"
+            android:name=".AddEditCarActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.admin.LoginAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.MainAdminActivity"
+            android:exported="true" >
+        </activity>
         <activity
             android:name=".ui.driver.OrderHistoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.driver.ProfileActivity"
             android:exported="false" />
-        <activity android:name=".ui.admin.RegistrationActivity" />
-        <activity android:name=".ui.admin.LoginActivity" />
+        <activity android:name=".ui.admin.AddEditDriverActivity" />
+        <activity android:name=".ui.driver.LoginActivity" />
         <activity android:name=".ui.driver.MainDriverActivity" />
         <activity android:name=".ui.customer.MainCustomerActivity" />
         <activity
             android:name=".ui.SplashScreenActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="true" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".MainActivity" />
 

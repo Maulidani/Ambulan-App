@@ -7,7 +7,7 @@ import android.os.Bundle
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.customer.MainCustomerActivity
-import com.skripsi.ambulanapp.ui.admin.LoginActivity
+import com.skripsi.ambulanapp.ui.driver.LoginActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
