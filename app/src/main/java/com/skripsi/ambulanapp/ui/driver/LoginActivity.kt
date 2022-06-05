@@ -10,7 +10,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.model.Model
-import com.skripsi.ambulanapp.network.ApiCLient
+import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.ui.admin.LoginAdminActivity
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.PreferencesHelper
@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
 
-        ApiCLient.instances.loginUser(username, password, type)
+        ApiClient.instances.loginUser(username, password, type)
             .enqueue(object : Callback<Model.ResponseModel> {
                 override fun onResponse(
                     call: Call<Model.ResponseModel>,

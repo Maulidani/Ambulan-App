@@ -8,7 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiCLient {
+object ApiClient {
     private const val URL = "${Constant.BASE_URL}api/"
 
     private val interceptor = HttpLoggingInterceptor().apply {

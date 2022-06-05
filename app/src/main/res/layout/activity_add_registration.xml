@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        android:text="Tambah Akun"
+        android:text="Tambah Akun Driver"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:hint="Email">
+        android:hint="Username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputUsername"
@@ -103,7 +103,7 @@
         android:src="@drawable/ic_profile" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnnext"
+        android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

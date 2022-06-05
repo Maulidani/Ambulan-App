@@ -116,12 +116,13 @@ class Controller
                 $files->move(public_path() . '/image/user/', $filename);
 
                 $users = new User;
-                $users->name = $request->phone;
+                $users->name = $request->name;
                 $users->phone = $request->phone;
                 $users->image = $filename;
                 $users->username = $request->username;
                 $users->password = $request->password;
                 $users->type = $request->type;
+                $users->status = 0;
                 $users->save();
 
                 if ($users) {
@@ -129,6 +130,7 @@ class Controller
                     return response()->json([
                         'message' => 'Success',
                         'errors' => false,
+                        'data' => $users
                     ]);
 
                 } else {
