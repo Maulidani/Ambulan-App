@@ -98,7 +98,7 @@ class LoginAdminActivity : AppCompatActivity() {
         sharedPref.put(Constant.PREF_TYPE, data.type)
         sharedPref.put(Constant.PREF_IS_LOGIN, true)
 
-        startActivity(Intent(this, MainDriverActivity::class.java))
+        startActivity(Intent(this, MainAdminActivity::class.java))
 
         finish()
     }
