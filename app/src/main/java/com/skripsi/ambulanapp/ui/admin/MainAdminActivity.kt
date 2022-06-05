@@ -10,8 +10,11 @@ import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.admin.fragment.AccountsListFragment
 import com.skripsi.ambulanapp.ui.admin.fragment.OrderHistoryFragment
+import com.skripsi.ambulanapp.util.Constant
+import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class MainAdminActivity : AppCompatActivity() {
+    private lateinit var sharedPref: PreferencesHelper
 
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -20,6 +23,9 @@ class MainAdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_admin)
+        supportActionBar?.title = "Admin"
+
+        sharedPref = PreferencesHelper(this)
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navView)
@@ -33,8 +39,12 @@ class MainAdminActivity : AppCompatActivity() {
         loadFragment(OrderHistoryFragment())
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navAkunDriver -> loadFragment(OrderHistoryFragment())
-                R.id.navLogout -> loadFragment(AccountsListFragment())
+                R.id.navOrderHistory -> loadFragment(OrderHistoryFragment())
+                R.id.navAkunDriver -> loadFragment(AccountsListFragment())
+                R.id.navLogout -> {
+                    sharedPref.logout()
+                    finish()
+                }
             }
             true
         }
@@ -54,6 +64,13 @@ class MainAdminActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
+            finish()
+        }
     }
 
 

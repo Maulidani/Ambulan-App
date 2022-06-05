@@ -1,11 +1,11 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.CancellationSignal
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
@@ -18,19 +18,24 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.directionModules.DirectionFinder
 import com.skripsi.ambulanapp.directionModules.DirectionFinderListener
 import com.skripsi.ambulanapp.directionModules.Route
-import com.skripsi.ambulanapp.util.GoogleMapHelper.*
+import com.skripsi.ambulanapp.util.Constant
+import com.skripsi.ambulanapp.util.GoogleMapHelper.getDottedPolylines
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import java.io.UnsupportedEncodingException
-import java.util.function.Consumer
 
 
 class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapReadyCallback {
+    private lateinit var sharedPref: PreferencesHelper
 
     private lateinit var mMap: GoogleMap
     private var isReady = false
@@ -47,6 +52,8 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+
+    private lateinit var progressDialog: ProgressDialog
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultCallback: LocationResult) {
@@ -81,6 +88,8 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
             // direction from myLocation to clientLocation/clientDestination
             if (isReady) {
                 if (!cameraZoom) {
+                    progressDialog.dismiss()
+
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
                         CameraPosition.builder().target(myLocation).zoom(13.5f).build()
                     )
@@ -106,6 +115,13 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_driver)
+        supportActionBar?.title = "Driver"
+
+        sharedPref = PreferencesHelper(this)
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
@@ -140,7 +156,10 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                         OrderHistoryActivity::class.java
                     )
                 )
-                R.id.navLogout -> finish()
+                R.id.navLogout -> {
+                    sharedPref.logout()
+                    finish()
+                }
             }
             true
         }
@@ -174,7 +193,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     override fun onDirectionFinderSuccess(routes: MutableList<Route>?) {
 
         Log.e("direction", "FinderSuccess")
-        Log.e("direction", "Route : "+routes.toString())
+        Log.e("direction", "Route : " + routes.toString())
 
         if (routes != null) {
             if (routes.isNotEmpty() && polyline != null) {
@@ -219,11 +238,6 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         } else {
             askLocationPermission()
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
 
     }
 
@@ -308,4 +322,11 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
+            finish()
+        }
+    }
 }

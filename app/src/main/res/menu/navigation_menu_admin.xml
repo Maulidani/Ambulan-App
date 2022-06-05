@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navOrderHistory"
+        android:title="Riwayat Order" />
+    <item
         android:id="@+id/navAkunDriver"
         android:title="Akun Driver" />
     <item

@@ -11,7 +11,7 @@ interface ApiService {
     //user
     @FormUrlEncoded
     @POST("login-users")
-    fun loginUUser(
+    fun loginUser(
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("type") type: String,
