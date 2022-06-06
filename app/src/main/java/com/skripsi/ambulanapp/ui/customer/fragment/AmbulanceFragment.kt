@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.util.PreferencesHelper
 
@@ -30,6 +31,9 @@ import com.skripsi.ambulanapp.util.PreferencesHelper
 class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     private lateinit var sharedPref: PreferencesHelper
     private lateinit var progressDialog: ProgressDialog
+
+    private val inputLokasiJemput: TextInputEditText by lazy { requireActivity().findViewById(R.id.inputLokasiJemput) }
+    private val inputLokasiTujuan: TextInputEditText by lazy { requireActivity().findViewById(R.id.inputLokasiTujuan) }
 
     private lateinit var mMap: GoogleMap
     private var isReady = false
