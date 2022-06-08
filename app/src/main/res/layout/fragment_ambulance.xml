@@ -31,48 +31,6 @@
                 android:text="Pesan ambulan"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lokasiTujuanTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="14dp"
-                android:background="@color/white"
-                android:hint="Lokasi tujuan"
-                app:layout_constraintBottom_toTopOf="@+id/btnPesan">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputLokasiTujuan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lokasiJemputTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:background="@color/white"
-                android:hint="Lokasi jemput"
-                app:layout_constraintBottom_toTopOf="@+id/lokasiTujuanTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputLokasiJemput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,53 +1,52 @@
-package com.skripsi.ambulanapp.ui.customer.fragment
+package com.skripsi.ambulanapp.ui.customer
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
-import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
+import android.view.textservice.TextInfo
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.ambulanapp.R
-import com.skripsi.ambulanapp.ui.customer.AddLatLngOrderActivity
-import com.skripsi.ambulanapp.util.PreferencesHelper
 
-
-class AmbulanceFragment : Fragment(), OnMapReadyCallback {
-    private lateinit var sharedPref: PreferencesHelper
-    private lateinit var progressDialog: ProgressDialog
+class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private var isReady = false
-
-    private var polyline: Polyline? = null
-
-    private val locationRequestCode = 1001
     private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationResult: LocationResult
     lateinit var cameraUpdate: CameraUpdate
-
     private var cameraZoom: Boolean = false
+    private val locationRequestCode = 1001
 
-    private val btnPesan :MaterialButton by lazy { requireActivity().findViewById(R.id.btnPesan) }
+    private lateinit var progressDialog: ProgressDialog
+    private var pickUp = ""
+    private val cardParentDetailOrder: CardView by lazy { findViewById(R.id.carOrderDetail) }
+    private val imgPickUp: ImageView by lazy { findViewById(R.id.imgAddPickUp) }
+    private val imgDropOff: ImageView by lazy { findViewById(R.id.imgAddDropOff) }
+    private val inputPickUp: TextInputEditText by lazy { findViewById(R.id.inputPickUp) }
+    private val inputDropOff: TextInputEditText by lazy { findViewById(R.id.inputDropoff) }
+    private val inputNameOrderBy: TextInputEditText by lazy { findViewById(R.id.inputOrderBy) }
+    private val inputOrderNote: TextInputEditText by lazy { findViewById(R.id.inputNote) }
+    private val btnOrder: MaterialButton by lazy { findViewById(R.id.btnOrder) }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultCallback: LocationResult) {
@@ -61,8 +60,8 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                     locationResult.locations[0].longitude
                 )
 
+            // direction from myLocation to clientLocation/clientDestination
             if (isReady) {
-                mMap.clear()
                 if (!cameraZoom) {
                     progressDialog.dismiss()
 
@@ -77,57 +76,74 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onMapReady(p0: GoogleMap) {
-        if (isAdded) {
-            mMap = p0
-            isReady = true
-            mMap.isMyLocationEnabled = true
-        }
-    }
+    @SuppressLint("SetTextI18n")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_add_lat_lng_order)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ambulance, container, false)
+        supportActionBar?.title = "Pesan Ambulan"
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager
-            .findFragmentById(R.id.mapFragment) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        sharedPref = PreferencesHelper(requireContext())
-        progressDialog = ProgressDialog(requireContext())
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Loading...")
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setCancelable(false)
+        progressDialog.show()
 
-        mFusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireActivity())
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
         locationRequest.interval = 4000
         locationRequest.fastestInterval = 2000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        btnPesan.setOnClickListener {
-            startActivity(Intent(requireContext().applicationContext, AddLatLngOrderActivity::class.java))
+        imgPickUp.setOnClickListener{
+            cardParentDetailOrder.visibility = View.GONE
+            mMap.setOnMapClickListener {
+                mMap.clear()
+                val latLngPickUp = LatLng(it.latitude, it.longitude)
+//                mMap.addMarker(
+//                    MarkerOptions().position(latLngPickUp).title("Lokasi Jemput")
+//                )
+                inputPickUp.setText("${it.latitude}, ${it.longitude}")
+                cardParentDetailOrder.visibility = View.VISIBLE
+            }
         }
 
-        if (isAdded){
-            progressDialog.setMessage("Memuat lokasi...")
-            progressDialog.show()
+        imgDropOff.setOnClickListener{
+            cardParentDetailOrder.visibility = View.GONE
+            mMap.setOnMapClickListener {
+                mMap.clear()
+                val latLngDropOff = LatLng(it.latitude, it.longitude)
+//                mMap.addMarker(
+//                    MarkerOptions().position(latLngDropOff).title("Lokasi Drop Off")
+//                )
+                inputDropOff.setText("${it.latitude}, ${it.longitude}")
+                cardParentDetailOrder.visibility = View.VISIBLE
+            }
         }
+
+        btnOrder.setOnClickListener {
+            val orderBy = inputNameOrderBy.text.toString()
+            val note = inputOrderNote.text.toString()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        isReady = true
+        mMap.isMyLocationEnabled = true
     }
 
 
     override fun onStart() {
         super.onStart()
         if (ContextCompat.checkSelfPermission(
-                requireActivity(),
+                this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
@@ -151,7 +167,7 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     private fun checkSettingAndStartLocationUpdates() {
         val request: LocationSettingsRequest =
             LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
-        val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
 
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(request)
 
@@ -163,7 +179,7 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             if (it is ResolvableApiException) {
                 val apiException: ResolvableApiException = it
                 try {
-                    apiException.startResolutionForResult(requireActivity(), locationRequestCode)
+                    apiException.startResolutionForResult(this, locationRequestCode)
                     askLocationPermission()
                 } catch (e: IntentSender.SendIntentException) {
                     e.printStackTrace()
@@ -174,22 +190,22 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
     private fun askLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
-                requireActivity(),
+                this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.shouldShowRequestPermissionRationale(
-                requireActivity(),
+                this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
         ) {
             ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
+                this, arrayOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ),
                 locationRequestCode
             )
         } else {
             ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(
+                this, arrayOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ),
                 locationRequestCode
@@ -218,4 +234,5 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
+
 }
