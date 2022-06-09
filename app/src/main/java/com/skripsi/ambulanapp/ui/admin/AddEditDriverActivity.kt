@@ -44,6 +44,24 @@ class AddEditDriverActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_registration)
         supportActionBar?.hide()
 
+        val intentType = intent.getStringExtra("add_edit")
+        val intentIdUser = intent.getStringExtra("id")
+        val intentName = intent.getStringExtra("name")
+        val intentPhone = intent.getStringExtra("phone")
+        val intentUsername = intent.getStringExtra("username")
+        val intentPassword = intent.getStringExtra("password")
+        val intentImage = intent.getStringExtra("image")
+        val intentCarName = intent.getStringExtra("car_type")
+        val intentCarNumber = intent.getStringExtra("car_number")
+
+        if (intentType.toString()=="edit") {
+
+        } else if (intentType.toString()=="show"){
+
+        } else {
+
+        }
+
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Loading...")
         progressDialog.setCanceledOnTouchOutside(false)

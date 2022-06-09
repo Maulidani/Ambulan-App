@@ -42,7 +42,10 @@ class AccountsListFragment : Fragment(), AdapterAccounts.IUserRecycler {
         progressDialog.setCancelable(true)
 
         btnAdd.setOnClickListener {
-            startActivity(Intent(requireContext(), AddEditDriverActivity::class.java))
+            startActivity(
+                Intent(requireContext(), AddEditDriverActivity::class.java)
+                    .putExtra("add_edit", "add")
+            )
         }
 
         getAccounts()
