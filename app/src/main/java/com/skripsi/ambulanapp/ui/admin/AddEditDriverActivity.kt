@@ -10,12 +10,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.model.Model
 import com.skripsi.ambulanapp.network.ApiClient
+import com.skripsi.ambulanapp.util.Constant
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,12 +41,14 @@ class AddEditDriverActivity : AppCompatActivity() {
     private var reqBody: RequestBody? = null
     private var partImage: MultipartBody.Part? = null
 
+    var intentType = "";
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_registration)
         supportActionBar?.hide()
 
-        val intentType = intent.getStringExtra("add_edit")
+        intentType = intent.getStringExtra("add_edit").toString()
         val intentIdUser = intent.getStringExtra("id")
         val intentName = intent.getStringExtra("name")
         val intentPhone = intent.getStringExtra("phone")
@@ -54,44 +58,78 @@ class AddEditDriverActivity : AppCompatActivity() {
         val intentCarName = intent.getStringExtra("car_type")
         val intentCarNumber = intent.getStringExtra("car_number")
 
-        if (intentType.toString()=="edit") {
+        if (intentType.toString() == "edit") {
 
-        } else if (intentType.toString()=="show"){
+            inputName.setText(intentName)
+            inputPhone.setText(intentPhone)
+            inputUsername.setText(intentUsername)
+            inputPassword.setText(intentPassword)
+            var linkImage = "${Constant.URL_IMAGE_USER}${intentImage}"
+            imgProfile.load(linkImage)
+
+
+            btnNext.setOnClickListener {
+                val name = inputName.text.toString()
+                val phone = inputPhone.text.toString()
+                val username = inputUsername.text.toString()
+                val password = inputPassword.text.toString()
+
+                if (partImage == null) {
+                    Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
+                } else if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
+                    addAkun(name, phone, username, password)
+
+                } else {
+                    Toast.makeText(this, "Lengkapi data", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
+            imgProfile.setOnClickListener {
+                ImagePicker.with(this)
+                    .cropSquare()
+                    .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
+                    }
+            }
+
+        } else if (intentType.toString() == "show") {
 
         } else {
 
-        }
+            progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Loading...")
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.setCancelable(false)
 
-        progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Loading...")
-        progressDialog.setCanceledOnTouchOutside(false)
-        progressDialog.setCancelable(false)
+            btnNext.setOnClickListener {
+                val name = inputName.text.toString()
+                val phone = inputPhone.text.toString()
+                val username = inputUsername.text.toString()
+                val password = inputPassword.text.toString()
 
-        btnNext.setOnClickListener {
-            val name = inputName.text.toString()
-            val phone = inputPhone.text.toString()
-            val username = inputUsername.text.toString()
-            val password = inputPassword.text.toString()
+                if (partImage == null) {
+                    Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
+                } else if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
+                    addAkun(name, phone, username, password)
 
-            if (partImage == null) {
-                Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
-            } else if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
-                addAkun(name, phone, username, password)
+                } else {
+                    Toast.makeText(this, "Lengkapi data", Toast.LENGTH_SHORT).show()
 
-            } else {
-                Toast.makeText(this, "Lengkapi data", Toast.LENGTH_SHORT).show()
+                }
+            }
 
+            imgProfile.setOnClickListener {
+                ImagePicker.with(this)
+                    .cropSquare()
+                    .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
+                    }
             }
         }
 
-        imgProfile.setOnClickListener {
-            ImagePicker.with(this)
-                .cropSquare()
-                .compress(1024)         //Final image size will be less than 1 MB(Optional)
-                .createIntent { intent ->
-                    startForProfileImageResult.launch(intent)
-                }
-        }
     }
 
     private fun addAkun(
@@ -168,6 +206,10 @@ class AddEditDriverActivity : AppCompatActivity() {
                         .show()
                 }
             })
+    }
+
+    private fun editImage(){
+
 
     }
 
@@ -187,6 +229,11 @@ class AddEditDriverActivity : AppCompatActivity() {
                 reqBody = image.asRequestBody("image/*".toMediaTypeOrNull())
 
                 partImage = MultipartBody.Part.createFormData("image", image.name, reqBody!!)
+
+                if (intentType=="edit") {
+
+                    editImage()
+                }
 
             } else if (resultCode == ImagePicker.RESULT_ERROR) {
                 Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
