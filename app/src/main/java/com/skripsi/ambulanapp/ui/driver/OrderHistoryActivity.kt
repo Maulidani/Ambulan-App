@@ -60,8 +60,8 @@ class OrderHistoryActivity : AppCompatActivity() {
 
                         } else {
 
-                            Toast.makeText(this@OrderHistoryActivity, "gagal", Toast.LENGTH_SHORT)
-                                .show()
+//                            Toast.makeText(this@OrderHistoryActivity, "gagal", Toast.LENGTH_SHORT)
+//                                .show()
                         }
                     } else {
                         Toast.makeText(this@OrderHistoryActivity, "gagal", Toast.LENGTH_SHORT)

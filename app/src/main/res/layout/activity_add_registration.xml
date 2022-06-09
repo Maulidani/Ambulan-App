@@ -110,5 +110,15 @@
         android:backgroundTint="@color/red"
         android:text="Lanjut" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCarName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/grey"
+        android:text="ubah data kendaraan"
+        android:textColor="@color/black"
+        android:visibility="invisible" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
 

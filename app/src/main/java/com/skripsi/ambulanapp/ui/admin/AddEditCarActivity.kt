@@ -32,8 +32,12 @@ class AddEditCarActivity : AppCompatActivity() {
 
         val intentId = intent.getStringExtra("id").toString()
         val intentName = intent.getStringExtra("name").toString()
+        val intentCarName = intent.getStringExtra("car_name").toString()
+        val intentCarNumber = intent.getStringExtra("car_number").toString()
 
         inputName.setText(intentName)
+        inputNameCar.setText(intentCarName)
+        inputNumber.setText(intentCarNumber)
 
         btnAdd.setOnClickListener {
             val car = inputNameCar.text.toString()

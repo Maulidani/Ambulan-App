@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
-import android.view.textservice.TextInfo
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +22,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.model.Model
+import com.skripsi.ambulanapp.network.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -89,6 +92,11 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
         progressDialog.setCancelable(false)
         progressDialog.show()
 
+        var latitudePickUp = ""
+        var longitudePickUp = ""
+        var latitudeDropOff = ""
+        var longitudeDropOff = ""
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -100,35 +108,59 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest.fastestInterval = 2000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        imgPickUp.setOnClickListener{
+        imgPickUp.setOnClickListener {
+            Toast.makeText(this, "pilih lokasi jemput", Toast.LENGTH_SHORT).show()
             cardParentDetailOrder.visibility = View.GONE
             mMap.setOnMapClickListener {
                 mMap.clear()
                 val latLngPickUp = LatLng(it.latitude, it.longitude)
-//                mMap.addMarker(
-//                    MarkerOptions().position(latLngPickUp).title("Lokasi Jemput")
-//                )
+                mMap.addMarker(
+                    MarkerOptions().position(latLngPickUp).title("Lokasi Jemput")
+                )
                 inputPickUp.setText("${it.latitude}, ${it.longitude}")
+                latitudePickUp = it.latitude.toString()
+                longitudePickUp = it.longitude.toString()
+
                 cardParentDetailOrder.visibility = View.VISIBLE
             }
         }
 
-        imgDropOff.setOnClickListener{
+        imgDropOff.setOnClickListener {
+            Toast.makeText(this, "pilih lokasi tujuan / drop off", Toast.LENGTH_SHORT).show()
             cardParentDetailOrder.visibility = View.GONE
             mMap.setOnMapClickListener {
                 mMap.clear()
                 val latLngDropOff = LatLng(it.latitude, it.longitude)
-//                mMap.addMarker(
-//                    MarkerOptions().position(latLngDropOff).title("Lokasi Drop Off")
-//                )
+                mMap.addMarker(
+                    MarkerOptions().position(latLngDropOff).title("Lokasi Drop Off")
+                )
                 inputDropOff.setText("${it.latitude}, ${it.longitude}")
+                latitudeDropOff = it.latitude.toString()
+                longitudeDropOff = it.longitude.toString()
+
                 cardParentDetailOrder.visibility = View.VISIBLE
+
             }
         }
 
         btnOrder.setOnClickListener {
             val orderBy = inputNameOrderBy.text.toString()
             val note = inputOrderNote.text.toString()
+
+            if (orderBy.isNotEmpty() && latitudePickUp.isNotEmpty()
+                && longitudePickUp.isNotEmpty() && latitudeDropOff.isNotEmpty()
+                && longitudeDropOff.isNotEmpty()
+            ) {
+                addOrder(
+                    orderBy,
+                    note,
+                    latitudePickUp,
+                    longitudePickUp,
+                    latitudeDropOff,
+                    longitudeDropOff
+                )
+
+            }
         }
     }
 
@@ -137,6 +169,77 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         isReady = true
         mMap.isMyLocationEnabled = true
+    }
+
+    private fun addOrder(
+        orderBy: String,
+        note: String,
+        latitudePickUp: String,
+        longitudePickUp: String,
+        latitudeDropOff: String,
+        longitudeDropOff: String
+    ) {
+
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+
+        ApiClient.instances.addOrder(
+            "",
+            "",
+            orderBy,
+            note,
+            "",
+            "",
+            latitudePickUp,
+            longitudePickUp,
+            latitudeDropOff,
+            longitudeDropOff,
+            "pending"
+        ).enqueue(object : Callback<Model.ResponseModel> {
+            override fun onResponse(
+                call: Call<Model.ResponseModel>,
+                response: Response<Model.ResponseModel>
+            ) {
+
+                val message = response.body()?.message
+                val error = response.body()?.errors
+                val data = response.body()?.data
+
+                if (response.isSuccessful) {
+                    if (error == false) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Berhasil : Mencari driver ambulan...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        finish()
+
+                    } else {
+
+                        Toast.makeText(this@AddLatLngOrderActivity, "gagal", Toast.LENGTH_SHORT)
+                            .show()
+
+                    }
+                } else {
+                    Toast.makeText(this@AddLatLngOrderActivity, "gagal", Toast.LENGTH_SHORT).show()
+
+                }
+
+                progressDialog.dismiss()
+            }
+
+            override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                progressDialog.dismiss()
+
+                Toast.makeText(
+                    this@AddLatLngOrderActivity,
+                    t.message.toString(),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        })
     }
 
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -32,6 +33,7 @@ class AddEditDriverActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private val btnNext: MaterialButton by lazy { findViewById(R.id.btnNext) }
+    private val btnDataCar: MaterialButton by lazy { findViewById(R.id.btnCarName) }
     private val inputName: TextInputEditText by lazy { findViewById(R.id.inputName) }
     private val inputPhone: TextInputEditText by lazy { findViewById(R.id.inputPhone) }
     private val inputUsername: TextInputEditText by lazy { findViewById(R.id.inputUsername) }
@@ -41,15 +43,21 @@ class AddEditDriverActivity : AppCompatActivity() {
     private var reqBody: RequestBody? = null
     private var partImage: MultipartBody.Part? = null
 
-    var intentType = "";
+    var intentType = ""
+    var intentIdUser = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_registration)
         supportActionBar?.hide()
 
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Loading...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        progressDialog.setCancelable(false)
+
         intentType = intent.getStringExtra("add_edit").toString()
-        val intentIdUser = intent.getStringExtra("id")
+        intentIdUser = intent.getStringExtra("id").toString()
         val intentName = intent.getStringExtra("name")
         val intentPhone = intent.getStringExtra("phone")
         val intentUsername = intent.getStringExtra("username")
@@ -60,13 +68,16 @@ class AddEditDriverActivity : AppCompatActivity() {
 
         if (intentType.toString() == "edit") {
 
+            btnNext.text = "Edit Akun"
+            btnDataCar.visibility = View.VISIBLE
+
             inputName.setText(intentName)
             inputPhone.setText(intentPhone)
             inputUsername.setText(intentUsername)
             inputPassword.setText(intentPassword)
+
             var linkImage = "${Constant.URL_IMAGE_USER}${intentImage}"
             imgProfile.load(linkImage)
-
 
             btnNext.setOnClickListener {
                 val name = inputName.text.toString()
@@ -74,15 +85,28 @@ class AddEditDriverActivity : AppCompatActivity() {
                 val username = inputUsername.text.toString()
                 val password = inputPassword.text.toString()
 
-                if (partImage == null) {
-                    Toast.makeText(this, "Pilih foto profil!", Toast.LENGTH_SHORT).show()
-                } else if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
-                    addAkun(name, phone, username, password)
+                if (name.isNotEmpty() && phone.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
+                    editAkun(intentIdUser, name, phone, username, password)
 
                 } else {
                     Toast.makeText(this, "Lengkapi data", Toast.LENGTH_SHORT).show()
 
                 }
+            }
+
+            btnDataCar.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@AddEditDriverActivity,
+                        AddEditCarActivity::class.java
+                    )
+                        .putExtra("id", intentIdUser)
+                        .putExtra("name", intentName)
+                        .putExtra("car_name", intentCarName)
+                        .putExtra("car_number", intentCarNumber)
+                )
+
+                finish()
             }
 
             imgProfile.setOnClickListener {
@@ -94,14 +118,7 @@ class AddEditDriverActivity : AppCompatActivity() {
                     }
             }
 
-        } else if (intentType.toString() == "show") {
-
         } else {
-
-            progressDialog = ProgressDialog(this)
-            progressDialog.setMessage("Loading...")
-            progressDialog.setCanceledOnTouchOutside(false)
-            progressDialog.setCancelable(false)
 
             btnNext.setOnClickListener {
                 val name = inputName.text.toString()
@@ -208,8 +225,103 @@ class AddEditDriverActivity : AppCompatActivity() {
             })
     }
 
-    private fun editImage(){
+    private fun editAkun(
+        id: String,
+        name: String,
+        phone: String,
+        username: String,
+        password: String,
+    ) {
+        progressDialog.show()
 
+        ApiClient.instances.editUser(
+            id.toInt(),
+            name,
+            phone,
+            username,
+            password,
+        )
+            .enqueue(object :
+                Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful) {
+                        if (message == "Success") {
+                            Toast.makeText(
+                                applicationContext,
+                                "Berhasil ubah akun",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            finish()
+
+                        } else {
+                            Toast.makeText(applicationContext, "gagal", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "gagal", Toast.LENGTH_SHORT).show()
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    Toast.makeText(applicationContext, t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+    }
+
+
+    private fun editImage(id: String) {
+        progressDialog.show()
+
+        val partId: RequestBody = id.toRequestBody("text/plain".toMediaTypeOrNull())
+
+        ApiClient.instances.editImageUser(
+            partId,
+            partImage!!
+        )
+            .enqueue(object :
+                Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+                    val message = response.body()?.message
+
+                    if (response.isSuccessful) {
+
+                        if (message == "Success") {
+                            Toast.makeText(
+                                applicationContext,
+                                "Berhasil mengubah foto",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else {
+                            Toast.makeText(applicationContext, "gagal", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "gagal", Toast.LENGTH_SHORT).show()
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    Toast.makeText(applicationContext, t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
 
     }
 
@@ -230,9 +342,9 @@ class AddEditDriverActivity : AppCompatActivity() {
 
                 partImage = MultipartBody.Part.createFormData("image", image.name, reqBody!!)
 
-                if (intentType=="edit") {
+                if (intentType == "edit") {
 
-                    editImage()
+                    editImage(intentIdUser)
                 }
 
             } else if (resultCode == ImagePicker.RESULT_ERROR) {

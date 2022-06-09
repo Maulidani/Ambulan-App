@@ -14,6 +14,7 @@ class Model {
         val status: Int,
 
         // orders
+        val order_by: String,
         val note: String,
         val pick_up: String,
         val drop_off: String,

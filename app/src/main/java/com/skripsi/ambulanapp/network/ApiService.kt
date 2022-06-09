@@ -92,6 +92,7 @@ interface ApiService {
     fun addOrder(
         @Field("id_orders") idOrder: String, //status = loading,finish,cancel
         @Field("id_user_driver") idDriverUser: String, //status = loading
+        @Field("order_by") orderBy: String,
         @Field("note") note: String,
         @Field("pick_up") pickUp: String,
         @Field("drop_off") dropOff: String,

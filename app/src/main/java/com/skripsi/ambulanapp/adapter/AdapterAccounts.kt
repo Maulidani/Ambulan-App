@@ -67,26 +67,11 @@ class AdapterAccounts(
         val builder: AlertDialog.Builder = AlertDialog.Builder(itemView.context)
         builder.setTitle("Aksi")
 
-        val options = arrayOf("Lihat Akun", "Edit Akun", "Hapus Akun")
+        val options = arrayOf( "Edit Akun", "Hapus Akun")
         builder.setItems(
             options
         ) { _, which ->
             when (which) {
-                0 -> {
-                    ContextCompat.startActivity(
-                        itemView.context,
-                        Intent(itemView.context, AddEditDriverActivity::class.java)
-                            .putExtra("add_edit", "show")
-                            .putExtra("id", result.id.toString())
-                            .putExtra("name", result.name)
-                            .putExtra("phone", result.phone)
-                            .putExtra("image", result.image)
-                            .putExtra("username", result.username)
-                            .putExtra("password", result.password)
-                            .putExtra("car_type", result.car_type)
-                            .putExtra("car_number", result.car_number), null
-                    )
-                }
                 1 -> {
                     ContextCompat.startActivity(
                         itemView.context,

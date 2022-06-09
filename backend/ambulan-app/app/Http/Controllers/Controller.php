@@ -69,6 +69,7 @@ class Controller
         if($request->status === "pending")
         {
             $orders = new Order;
+            $orders->order_by = $request->order_by;
             $orders->note = $request->note;
             $orders->pick_up = $request->pick_up;
             $orders->drop_off = $request->drop_off;
