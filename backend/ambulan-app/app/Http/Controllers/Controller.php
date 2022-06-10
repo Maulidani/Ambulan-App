@@ -17,19 +17,26 @@ class Controller
         $id = $request->id_driver;
 
         if($id == "0"){
-            $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
-            ->where('orders.status' , '=',$status)
-            ->orderBy('orders.updated_at', 'DESC')
-                   ->get(
-                       [
-                           'orders.id as id_orders',
-                           'orders.*',
-                           'users.id as id_users',
-                           'users.status as status_users',
-                           'orders.status as status_orders',
-                           'users.*'
-                       ]
-                   );
+
+            if($status == "pending"){
+                $orders = Order::where('orders.status' , '=',$status)
+                    ->get();
+
+            } else {
+                $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
+                ->where('orders.status' , '=',$status)
+                ->orderBy('orders.updated_at', 'DESC')
+                    ->get(
+                        [
+                            'orders.id as id_orders',
+                            'orders.*',
+                            'users.id as id_users',
+                            'users.status as status_users',
+                            'orders.status as status_orders',
+                            'users.*'
+                        ]
+                    );
+            }
         } else {
             $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
             ->where('users.id' , '=',$id)
@@ -111,6 +118,7 @@ class Controller
             return response()->json([
                 'message' => 'Success',
                 'errors' => false,
+                'order' => $orders
             ]);
         } else {
             return response()->json([

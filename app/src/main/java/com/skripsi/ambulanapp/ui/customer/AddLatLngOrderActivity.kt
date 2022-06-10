@@ -25,6 +25,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.model.Model
 import com.skripsi.ambulanapp.network.ApiClient
+import com.skripsi.ambulanapp.util.Constant
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +42,7 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
     private var cameraZoom: Boolean = false
     private val locationRequestCode = 1001
 
+    private lateinit var sharedPref: PreferencesHelper
     private lateinit var progressDialog: ProgressDialog
     private var pickUp = ""
     private val cardParentDetailOrder: CardView by lazy { findViewById(R.id.carOrderDetail) }
@@ -85,6 +88,8 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_add_lat_lng_order)
 
         supportActionBar?.title = "Pesan Ambulan"
+
+        sharedPref = PreferencesHelper(this)
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Loading...")
@@ -204,6 +209,7 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
                 val message = response.body()?.message
                 val error = response.body()?.errors
                 val data = response.body()?.data
+                val order = response.body()?.order
 
                 if (response.isSuccessful) {
                     if (error == false) {
@@ -212,6 +218,9 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
                             "Berhasil : Mencari driver ambulan...",
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        sharedPref.put(Constant.PREF_ID_ORDER, order?.id.toString())
+                        sharedPref.put(Constant.PREF_IS_ORDERING, true)
 
                         finish()
 

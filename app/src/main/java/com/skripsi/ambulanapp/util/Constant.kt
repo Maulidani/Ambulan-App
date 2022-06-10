@@ -10,5 +10,9 @@ class Constant {
         const val PREF_ID_USER = "PREF_ID_USER"
         const val PREF_TYPE = "PREF_TYPE"
 
+        const val PREF_ID_ORDER = "PREF_ID_ORDER"
+        const val PREF_ORDER_STATUS = "PREF_ORDER_STATUS"
+        const val PREF_IS_ORDERING = "PREF_IS_ORDERING"
+
     }
 }
