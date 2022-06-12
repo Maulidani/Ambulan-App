@@ -2,9 +2,11 @@ package com.skripsi.ambulanapp.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.admin.MainAdminActivity
@@ -24,6 +26,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private val orderAmbulan: MaterialButton by lazy { findViewById(R.id.btnOrderAmbulan) }
     private val loginDriver: MaterialButton by lazy { findViewById(R.id.btnLoginDriver) }
+
+    private val locationRequestCode = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +74,51 @@ class SplashScreenActivity : AppCompatActivity() {
             loginDriver.visibility = View.INVISIBLE
         }
 
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+
+        askLocationPermission()
+    }
+
+    private fun askLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                locationRequestCode
+            )
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                locationRequestCode
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == locationRequestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }
     }
 
 }

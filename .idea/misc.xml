@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1130095923261391" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_customer.xml" value="0.13451086956521738" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_driver.xml" value="0.18667679837892603" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_order_history.xml" value="0.32065217391304346" />

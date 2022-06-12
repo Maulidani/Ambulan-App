@@ -1,6 +1,7 @@
 package com.skripsi.ambulanapp.ui.customer.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.IntentSender
@@ -12,11 +13,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import coil.load
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
@@ -32,9 +38,6 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.ui.customer.AddLatLngOrderActivity
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.PreferencesHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,7 +61,14 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
     private var cameraZoom: Boolean = false
 
+    private val cardParentOrderInfo: CardView by lazy { requireActivity().findViewById(R.id.carOrderInfo) }
     private val btnPesan: MaterialButton by lazy { requireActivity().findViewById(R.id.btnPesan) }
+    private val btnFinish: MaterialButton by lazy { requireActivity().findViewById(R.id.btnFinish) }
+    private val pbLoading: ProgressBar by lazy { requireActivity().findViewById(R.id.loading) }
+    private val imgDriver: ImageView by lazy { requireActivity().findViewById(R.id.imgAmbulance) }
+    private val tvDrivername: TextView by lazy { requireActivity().findViewById(R.id.tvNameDriver) }
+    private val tvDriverCar: TextView by lazy { requireActivity().findViewById(R.id.tvNameCar) }
+    private val tvDriverCarNumber: TextView by lazy { requireActivity().findViewById(R.id.tvNumberCar) }
 
     private var myLocation: LatLng? = null
 
@@ -82,13 +92,22 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
                     if (isStatusOrder == "loading") {
                         getDriver("loading_order")
+                        btnPesan.visibility = View.GONE
+                        mMap.clear()
+
                     } else if (isOrdering) {
                         getDriver("add_driver_order")
+                        cardParentOrderInfo.visibility = View.GONE
+                        btnPesan.visibility = View.GONE
+
                     } else {
 
+                        cardParentOrderInfo.visibility = View.GONE
+                        btnPesan.visibility = View.VISIBLE
                     }
                     getDriver = false
                 }
+
                 if (!cameraZoom) {
 //                    progressDialog.dismiss()
                     getDriver("set_marker")
@@ -132,6 +151,7 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
         progressDialog = ProgressDialog(requireContext())
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setCancelable(false)
+        progressDialog.show()
 
         mFusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -140,6 +160,9 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
         locationRequest.fastestInterval = 2000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
+        btnFinish.setOnClickListener {
+            deleteAlert()
+        }
         btnPesan.setOnClickListener {
             startActivity(
                 Intent(
@@ -251,7 +274,8 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getDriver(type: String) {
-        mMap.clear()
+//        mMap.clear()
+        progressDialog.show()
 
         ApiClient.instances.getDriverUser().enqueue(object : Callback<Model.ResponseModel> {
             @RequiresApi(Build.VERSION_CODES.N)
@@ -267,17 +291,33 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                 if (response.isSuccessful) {
                     if (error == false) {
 
+                        val idOrder = sharedPref.getString(Constant.PREF_ID_ORDER).toString()
+                        val idDriver = sharedPref.getString(Constant.PREF_DRIVER_ID).toString()
+
                         if (type == "add_driver_order") {
-                            val idOrder = sharedPref.getString(Constant.PREF_ID_ORDER).toString()
-                            mMap.clear()
+
                             sortJarak(data, idOrder)
+
                         } else if (type == "loading_order") {
 //                            val idOrder = sharedPref.getString(Constant.PREF_ID_ORDER).toString()
-//
-//                            myOrderLoading(data, idOrder)
 
-                            mMap.clear()
-                            Toast.makeText(requireContext(), "driver menuju kelokasi pick up", Toast.LENGTH_SHORT).show()
+                            if (data != null) {
+                                for (i in data) {
+                                    if (i.id == idDriver.toInt()) {
+                                        mMap.clear()
+//                                      Toast.makeText(requireContext(), "driver menuju kelokasi pick up", Toast.LENGTH_SHORT).show()
+                                        cardParentOrderInfo.visibility = View.VISIBLE
+
+                                        tvDrivername.text = i.name
+                                        tvDriverCar.text = i.car_type
+                                        tvDriverCarNumber.text = i.car_number
+                                        var linkImage = "${Constant.URL_IMAGE_USER}${i.image}"
+                                        imgDriver.load(linkImage)
+
+                                    }
+                                }
+                            }
+
                         } else {
                             setMarker(data)
 
@@ -330,8 +370,30 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        progressDialog.show()
-//
+//        progressDialog.show()
+
+        getDriver = true
+        if (getDriver) {
+            val isOrdering = sharedPref.getBoolean(Constant.PREF_IS_ORDERING)
+            val isStatusOrder = sharedPref.getString(Constant.PREF_ORDER_STATUS)
+
+            if (isStatusOrder == "loading") {
+                getDriver("loading_order")
+                btnPesan.visibility = View.GONE
+
+            } else if (isOrdering) {
+                getDriver("add_driver_order")
+                cardParentOrderInfo.visibility = View.GONE
+                btnPesan.visibility = View.GONE
+
+            } else {
+
+                cardParentOrderInfo.visibility = View.GONE
+                btnPesan.visibility = View.VISIBLE
+            }
+            getDriver = false
+        }
+
 //        val isOrdering = sharedPref.getBoolean(Constant.PREF_IS_ORDERING)
 //        val isStatusOrder = sharedPref.getString(Constant.PREF_ORDER_STATUS)
 //
@@ -345,15 +407,18 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-
-    private fun addOrderDriver(idOrder: ArrayList<Array<String>>) {
+    private fun addOrderDriver(
+        idDriver: ArrayList<Array<String>>,
+        idOrder: String,
+        status: String
+    ) {
         if (isAdded) {
-            progressDialog.setMessage("Loading...")
+            progressDialog.setMessage("Mencari Driver Ambulan...")
             progressDialog.show()
 
             ApiClient.instances.addOrder(
-                idOrder[0][0],
-                idOrder[0][1],
+                idOrder,
+                idDriver[0][0],
                 "",
                 "",
                 "",
@@ -362,7 +427,7 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                 "",
                 "",
                 "",
-                "loading"
+                status
             ).enqueue(object : Callback<Model.ResponseModel> {
                 override fun onResponse(
                     call: Call<Model.ResponseModel>,
@@ -378,13 +443,22 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                         if (error == false) {
                             Toast.makeText(
                                 requireContext(),
-                                "Berhasil : mendapat driver",
+                                "Berhasil : mendapat driver ",
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
 
+                            Log.e("order : ", order.toString())
+
                             sharedPref.put(Constant.PREF_ORDER_STATUS, "loading")
-                            Toast.makeText(requireContext(), order?.name+ "sedang kelokasi anda", Toast.LENGTH_SHORT).show()
+
+                            order?.id_user_driver?.let {
+                                sharedPref.put(
+                                    Constant.PREF_DRIVER_ID,
+                                    it
+                                )
+                            }
+
                             getDriver("loading_order")
 
                         } else {
@@ -463,20 +537,96 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
 
                 Stream.of<Array<String>>(*dataToSort)
                     .sorted { small: Array<String>, big: Array<String> ->
-                        small[0].compareTo(big[0])
+                        small[1].compareTo(big[1])
+                        Log.e("jarak: sort", small[1] + " > " + big[1])
                     }
                     .forEach { dataSort: Array<String> ->
                         list.add(dataSort)
                         Log.e("jarak: hasil sort", list[0][0])
+                        Log.e("jarak: hasil sort", list[0][1])
                     }
-
-                addOrderDriver(list)
+//                Log.e("jarak: hasil sort", list.toString())
+                addOrderDriver(list, idOrder, "loading")
 
             }
         }
 
     }
 
-//    private fun myOrderLoading(data: List<Model.DataModel>?, idOrder: String) {
-//    }
+    private fun deleteAlert() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Selesai")
+        builder.setMessage("Orderan ini telah selesai ?")
+
+        builder.setPositiveButton("Ya") { _, _ ->
+            progressDialog.show()
+
+            val idOrder = sharedPref.getString(Constant.PREF_ID_ORDER).toString()
+            val idDriver = sharedPref.getString(Constant.PREF_DRIVER_ID).toString()
+
+            ApiClient.instances.addOrder(
+                idOrder,
+                idDriver,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "finish"
+            ).enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            cardParentOrderInfo.visibility = View.GONE
+                            btnPesan.visibility = View.VISIBLE
+                            sharedPref.logout()
+
+                            getDriver("set_marker")
+
+                        } else {
+
+                            Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    Toast.makeText(
+                        requireContext(),
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+        }
+
+        builder.setNegativeButton("Tidak") { _, _ ->
+            // cancel
+        }
+        builder.show()
+    }
+
 }

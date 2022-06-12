@@ -33,6 +33,91 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/carOrderInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:visibility="gone"
+            app:cardCornerRadius="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="24dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAmbulance"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_ambulance"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNameDriver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="Andi driver"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/imgAmbulance" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNameCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Toyota"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tvNumberCar"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameDriver" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNumberCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="DD 99 DD"
+                    app:layout_constraintLeft_toRightOf="@id/tvNameCar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameDriver" />
+
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tvInfoDriver"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvNumberCar" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInfoDriver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="Driver Menuju ke titik Lokasi"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toBottomOf="@+id/loading" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFinish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Selesai"
+                    app:layout_constraintTop_toBottomOf="@id/tvInfoDriver" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

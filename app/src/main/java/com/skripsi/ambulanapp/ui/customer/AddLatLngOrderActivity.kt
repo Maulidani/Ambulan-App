@@ -215,7 +215,7 @@ class AddLatLngOrderActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (error == false) {
                         Toast.makeText(
                             applicationContext,
-                            "Berhasil : Mencari driver ambulan...",
+                            "Mencari driver ambulan...",
                             Toast.LENGTH_SHORT
                         ).show()
 
