@@ -67,7 +67,7 @@ interface ApiService {
     @POST("add-status-users")
     fun addStatusDriverUser(
         @Field("id_user") idUser: Int,
-        @Field("status") latitude: Int,
+        @Field("status") status: Int,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded

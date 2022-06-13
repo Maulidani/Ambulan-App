@@ -416,76 +416,158 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             progressDialog.setMessage("Mencari Driver Ambulan...")
             progressDialog.show()
 
-            ApiClient.instances.addOrder(
-                idOrder,
-                idDriver[0][0],
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                status
-            ).enqueue(object : Callback<Model.ResponseModel> {
-                override fun onResponse(
-                    call: Call<Model.ResponseModel>,
-                    response: Response<Model.ResponseModel>
-                ) {
+            var checkStatus = false
+            if (idDriver.isNotEmpty()) {
+                checkStatus = checkStatusDriver(idDriver[0][0], 2)
+            } else {
+                checkStatus = false
+            }
 
-                    val message = response.body()?.message
-                    val error = response.body()?.errors
-                    val data = response.body()?.data
-                    val order = response.body()?.order
+            if (checkStatus) {
 
-                    if (response.isSuccessful) {
-                        if (error == false) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Berhasil : mendapat driver ",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                ApiClient.instances.addOrder(
+                    idOrder,
+                    idDriver[0][0],
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    status
+                ).enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
 
-                            Log.e("order : ", order.toString())
+                        val message = response.body()?.message
+                        val error = response.body()?.errors
+                        val data = response.body()?.data
+                        val order = response.body()?.order
 
-                            sharedPref.put(Constant.PREF_ORDER_STATUS, "loading")
-
-                            order?.id_user_driver?.let {
-                                sharedPref.put(
-                                    Constant.PREF_DRIVER_ID,
-                                    it
+                        if (response.isSuccessful) {
+                            if (error == false) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Berhasil : mendapat driver ",
+                                    Toast.LENGTH_SHORT
                                 )
+                                    .show()
+
+                                Log.e("order : ", order.toString())
+
+                                sharedPref.put(Constant.PREF_ORDER_STATUS, "loading")
+
+                                order?.id_user_driver?.let {
+                                    sharedPref.put(
+                                        Constant.PREF_DRIVER_ID,
+                                        it
+                                    )
+                                }
+
+                                getDriver("loading_order")
+
+                            } else {
+
+                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+                                    .show()
+
                             }
-
-                            getDriver("loading_order")
-
                         } else {
-
-                            Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
 
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
 
+                        progressDialog.dismiss()
                     }
 
-                    progressDialog.dismiss()
-                }
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        progressDialog.dismiss()
 
-                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                    progressDialog.dismiss()
+                        Toast.makeText(
+                            requireContext(),
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                })
 
-                    Toast.makeText(
-                        requireContext(),
-                        t.message.toString(),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
-            })
+            } else {
+
+                val idOrder = sharedPref.getString(Constant.PREF_ID_ORDER).toString()
+
+                ApiClient.instances.addOrder(
+                    idOrder,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "finish"
+                ).enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+
+                        val message = response.body()?.message
+                        val error = response.body()?.errors
+                        val data = response.body()?.data
+                        val order = response.body()?.order
+
+                        if (response.isSuccessful) {
+                            if (error == false) {
+
+
+                                Toast.makeText(
+                                    requireContext(),
+                                    "gagal : tidak mendapat driver",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+
+                                cardParentOrderInfo.visibility = View.GONE
+                                btnPesan.visibility = View.VISIBLE
+                                sharedPref.logout()
+
+                                getDriver("set_marker")
+
+                            } else {
+
+                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+                                    .show()
+
+                            }
+                        } else {
+                            Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
+
+                        }
+
+                        progressDialog.dismiss()
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        progressDialog.dismiss()
+
+                        Toast.makeText(
+                            requireContext(),
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                })
+            }
+            progressDialog.dismiss()
+
         }
     }
 
@@ -590,12 +672,22 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                     if (response.isSuccessful) {
                         if (error == false) {
 
-                            cardParentOrderInfo.visibility = View.GONE
-                            btnPesan.visibility = View.VISIBLE
-                            sharedPref.logout()
+                            val checkStatus = checkStatusDriver(idDriver, 1)
 
-                            getDriver("set_marker")
+                            if (checkStatus) {
 
+                                cardParentOrderInfo.visibility = View.GONE
+                                btnPesan.visibility = View.VISIBLE
+                                sharedPref.logout()
+
+                                getDriver("set_marker")
+
+                            } else {
+
+                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+                                    .show()
+
+                            }
                         } else {
 
                             Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
@@ -627,6 +719,61 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             // cancel
         }
         builder.show()
+    }
+
+    private fun checkStatusDriver(idDriver: String, status: Int): Boolean {
+        progressDialog.show()
+
+        var checkStatus = true
+
+        ApiClient.instances.addStatusDriverUser(idDriver.toInt(), status)
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            checkStatus = true
+
+                        } else {
+
+                            Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                            checkStatus = false
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
+
+                        checkStatus = false
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    checkStatus = false
+
+                    Toast.makeText(
+                        requireContext(),
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+
+        return checkStatus
     }
 
 }
