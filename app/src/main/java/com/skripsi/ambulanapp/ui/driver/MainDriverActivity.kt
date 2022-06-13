@@ -28,9 +28,18 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.directionModules.DirectionFinder
 import com.skripsi.ambulanapp.directionModules.DirectionFinderListener
 import com.skripsi.ambulanapp.directionModules.Route
+import com.skripsi.ambulanapp.model.Model
+import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.GoogleMapHelper.getDottedPolylines
 import com.skripsi.ambulanapp.util.PreferencesHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.UnsupportedEncodingException
 
 
@@ -53,6 +62,8 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
+    var loop = true
+
     private lateinit var progressDialog: ProgressDialog
 
     private val locationCallback = object : LocationCallback() {
@@ -67,23 +78,6 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     locationResult.locations[0].longitude
                 )
 
-            //clientLocation, clientDestination
-            val origin = LatLng(-5.139740893754784, 119.45001968809942)
-            val destination = LatLng(-5.1347215426505946, 119.43516105772933)
-
-            // direction from clientLocation to clientDestination
-            if (isReady) {
-//                if (!cameraZoom) {
-//                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
-//                        CameraPosition.builder().target(origin).zoom(13.5f).build()
-//                    )
-//                    mMap.animateCamera(cameraUpdate)
-//                    cameraZoom = true
-//                }
-                mMap.addMarker(MarkerOptions().position(origin).title("Lokasi Jemput"))
-                mMap.addMarker(MarkerOptions().position(destination).title("Lokasi Drop Off"))
-//                fetchDirections(origin, destination)
-            }
 
             // direction from myLocation to clientLocation/clientDestination
             if (isReady) {
@@ -97,7 +91,18 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     cameraZoom = true
                 }
 
-//                fetchDirections(myLocation, origin)
+                val idUser = sharedPref.getString(Constant.PREF_ID_USER)
+
+                CoroutineScope(Dispatchers.Main).launch {
+
+                    isReady = true
+
+                    while (loop) {
+                        getOrder(idUser)
+                        delay(300000)
+
+                    }
+                }
 
             }
         }
@@ -123,7 +128,6 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         progressDialog.setMessage("Loading...")
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setCancelable(false)
-        progressDialog.show()
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
@@ -326,9 +330,80 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
     override fun onResume() {
         super.onResume()
+        progressDialog.show()
+
+        loop = true
 
         if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
             finish()
+        } else if (isReady) {
+            val idUser = sharedPref.getString(Constant.PREF_ID_USER)
+            getOrder(idUser)
+        }
+    }
+
+    private fun getOrder(idUser: String?) {
+
+        ApiClient.instances.showOrder("loading", idUser.toString())
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            setMarker(data)
+
+                            Toast.makeText(this@MainDriverActivity, "Sedang Ada Orderan", Toast.LENGTH_SHORT).show()
+
+                        }
+
+                    } else {
+                        Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT).show()
+                    }
+                    progressDialog.dismiss()
+
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@MainDriverActivity,
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+    }
+
+    private fun setMarker(data: List<Model.DataModel>?) {
+        mMap.clear()
+
+        if (data != null) {
+            for (i in data) {
+                val pickUpLocation =
+                    LatLng(i.pick_up_latitude.toDouble(), i.pick_up_longitude.toDouble())
+                val dropOffLocation =
+                    LatLng(i.drop_off_latitude.toDouble(), i.drop_off_longitude.toDouble())
+
+                mMap.addMarker(
+                    MarkerOptions().position(pickUpLocation).title("Lokasi Pick Up / Jemput")
+                )
+
+                mMap.addMarker(
+                    MarkerOptions().position(dropOffLocation).title("Lokasi Drop Off")
+                )
+
+                loop = false
+
+            }
         }
     }
 }
