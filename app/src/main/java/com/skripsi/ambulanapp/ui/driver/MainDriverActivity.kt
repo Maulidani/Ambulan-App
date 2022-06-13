@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.tasks.Task
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.directionModules.DirectionFinder
@@ -33,10 +35,7 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.GoogleMapHelper.getDottedPolylines
 import com.skripsi.ambulanapp.util.PreferencesHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,6 +60,10 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+
+    private val btnPickUp: MaterialButton by lazy { findViewById(R.id.btnPickUp) }
+    private val btnDropOff: MaterialButton by lazy { findViewById(R.id.btnDropOff) }
+    private val btnFinish: MaterialButton by lazy { findViewById(R.id.btnFinish) }
 
     var loop = true
 
@@ -98,7 +101,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     isReady = true
 
                     while (loop) {
-                        getOrder(idUser)
+                        getOrder(idUser,this.cancel())
                         delay(300000)
 
                     }
@@ -121,6 +124,10 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_driver)
         supportActionBar?.title = "Driver"
+
+        btnPickUp.visibility = View.GONE
+        btnDropOff.visibility = View.GONE
+        btnFinish.visibility = View.GONE
 
         sharedPref = PreferencesHelper(this)
 
@@ -335,14 +342,16 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         loop = true
 
         if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
+
             finish()
+
         } else if (isReady) {
             val idUser = sharedPref.getString(Constant.PREF_ID_USER)
-            getOrder(idUser)
+            getOrder(idUser, null)
         }
     }
 
-    private fun getOrder(idUser: String?) {
+    private fun getOrder(idUser: String?, cancel: Unit?) {
 
         ApiClient.instances.showOrder("loading", idUser.toString())
             .enqueue(object : Callback<Model.ResponseModel> {
@@ -358,8 +367,11 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     if (response.isSuccessful) {
                         if (error == false) {
 
+                            btnPickUp.visibility = View.VISIBLE
+                            btnDropOff.visibility = View.VISIBLE
+                            btnFinish.visibility = View.VISIBLE
                             setMarker(data)
-
+                            cancel
                             Toast.makeText(this@MainDriverActivity, "Sedang Ada Orderan", Toast.LENGTH_SHORT).show()
 
                         }
