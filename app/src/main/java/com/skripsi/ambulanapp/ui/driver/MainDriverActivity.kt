@@ -1,6 +1,7 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.IntentSender
@@ -176,6 +177,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
             }
             true
         }
+
     }
 
     private fun fetchDirections(origin: LatLng, destination: LatLng) {
@@ -413,9 +415,164 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     MarkerOptions().position(dropOffLocation).title("Lokasi Drop Off")
                 )
 
+                btnPickUp.setOnClickListener {
+                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
+                        CameraPosition.builder().target(pickUpLocation).zoom(13.5f).build()
+                    )
+                    mMap.animateCamera(cameraUpdate)
+                }
+                btnDropOff.setOnClickListener {
+                    cameraUpdate = CameraUpdateFactory.newCameraPosition(
+                        CameraPosition.builder().target(dropOffLocation).zoom(13.5f).build()
+                    )
+                    mMap.animateCamera(cameraUpdate)
+                }
+
+                btnFinish.setOnClickListener {
+                    deleteAlert(i.id_orders, i.id_user_driver)
+                }
+
                 loop = false
 
             }
+
+
         }
+    }
+    private fun deleteAlert(idOrders: Int, idUserDriver: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Selesai")
+        builder.setMessage("Orderan ini telah selesai ?")
+
+        builder.setPositiveButton("Ya") { _, _ ->
+            progressDialog.show()
+
+            ApiClient.instances.addOrder(
+                idOrders.toString(),
+                idUserDriver.toString(),
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "finish"
+            ).enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            val checkStatus = checkStatusDriver(idUserDriver.toString(), 1)
+
+                            if (checkStatus) {
+
+                                btnPickUp.visibility = View.GONE
+                                btnDropOff.visibility = View.GONE
+                                btnFinish.visibility = View.GONE
+                                mMap.clear()
+
+                            } else {
+
+                                Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT)
+                                    .show()
+
+                            }
+                        } else {
+
+                            Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    } else {
+                        Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    Toast.makeText(
+                        this@MainDriverActivity,
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+        }
+
+        builder.setNegativeButton("Tidak") { _, _ ->
+            // cancel
+        }
+        builder.show()
+    }
+
+    private fun checkStatusDriver(idDriver: String, status: Int): Boolean {
+        progressDialog.show()
+
+        var checkStatus = true
+
+        ApiClient.instances.addStatusDriverUser(idDriver.toInt(), status)
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            checkStatus = true
+
+                        } else {
+
+                            Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                            checkStatus = false
+                        }
+                    } else {
+                        Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT).show()
+
+                        checkStatus = false
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+                    checkStatus = false
+
+                    Toast.makeText(
+                        this@MainDriverActivity,
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+
+        return checkStatus
     }
 }
