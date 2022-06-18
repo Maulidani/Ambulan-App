@@ -16,7 +16,7 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.model.Model
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.ui.admin.AddArtikelActivity
-import com.skripsi.ambulanapp.ui.admin.DetailArtikelActivity
+import com.skripsi.ambulanapp.ui.customer.DetailArtikelActivity
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
@@ -54,6 +54,19 @@ class AdapterArtikels(
                 item.setOnClickListener {
                     optionAlert(itemView, result)
                 }
+            } else {
+                ContextCompat.startActivity(
+                    itemView.context,
+                    Intent(itemView.context, DetailArtikelActivity::class.java)
+                        .putExtra("add_edit", "show")
+                        .putExtra("id", result.id.toString())
+                        .putExtra("type", result.type)
+                        .putExtra("title", result.title)
+                        .putExtra("hospital", result.hospital)
+                        .putExtra("hospital_address", result.hospital_address)
+                        .putExtra("content", result.content)
+                        .putExtra("image", result.image), null
+                )
             }
         }
     }

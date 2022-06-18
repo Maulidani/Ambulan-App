@@ -29,7 +29,7 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.admin.DetailArtikelActivity"
+            android:name=".ui.customer.DetailArtikelActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.AddArtikelActivity"
