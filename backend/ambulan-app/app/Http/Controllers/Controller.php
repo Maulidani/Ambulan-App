@@ -554,9 +554,9 @@ class Controller
         }
     }
 
-    public function showArtikels()
+    public function showArtikels(Request $request)
     {
-        $artikels = Artikel::orderBy('updated_at', 'DESC')
+        $artikels = Artikel::where('type',$request->type)->orderBy('updated_at', 'DESC')
                ->get();
 
         if ($artikels->isEmpty()) {

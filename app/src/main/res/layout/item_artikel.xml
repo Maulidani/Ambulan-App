@@ -17,14 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/grey"
-            android:paddingHorizontal="14dp"
+            android:paddingHorizontal="12dp"
             android:paddingTop="14dp"
             android:paddingBottom="18dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgItem"
-                android:layout_width="170dp"
-                android:layout_height="120dp"
+                android:layout_width="140dp"
+                android:layout_height="100dp"
                 android:src="@color/red_dark"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -32,7 +32,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvNameItem"
-                android:layout_width="170dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="title"
@@ -45,7 +45,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHospital"
-                android:layout_width="170dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Rumah Sakit"

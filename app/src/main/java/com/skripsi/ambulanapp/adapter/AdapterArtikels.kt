@@ -45,7 +45,7 @@ class AdapterArtikels(
             imgArtikel.load(linkImage)
             linkImage = ""
 
-            title.text = result.name
+            title.text = result.title
             hospital.text = result.hospital
 
             val typeAccount = sharedPref.getString(Constant.PREF_TYPE).toString()
@@ -79,10 +79,11 @@ class AdapterArtikels(
             options
         ) { _, which ->
             when (which) {
-                1 -> {
+                0 -> {
                     ContextCompat.startActivity(
                         itemView.context,
                         Intent(itemView.context, DetailArtikelActivity::class.java)
+                            .putExtra("add_edit", "show")
                             .putExtra("id", result.id.toString())
                             .putExtra("type", result.type)
                             .putExtra("title", result.title)
@@ -92,7 +93,7 @@ class AdapterArtikels(
                             .putExtra("image", result.image), null
                     )
                 }
-                2 -> {
+                1 -> {
                     ContextCompat.startActivity(
                         itemView.context,
                         Intent(itemView.context, AddArtikelActivity::class.java)
@@ -106,7 +107,7 @@ class AdapterArtikels(
                             .putExtra("image", result.image), null
                     )
                 }
-                3 -> deleteAlert(itemView, result.id, result.title)
+                2 -> deleteAlert(itemView, result.id, result.title)
             }
         }
         val dialog: AlertDialog = builder.create()
@@ -159,4 +160,5 @@ class AdapterArtikels(
     interface IUserRecycler {
         fun refreshView(onUpdate: Boolean)
     }
+
 }

@@ -72,7 +72,7 @@ class AdapterAccounts(
             options
         ) { _, which ->
             when (which) {
-                1 -> {
+                0 -> {
                     ContextCompat.startActivity(
                         itemView.context,
                         Intent(itemView.context, AddEditDriverActivity::class.java)
@@ -87,7 +87,7 @@ class AdapterAccounts(
                             .putExtra("car_number", result.car_number), null
                     )
                 }
-                2 -> deleteAlert(itemView, result.id, result.name)
+                1 -> deleteAlert(itemView, result.id, result.name)
             }
         }
         val dialog: AlertDialog = builder.create()

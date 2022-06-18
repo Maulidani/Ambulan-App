@@ -33,5 +33,5 @@ Route::post('add-artikels', 'App\Http\Controllers\Controller@addArtikels');
 Route::post('edit-artikels', 'App\Http\Controllers\Controller@editArtikels');
 Route::post('edit-image-artikels', 'App\Http\Controllers\Controller@editImageArtikels');
 Route::post('delete-artikels', 'App\Http\Controllers\Controller@deleteArtikels');
-Route::get('show-artikels', 'App\Http\Controllers\Controller@showArtikels');
+Route::post('show-artikels', 'App\Http\Controllers\Controller@showArtikels');
 

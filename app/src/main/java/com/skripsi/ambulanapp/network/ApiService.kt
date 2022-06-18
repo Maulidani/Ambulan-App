@@ -138,8 +138,10 @@ interface ApiService {
         @Field("id") id: Int,
     ): Call<Model.ResponseModel>
 
-    @GET("show-artikels")
+    @FormUrlEncoded
+    @POST("show-artikels")
     fun getArtikel(
+        @Field("type") type: String,
     ): Call<Model.ResponseModel>
 
 }
