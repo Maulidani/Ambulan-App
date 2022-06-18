@@ -29,3 +29,9 @@ Route::post('add-latlng-driver-users', 'App\Http\Controllers\Controller@addLatln
 Route::get('get-driver-users', 'App\Http\Controllers\Controller@getDriverUsers');
 Route::post('add-status-users', 'App\Http\Controllers\Controller@addStatusUsers');
 Route::post('add-edit-car-users', 'App\Http\Controllers\Controller@addEditCarUsers');
+Route::post('add-artikels', 'App\Http\Controllers\Controller@addArtikels');
+Route::post('edit-artikels', 'App\Http\Controllers\Controller@editArtikels');
+Route::post('edit-image-artikels', 'App\Http\Controllers\Controller@editImageArtikels');
+Route::post('delete-artikels', 'App\Http\Controllers\Controller@deleteArtikels');
+Route::get('show-artikels', 'App\Http\Controllers\Controller@showArtikels');
+

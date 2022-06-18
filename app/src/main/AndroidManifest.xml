@@ -28,7 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".ui.admin.DetailArtikelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.AddArtikelActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.customer.AddLatLngOrderActivity"
             android:exported="false" />
@@ -71,7 +76,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>

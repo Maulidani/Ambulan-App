@@ -52,7 +52,7 @@ interface ApiService {
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
-    @POST("delete-users")
+    @POST("add-latlng-driver-users")
     fun addLatlngDriverUser(
         @Field("id_user") idUser: Int,
         @Field("latitude") latitude: String,
@@ -101,6 +101,45 @@ interface ApiService {
         @Field("drop_off_latitude") dropOffLatitude: String,
         @Field("drop_off_longitude") dropOffLongitude: String,
         @Field("status") status: String, //status = loading,finish,cancel
+    ): Call<Model.ResponseModel>
+
+    //artikel
+    @Multipart
+    @POST("add-artikels")
+    fun addArtikel(
+        @Part("type") type: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("hospital") hospital: RequestBody,
+        @Part("hospital_address") hospitalAddress: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("edit-artikels")
+    fun editArtikel(
+        @Field("id") id: Int,
+        @Field("title") title: String,
+        @Field("hospital") hospital: String,
+        @Field("hospital_address") hospitalAddress: String,
+        @Field("content") content: String,
+    ): Call<Model.ResponseModel>
+
+    @Multipart
+    @POST("edit-image-artikels")
+    fun editImageArtikel(
+        @Part("id") id: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("delete-artikels")
+    fun deletArtikel(
+        @Field("id") id: Int,
+    ): Call<Model.ResponseModel>
+
+    @GET("show-artikels")
+    fun getArtikel(
     ): Call<Model.ResponseModel>
 
 }

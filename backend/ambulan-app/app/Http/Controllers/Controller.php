@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Artikel;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -406,6 +407,174 @@ class Controller
             ]);
         }
     }
+
+    public function addArtikels(Request $request)
+    {
+
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
+
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
+
+                $check = in_array($extension, $allowedfileExtension);
+
+                if ($check) {
+
+                    $files->move(public_path() . '/image/artikel/', $filename);
+
+                    $artikels = new Artikel;
+                    $artikels->title = $request->title;
+                    $artikels->type = $request->type;
+                    $artikels->hospital = $request->hospital;
+                    $artikels->hospital_address = $request->hospital_address;
+                    $artikels->content = $request->content;
+                    $artikels->image = $filename;
+                    $artikels->save();
+
+                    if ($artikels) {
+
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false
+                        ]);
+
+                    } else {
+
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'message' => 'Failed',
+                        'errors' => true,
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
+        }
+
+    public function deleteArtikels(Request $request)
+    {
+       $artikels = Artikel::where(
+            'id',
+            $request->id
+        )->delete();
+
+        if($artikels) {
+
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+
+    public function editImageArtikels(Request $request)
+    {
+
+        $files = $request->image;
+        $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+        if ($request->hasfile('image')) {
+
+            $filename = time() . '.' . $files->getClientOriginalName();
+            $extension = $files->getClientOriginalExtension();
+
+            $check = in_array($extension, $allowedfileExtension);
+
+            if ($check) {
+
+                $files->move(public_path() . '/image/artikel/', $filename);
+
+                $edit = Artikel::find($request->id);
+                $edit->image = $filename;
+                $edit->save();
+
+                if ($edit) {
+
+                    return response()->json([
+                        'message' => 'Success',
+                        'errors' => false,
+                    ]);
+                } else {
+
+                    return response()->json([
+                        'message' => 'Failed',
+                        'errors' => true,
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+    public function editArtikels(Request $request)
+    {
+        $edit = Artikel::find($request->id);
+        $edit->title = $request->title;
+        $edit->hospital = $request->hospital;
+        $edit->hospital_address = $request->hospital_address;
+        $edit->content = $request->content;
+        $edit->save();
+
+        if ($edit) {
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+    public function showArtikels()
+    {
+        $artikels = Artikel::orderBy('updated_at', 'DESC')
+               ->get();
+
+        if ($artikels->isEmpty()) {
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+                'data' => $artikels,
+            ]);
+        }        
+    }
+
+
 
 }
 

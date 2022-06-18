@@ -14,6 +14,14 @@ class Model {
         val id: Int,
         val status: Int,
 
+        //artikel
+//        val type: String,
+        val title: String,
+        val hospital: String,
+        val hospital_address: String,
+        val content: String,
+//        val image: String,
+
         // orders
         val order_by: String,
         val note: String,
@@ -42,7 +50,11 @@ class Model {
         val car_type: String,
         val car_number: String,
 
-    )
+        val updated_at: String,
+        val created_at: String,
+
+
+        )
 
     data class DataOrderModel(
         val id: Int,

@@ -45,7 +45,7 @@ import java.io.UnsupportedEncodingException
 
 class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapReadyCallback {
     private lateinit var sharedPref: PreferencesHelper
-
+    private var idUserLocal = ""
     private lateinit var mMap: GoogleMap
     private var isReady = false
     private var polyline: Polyline? = null
@@ -86,7 +86,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
             // direction from myLocation to clientLocation/clientDestination
             if (isReady) {
                 if (!cameraZoom) {
-                    progressDialog.dismiss()
+                    addLatlngDriver(myLocation)
 
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
                         CameraPosition.builder().target(myLocation).zoom(13.5f).build()
@@ -102,7 +102,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                     isReady = true
 
                     while (loop) {
-                        getOrder(idUser,this.cancel())
+                        getOrder(idUser, this.cancel())
                         delay(300000)
 
                     }
@@ -131,7 +131,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
         btnFinish.visibility = View.GONE
 
         sharedPref = PreferencesHelper(this)
-
+        idUserLocal = sharedPref.getString(Constant.PREF_ID_USER).toString()
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Loading...")
         progressDialog.setCanceledOnTouchOutside(false)
@@ -354,6 +354,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
     }
 
     private fun getOrder(idUser: String?, cancel: Unit?) {
+        progressDialog.dismiss()
 
         ApiClient.instances.showOrder("loading", idUser.toString())
             .enqueue(object : Callback<Model.ResponseModel> {
@@ -374,7 +375,11 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
                             btnFinish.visibility = View.VISIBLE
                             setMarker(data)
                             cancel
-                            Toast.makeText(this@MainDriverActivity, "Sedang Ada Orderan", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@MainDriverActivity,
+                                "Sedang Ada Orderan",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }
 
@@ -439,6 +444,7 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
 
         }
     }
+
     private fun deleteAlert(idOrders: Int, idUserDriver: Int) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Selesai")
@@ -574,5 +580,133 @@ class MainDriverActivity : AppCompatActivity(), DirectionFinderListener, OnMapRe
             })
 
         return checkStatus
+    }
+
+    private fun addLatlngDriver(myLocation: LatLng) {
+
+        val idUser = sharedPref.getString(Constant.PREF_ID_USER)
+
+        ApiClient.instances.addLatlngDriverUser(
+            idUser!!.toInt(),
+            myLocation.latitude.toString(),
+            myLocation.longitude.toString()
+        )
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            addActiveDriver(idUser, 1)
+
+                        } else {
+
+                            Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    } else {
+                        Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    progressDialog.dismiss()
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    progressDialog.dismiss()
+
+
+                    Toast.makeText(
+                        this@MainDriverActivity,
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+    }
+
+    private fun addActiveDriver(idUser: String, status: Int) {
+        if (status == 1) {
+            progressDialog.show()
+        }
+
+        ApiClient.instances.addStatusDriverUser(idUser.toInt(), status)
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+
+                    val message = response.body()?.message
+                    val error = response.body()?.errors
+                    val data = response.body()?.data
+                    val order = response.body()?.order
+
+                    if (response.isSuccessful) {
+                        if (error == false) {
+
+                            if (status == 1) {
+                                Toast.makeText(
+                                    this@MainDriverActivity,
+                                    "Akun anda sudah aktif",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            } else {
+                                Toast.makeText(
+                                    this@MainDriverActivity,
+                                    "Akun anda sudah tidak aktif",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
+                        } else {
+
+                            Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT)
+                                .show()
+
+                        }
+                    } else {
+                        Toast.makeText(this@MainDriverActivity, "gagal", Toast.LENGTH_SHORT).show()
+
+                    }
+
+                    if (status == 1) {
+                        progressDialog.dismiss()
+
+                    }
+
+                }
+
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                    if (status == 1) {
+                        progressDialog.dismiss()
+                    }
+
+                    Toast.makeText(
+                        this@MainDriverActivity,
+                        t.message.toString(),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+    }
+
+    override fun onDestroy() {
+
+        addActiveDriver(idUserLocal, 0)
+        super.onDestroy()
+
     }
 }
