@@ -70,6 +70,7 @@ class HomeFragment : Fragment(), AdapterArtikels.IUserRecycler {
                                         false
                                     )
                                     rvRSTerdekat.adapter = adapter
+
                                 } else {
                                     rvPerolonganPertama.layoutManager = LinearLayoutManager(
                                         requireContext(),
@@ -80,9 +81,9 @@ class HomeFragment : Fragment(), AdapterArtikels.IUserRecycler {
                                 }
 
                             } else {
-
-                                Toast.makeText(requireContext(), "Kosong", Toast.LENGTH_SHORT)
-                                    .show()
+//
+//                                Toast.makeText(requireContext(), "Kosong", Toast.LENGTH_SHORT)
+//                                    .show()
                             }
                         } else {
                             Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()

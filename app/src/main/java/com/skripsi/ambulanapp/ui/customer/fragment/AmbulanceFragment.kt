@@ -3,9 +3,12 @@ package com.skripsi.ambulanapp.ui.customer.fragment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -26,10 +29,7 @@ import coil.load
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
@@ -42,6 +42,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.stream.Stream
+
 
 class AmbulanceFragment : Fragment(), OnMapReadyCallback {
     private lateinit var sharedPref: PreferencesHelper
@@ -360,9 +361,8 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
                     val driverLoc = LatLng(i.latitude.toDouble(), i.longitude.toDouble())
 
                     mMap.addMarker(
-                        MarkerOptions().position(driverLoc).title(i.name)
+                        MarkerOptions().position(driverLoc).title(i.name).icon(BitmapFromVector(requireContext(),R.drawable.ic_ambulan))
                     )
-
                 }
             }
         }
@@ -774,6 +774,37 @@ class AmbulanceFragment : Fragment(), OnMapReadyCallback {
             })
 
         return checkStatus
+    }
+
+    private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+        // below line is use to generate a drawable.
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
+
+        // below line is use to set bounds to our vector drawable.
+        vectorDrawable!!.setBounds(
+            0,
+            0,
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight
+        )
+
+        // below line is use to create a bitmap for our
+        // drawable which we have added.
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        // below line is use to add bitmap in our canvas.
+        val canvas = Canvas(bitmap)
+
+        // below line is use to draw our
+        // vector drawable in canvas.
+        vectorDrawable.draw(canvas)
+
+        // after generating our bitmap we are returning our bitmap.
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
 }

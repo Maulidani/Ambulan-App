@@ -2,6 +2,7 @@ package com.skripsi.ambulanapp.adapter
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,9 +42,9 @@ class AdapterArtikels(
 
             sharedPref = PreferencesHelper(itemView.context)
 
-            var linkImage = "${Constant.URL_IMAGE_ARTIKEL}${result.image}"
+            var linkImage = ""
+            linkImage = "${Constant.URL_IMAGE_ARTIKEL}${result.image}"
             imgArtikel.load(linkImage)
-            linkImage = ""
 
             title.text = result.title
             hospital.text = result.hospital
@@ -55,18 +56,26 @@ class AdapterArtikels(
                     optionAlert(itemView, result)
                 }
             } else {
-                ContextCompat.startActivity(
-                    itemView.context,
-                    Intent(itemView.context, DetailArtikelActivity::class.java)
-                        .putExtra("add_edit", "show")
-                        .putExtra("id", result.id.toString())
-                        .putExtra("type", result.type)
-                        .putExtra("title", result.title)
-                        .putExtra("hospital", result.hospital)
-                        .putExtra("hospital_address", result.hospital_address)
-                        .putExtra("content", result.content)
-                        .putExtra("image", result.image), null
-                )
+                item.setOnClickListener {
+                    ContextCompat.startActivity(
+                        itemView.context,
+                        Intent(itemView.context, DetailArtikelActivity::class.java)
+                            .putExtra("add_edit", "show")
+                            .putExtra("id", result.id.toString())
+                            .putExtra("type", result.type)
+                            .putExtra("title", result.title)
+                            .putExtra("hospital", result.hospital)
+                            .putExtra("hospital_address", result.hospital_address)
+                            .putExtra("content", result.content)
+                            .putExtra("image", result.image), null
+                    )
+                }
+
+                item.setOnLongClickListener {
+                    Log.e("link img: ", linkImage)
+                    true
+                }
+
             }
         }
     }
@@ -87,7 +96,7 @@ class AdapterArtikels(
         val builder: AlertDialog.Builder = AlertDialog.Builder(itemView.context)
         builder.setTitle("Aksi")
 
-        val options = arrayOf("Lihat Artikel","Edit Artikel", "Hapus Artikel")
+        val options = arrayOf("Lihat Artikel", "Edit Artikel", "Hapus Artikel")
         builder.setItems(
             options
         ) { _, which ->

@@ -2,7 +2,7 @@ package com.skripsi.ambulanapp.util
 
 class Constant {
     companion object {
-        const val BASE_URL = "http://192.168.142.5:8000/"
+        const val BASE_URL = "http://172.20.10.4:8000/"
 
         const val URL_IMAGE_USER = BASE_URL + "image/user/"
         const val URL_IMAGE_ARTIKEL = BASE_URL + "image/artikel/"
