@@ -28,7 +28,7 @@ import retrofit2.Response
 class ArtikelFragment(type: String) : Fragment(), AdapterArtikels.IUserRecycler {
     private lateinit var progressDialog: ProgressDialog
     private val rv: RecyclerView by lazy { requireActivity().findViewById(R.id.rvArtikel) }
-    private val btnAdd: FloatingActionButton by lazy { requireActivity().findViewById(R.id.fabAdd) }
+    private val btnAdd: FloatingActionButton by lazy { requireActivity().findViewById(R.id.fabAddArtikel) }
     private val tvTitle: TextView by lazy { requireActivity().findViewById(R.id.tvArtikel) }
 
     var _type = type
@@ -47,25 +47,6 @@ class ArtikelFragment(type: String) : Fragment(), AdapterArtikels.IUserRecycler 
         progressDialog = ProgressDialog(requireContext())
         progressDialog.setCanceledOnTouchOutside(true)
         progressDialog.setCancelable(true)
-
-        if (_type == "rumah_sakit_terdekat"){
-           getArtikel(_type)
-            tvTitle.setText("Rumah Sakit Terdekat")
-
-        } else if(_type == "pertolongan_pertama") {
-            getArtikel(_type)
-            tvTitle.setText("Pertolongan Pertama")
-
-        } else {
-
-        }
-
-        btnAdd.setOnClickListener {
-            startActivity(
-                Intent(requireContext(), AddArtikelActivity::class.java)
-                    .putExtra("add_edit", "add")
-            )
-        }
 
     }
 
@@ -123,6 +104,35 @@ class ArtikelFragment(type: String) : Fragment(), AdapterArtikels.IUserRecycler 
 
     override fun onResume() {
         super.onResume()
+
+        if (_type == "rumah_sakit_terdekat"){
+            getArtikel(_type)
+            tvTitle.setText("Info Rumah Sakit dan Puskesmas")
+
+        } else if(_type == "pertolongan_pertama") {
+            getArtikel(_type)
+            tvTitle.setText("Pertolongan Pertama")
+
+        } else {
+
+        }
+
+        btnAdd.setOnClickListener {
+            if (_type == "rumah_sakit_terdekat"){
+                startActivity(
+                    Intent(requireActivity().applicationContext, AddArtikelActivity::class.java)
+                        .putExtra("add_edit", "add")
+                )
+            } else if(_type == "pertolongan_pertama") {
+                startActivity(
+                    Intent(requireActivity().applicationContext, AddArtikelActivity::class.java)
+                        .putExtra("add_edit", "add")
+                )
+            }
+
+
+        }
+
         getArtikel(_type)
     }
 }

@@ -23,7 +23,7 @@ import retrofit2.Response
 class AccountsListFragment : Fragment(), AdapterAccounts.IUserRecycler {
     private lateinit var progressDialog: ProgressDialog
 
-    private val btnAdd: FloatingActionButton by lazy { requireActivity().findViewById(R.id.fabAdd) }
+    private val btnAdd: FloatingActionButton by lazy { requireActivity().findViewById(R.id.fabAddAccount) }
     private val rv: RecyclerView by lazy { requireActivity().findViewById(R.id.rvAccounts) }
 
     override fun onCreateView(
@@ -76,9 +76,9 @@ class AccountsListFragment : Fragment(), AdapterAccounts.IUserRecycler {
                                 rv.layoutManager = LinearLayoutManager(requireContext())
                                 rv.adapter = adapter
                             } else {
-
-                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
-                                    .show()
+//
+//                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
+//                                    .show()
                             }
                         } else {
                             Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()

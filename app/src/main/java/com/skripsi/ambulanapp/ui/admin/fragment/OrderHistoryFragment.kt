@@ -65,8 +65,8 @@ class OrderHistoryFragment : Fragment() {
 
                             } else {
 
-                                Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT)
-                                    .show()
+//                                Toast.makeText(requireContext(), "kosong", Toast.LENGTH_SHORT)
+//                                    .show()
                             }
                         } else {
                             Toast.makeText(requireContext(), "gagal", Toast.LENGTH_SHORT).show()
