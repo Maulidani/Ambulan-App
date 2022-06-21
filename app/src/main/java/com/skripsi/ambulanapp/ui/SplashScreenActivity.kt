@@ -1,86 +1,128 @@
 package com.skripsi.ambulanapp.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
-import com.skripsi.ambulanapp.ui.admin.MainAdminActivity
-import com.skripsi.ambulanapp.ui.customer.MainCustomerActivity
-import com.skripsi.ambulanapp.ui.driver.LoginActivity
-import com.skripsi.ambulanapp.ui.driver.MainDriverActivity
-import com.skripsi.ambulanapp.util.Constant
-import com.skripsi.ambulanapp.util.PreferencesHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.skripsi.ambulanapp.ui.customer.CustomerMainActivity
+import com.skripsi.ambulanapp.ui.driver.DriverLoginActivity
 
-@SuppressLint("CustomSplashScreen")
-class SplashScreenActivity : AppCompatActivity() {
-    private lateinit var sharedPref: PreferencesHelper
+class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val orderAmbulan: MaterialButton by lazy { findViewById(R.id.btnOrderAmbulan) }
-    private val loginDriver: MaterialButton by lazy { findViewById(R.id.btnLoginDriver) }
+    private val btnOrderAmbulance: MaterialButton by lazy{ findViewById(R.id.btnOrderAmbulance)}
+    private val btnDriverIn: MaterialButton by lazy{ findViewById(R.id.btnDriverIn)}
 
+    private lateinit var mMap: GoogleMap
     private val locationRequestCode = 1001
+    private lateinit var locationRequest: LocationRequest
+
+    private fun onClick(){
+        btnOrderAmbulance.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+
+                startActivity(Intent(this, CustomerMainActivity::class.java))
+
+            } else {
+                askLocationPermission()
+            }
+        }
+        btnDriverIn.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+
+                startActivity(Intent(this, DriverLoginActivity::class.java))
+
+            } else {
+                askLocationPermission()
+            }
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        supportActionBar?.hide()
-        sharedPref = PreferencesHelper(this)
 
-        if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN) && sharedPref.getString(Constant.PREF_TYPE) == "admin") {
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-            orderAmbulan.visibility = View.INVISIBLE
-            loginDriver.visibility = View.INVISIBLE
+        locationRequest = LocationRequest.create()
+        locationRequest.interval = 4000
+        locationRequest.fastestInterval = 2000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(2500)
-
-                startActivity(Intent(this@SplashScreenActivity, MainAdminActivity::class.java))
-            }
-        }
-
-        orderAmbulan.setOnClickListener {
-            startActivity(Intent(this, MainCustomerActivity::class.java))
-        }
-
-        loginDriver.setOnClickListener {
-            if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
-                startActivity(Intent(this, MainDriverActivity::class.java))
-            } else {
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (!sharedPref.getBoolean(Constant.PREF_IS_LOGIN)) {
-
-            orderAmbulan.visibility = View.VISIBLE
-            loginDriver.visibility = View.VISIBLE
-
-        } else if (sharedPref.getBoolean(Constant.PREF_IS_LOGIN) && sharedPref.getString(Constant.PREF_TYPE) == "admin") {
-
-            orderAmbulan.visibility = View.INVISIBLE
-            loginDriver.visibility = View.INVISIBLE
-        }
+        onClick()
 
     }
 
+    override fun onMapReady(p0: GoogleMap) {
+        mMap = p0
+    }
 
     override fun onStart() {
         super.onStart()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            checkSettingAndStartLocationUpdates()
+        } else {
+            askLocationPermission()
+        }
+    }
 
-        askLocationPermission()
+    //permission
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == locationRequestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                checkSettingAndStartLocationUpdates()
+            }
+        }
+    }
+
+    private fun checkSettingAndStartLocationUpdates() {
+        val request: LocationSettingsRequest =
+            LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(request)
+
+        task.addOnFailureListener {
+            if (it is ResolvableApiException) {
+                val apiException: ResolvableApiException = it
+                try {
+                    apiException.startResolutionForResult(this, locationRequestCode)
+                    askLocationPermission()
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun askLocationPermission() {
@@ -105,19 +147,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 ),
                 locationRequestCode
             )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == locationRequestCode) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            }
         }
     }
 

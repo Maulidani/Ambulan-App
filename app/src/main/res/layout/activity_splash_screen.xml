@@ -4,40 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="18dp"
     tools:context=".ui.SplashScreenActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapFragment"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:id="@+id/imgLogo"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="130dp"
         android:src="@drawable/logo_i_care"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOrderAmbulance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pesan Ambulance"
-        android:layout_marginHorizontal="24dp"
-        android:background="@color/red"
-        android:id="@+id/btnOrderAmbulan"
-        android:layout_marginTop="24dp"
+        android:paddingVertical="8dp"
+        android:text="Pesan Ambulan"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:gravity="center"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnLoginDriver"/>
+        android:textStyle="bold"
+        app:cornerRadius="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnDriverIn" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDriverIn"
         android:layout_width="match_parent"
-        android:id="@+id/btnLoginDriver"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/grey"
         android:text="Masuk Driver"
-        android:layout_marginHorizontal="24dp"
-        android:backgroundTint="@color/white"
-        android:layout_marginTop="24dp"
+        android:textAllCaps="false"
         android:textColor="@color/red"
-        android:gravity="center"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:textStyle="bold"
+        app:cornerRadius="60dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

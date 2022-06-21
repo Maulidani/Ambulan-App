@@ -70,7 +70,18 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
 
     //maps services
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.maps:google-maps-services:0.9.3'
+
+    //viewmodel & livedata
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc02'
+
+    //slide up panel
+    //https://github.com/umano/AndroidSlidingUpPanel
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    //loading
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }
