@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="18dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:text="Lengkapi data pemesanan"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/orderByTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="   Nama Pemesan"
+            app:boxCornerRadiusBottomEnd="60dp"
+            app:boxCornerRadiusBottomStart="60dp"
+            app:boxCornerRadiusTopEnd="60dp"
+            app:boxCornerRadiusTopStart="60dp"
+            app:layout_constraintTop_toBottomOf="@id/tvHead">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputOrderBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:hint="   Telepon"
+            app:boxCornerRadiusBottomEnd="60dp"
+            app:boxCornerRadiusBottomStart="60dp"
+            app:boxCornerRadiusTopEnd="60dp"
+            app:boxCornerRadiusTopStart="60dp"
+            app:layout_constraintTop_toBottomOf="@id/orderByTextField">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOrderAmbulance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Pesan Ambulan"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingVertical="8dp"
+            app:cornerRadius="60dp"
+            app:layout_constraintTop_toBottomOf="@id/phoneTextField"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:text="Batal"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:cornerRadius="60dp"
+            app:layout_constraintTop_toBottomOf="@id/btnOrderAmbulance" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

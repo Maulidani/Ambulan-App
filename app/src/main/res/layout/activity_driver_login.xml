@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="18dp"
+    android:paddingBottom="18dp"
+    tools:context=".ui.driver.DriverLoginActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/parent_head"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_left_black" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_i_care" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="left|top"
+        android:text="Masuk Driver"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/parent_head" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSubHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="left|top"
+        android:textSize="12sp"
+        android:text="Silahkan masuk dengan akun yang sudah terdaftar di Admin"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tvHead" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameTextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="   Username"
+        app:boxCornerRadiusBottomEnd="60dp"
+        app:boxCornerRadiusBottomStart="60dp"
+        app:boxCornerRadiusTopEnd="60dp"
+        app:boxCornerRadiusTopStart="60dp"
+        app:layout_constraintTop_toBottomOf="@id/tvSubHead">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordTextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:hint="   Password"
+        app:boxCornerRadiusBottomEnd="60dp"
+        app:boxCornerRadiusBottomStart="60dp"
+        app:boxCornerRadiusTopEnd="60dp"
+        app:boxCornerRadiusTopStart="60dp"
+        app:layout_constraintTop_toBottomOf="@id/usernameTextField"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textSize="12sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLoginAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="left|top"
+        android:text="Masuk Admin"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLoginDriver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="Masuk driver"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:cornerRadius="60dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
