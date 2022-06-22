@@ -12,7 +12,7 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-       'id', 'note', 'pick_up','drop_off','pick_up_latitude', 'pick_up_longitude', 'drop_off_latitude','drop_off_longitude','id_user_driver','status','updated_at','created_at',
+       'id', 'id_driver', 'name','phone','pick_up_latitude', 'pick_up_longitude', 'id_hospital','status','updated_at','created_at',
     ];
 
 }

@@ -5,56 +5,61 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Artikel;
+use App\Models\Hospital;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
 class Controller
 {
-    public function showOrders(Request $request)
+    public function getOrders()
     {
-        $status = $request->status;
-        $id = $request->id_driver;
+        // $status = $request->status;
+        // $id = $request->id_driver;
 
-        if($id == "0"){
+        // if($id == "0"){
 
-            if($status == "pending"){
-                $orders = Order::where('orders.status' , '=',$status)
-                    ->get();
+        //     if($status == "pending"){
+        //         $orders = Order::where('orders.status' , '=',$status)
+        //             ->get();
 
-            } else {
-                $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
-                ->where('orders.status' , '=',$status)
-                ->orderBy('orders.updated_at', 'DESC')
-                    ->get(
-                        [
-                            'orders.id as id_orders',
-                            'orders.*',
-                            'users.id as id_users',
-                            'users.status as status_users',
-                            'orders.status as status_orders',
-                            'users.*'
-                        ]
-                    );
-            }
-        } else {
-            $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
-            ->where('users.id' , '=',$id)
-            ->where('orders.status' , '=',$status)
-            ->orderBy('orders.updated_at', 'DESC')
-                   ->get(
-                       [
-                           'orders.id as id_orders',
-                           'orders.*',
-                           'users.id as id_users',
-                           'users.status as status_users',
-                           'orders.status as status_orders',
-                           'users.*'
-                       ]
-                   );
-        }
-
+        //     } else {
+        //         $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
+        //         ->where('orders.status' , '=',$status)
+        //         ->orderBy('orders.updated_at', 'DESC')
+        //             ->get(
+        //                 [
+        //                     'orders.id as id_orders',
+        //                     'orders.*',
+        //                     'users.id as id_users',
+        //                     'users.status as status_users',
+        //                     'orders.status as status_orders',
+        //                     'users.*'
+        //                 ]
+        //             );
+        //     }
+        // } else {
+        //     $orders = Order::join('users', 'orders.id_user_driver', '=', 'users.id')
+        //     ->where('users.id' , '=',$id)
+        //     ->where('orders.status' , '=',$status)
+        //     ->orderBy('orders.updated_at', 'DESC')
+        //            ->get(
+        //                [
+        //                    'orders.id as id_orders',
+        //                    'orders.*',
+        //                    'users.id as id_users',
+        //                    'users.status as status_users',
+        //                    'orders.status as status_orders',
+        //                    'users.*'
+        //                ]
+        //            );
+        // }
+       
+        $orders = Order::where(
+            'status',
+            1
+        )->orderBy('updated_at', 'DESC')
+               ->get();
 
         if ($orders->isEmpty()) {
             return response()->json([
@@ -73,47 +78,14 @@ class Controller
 
     public function addOrders(Request $request)
     {
-
-        if($request->status === "pending")
-        {
-            $orders = new Order;
-            $orders->order_by = $request->order_by;
-            $orders->note = $request->note;
-            $orders->pick_up = $request->pick_up;
-            $orders->drop_off = $request->drop_off;
-            $orders->pick_up_latitude = $request->pick_up_latitude;
-            $orders->pick_up_longitude = $request->pick_up_longitude;
-            $orders->drop_off_latitude = $request->drop_off_latitude;
-            $orders->drop_off_longitude = $request->drop_off_longitude;
-            $orders->status = $request->status;
-            $orders->save();
-
-        } else if($request->status === "loading"){
-            
-            $orders = Order::find($request->id_orders);
-            $orders->id_user_driver = $request->id_user_driver;
-            $orders->status = $request->status;
-            $orders->save();
-            
-        } else if($request->status === "finish"){
-          
-            $orders = Order::find($request->id_orders);
-            $orders->status = $request->status;
-            $orders->save();
-
-        } else if($request->status === "cancel"){
-          
-            $orders = Order::find($request->id_orders);
-            $orders->status = $request->status;
-            $orders->save();
-
-        } else {
-            
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        }
+        $orders = new Order;
+        $orders->id_driver = $request->id_user;
+        $orders->name = $request->name;
+        $orders->phone = $request->phone;
+        $orders->pick_up_latitude = $request->pick_up_latitude;
+        $orders->pick_up_longitude = $request->pick_up_longitude;
+        $orders->id_hospital = $request->id_hospital;
+        $orders->save();
 
         if ($orders) {
             return response()->json([
@@ -127,8 +99,28 @@ class Controller
                 'errors' => true,
             ]);
         }
-
     }
+
+    public function addStatusOrders(Request $request)
+    {
+        $add = Order::find($request->id_order);
+        $add->status = $request->status;
+        $add->save();
+
+        if ($add) {
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
 
     public function addUsers(Request $request)
     {
@@ -152,13 +144,12 @@ class Controller
                     $files->move(public_path() . '/image/user/', $filename);
 
                     $users = new User;
+                    $users->type = $request->type;
                     $users->name = $request->name;
                     $users->phone = $request->phone;
-                    $users->image = $filename;
                     $users->username = $request->username;
                     $users->password = $request->password;
-                    $users->type = $request->type;
-                    $users->status = 0;
+                    $users->image = $filename;
                     $users->save();
 
                     if ($users) {
@@ -199,72 +190,83 @@ class Controller
 
     public function editUsers(Request $request)
     {
-        $edit = User::find($request->id_user);
-        $edit->name = $request->name;
-        $edit->phone = $request->phone;
-        $edit->username = $request->username;
-        $edit->password = $request->password;
-        $edit->save();
 
-        if ($edit) {
-            return response()->json([
-                'message' => 'Success',
-                'errors' => false,
-            ]);
-        } else {
+        $exist = User::where([
+            ['id', '=', $request->id_user],
+        ])->exists();
 
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        }
-    }
+        if($exist){
 
-    public function editImageUsers(Request $request)
-    {
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
 
-        $files = $request->image;
-        $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
-        if ($request->hasfile('image')) {
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
 
-            $filename = time() . '.' . $files->getClientOriginalName();
-            $extension = $files->getClientOriginalExtension();
+                $check = in_array($extension, $allowedfileExtension);
 
-            $check = in_array($extension, $allowedfileExtension);
+                if ($check) {
+                
+                        $files->move(public_path() . '/image/user/', $filename);
 
-            if ($check) {
-
-                $files->move(public_path() . '/image/user/', $filename);
-
-                $edit = User::find($request->id_user);
-                $edit->image = $filename;
-                $edit->save();
-
-                if ($edit) {
-
-                    return response()->json([
-                        'message' => 'Success',
-                        'errors' => false,
-                    ]);
+                        $edit = User::find($request->id_user);
+                        $edit->name = $request->name;
+                        $edit->phone = $request->phone;
+                        $edit->username = $request->username;
+                        $edit->password = $request->password;
+                        $edit->image = $filename;
+                        $edit->save();
+                 
+                    if ($edit) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+                
                 } else {
-
                     return response()->json([
                         'message' => 'Failed',
                         'errors' => true,
                     ]);
                 }
             } else {
-                return response()->json([
+
+                $edit = User::find($request->id_user);
+                $edit->name = $request->name;
+                $edit->phone = $request->phone;
+                $edit->username = $request->username;
+                $edit->password = $request->password;
+                $edit->save();
+
+                    if ($edit) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+            }
+
+        } else {
+            return response()->json([
                     'message' => 'Failed',
                     'errors' => true,
                 ]);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
         }
+
     }
 
     public function deleteUsers(Request $request)
@@ -387,28 +389,7 @@ class Controller
         }
     }
 
-    public function addEditCarUsers(Request $request)
-    {
-        $add = User::find($request->id_user);
-        $add->car_type = $request->car_type;
-        $add->car_number = $request->car_number;
-        $add->save();
-
-        if ($add) {
-            return response()->json([
-                'message' => 'Success',
-                'errors' => false,
-            ]);
-        } else {
-
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        }
-    }
-
-    public function addArtikels(Request $request)
+    public function addHospitals(Request $request)
     {
 
             $files = $request->image;
@@ -422,22 +403,22 @@ class Controller
 
                 if ($check) {
 
-                    $files->move(public_path() . '/image/artikel/', $filename);
+                    $files->move(public_path() . '/image/hospital/', $filename);
 
-                    $artikels = new Artikel;
-                    $artikels->title = $request->title;
-                    $artikels->type = $request->type;
-                    $artikels->hospital = $request->hospital;
-                    $artikels->hospital_address = $request->hospital_address;
-                    $artikels->content = $request->content;
-                    $artikels->image = $filename;
-                    $artikels->save();
+                    $hospital = new Hospital;
+                    $hospital->name = $request->name;
+                    $hospital->address = $request->address;
+                    $hospital->latitude = $request->latitude;
+                    $hospital->longitude = $request->longitude;
+                    $hospital->image = $filename;
+                    $hospital->save();
 
-                    if ($artikels) {
+                    if ($hospital) {
 
                         return response()->json([
                             'message' => 'Success',
-                            'errors' => false
+                            'errors' => false,
+                            'hospital' => $hospital
                         ]);
 
                     } else {
@@ -459,57 +440,51 @@ class Controller
                     'errors' => true,
                 ]);
             }
-        }
 
-    public function deleteArtikels(Request $request)
-    {
-       $artikels = Artikel::where(
-            'id',
-            $request->id
-        )->delete();
-
-        if($artikels) {
-
-            return response()->json([
-                'message' => 'Success',
-                'errors' => false,
-            ]);
-        } else {
-
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        }
     }
 
+    public function editHospitals(Request $request){
+       
+        $exist = Hospital::where([
+            ['id', '=', $request->id_hospital],
+        ])->exists();
 
-    public function editImageArtikels(Request $request)
-    {
+        if($exist){
 
-        $files = $request->image;
-        $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
-        if ($request->hasfile('image')) {
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
 
-            $filename = time() . '.' . $files->getClientOriginalName();
-            $extension = $files->getClientOriginalExtension();
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
 
-            $check = in_array($extension, $allowedfileExtension);
+                $check = in_array($extension, $allowedfileExtension);
 
-            if ($check) {
+                if ($check) {
 
-                $files->move(public_path() . '/image/artikel/', $filename);
+                    $files->move(public_path() . '/image/hospital/', $filename);
 
-                $edit = Artikel::find($request->id);
-                $edit->image = $filename;
-                $edit->save();
-
-                if ($edit) {
-
-                    return response()->json([
-                        'message' => 'Success',
-                        'errors' => false,
-                    ]);
+                        $hospital = Hospital::find($request->id_hospital);
+                        $hospital->name = $request->name;
+                        $hospital->address = $request->address;
+                        $hospital->latitude = $request->latitude;
+                        $hospital->longitude = $request->longitude;
+                        $hospital->image = $filename;
+                        $hospital->save();
+            
+                    if ($hospital) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+                
                 } else {
 
                     return response()->json([
@@ -518,62 +493,103 @@ class Controller
                     ]);
                 }
             } else {
+
+                $hospital = Hospital::find($request->id_hospital);
+                    $hospital->name = $request->name;
+                    $hospital->address = $request->address;
+                    $hospital->latitude = $request->latitude;
+                    $hospital->longitude = $request->longitude;
+                    $hospital->save();
+                  
+                    if ($hospital) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+            }
+
+        } else {
+            return response()->json([
+                    'message' => 'Exist',
+                    'errors' => true,
+                ]);
+        }
+    }
+
+    public function deleteHospitals(Request $request)
+    {
+       $delete =  Hospital::where(
+            'id',
+            $request->id_hospital
+        )->delete();
+
+        if($delete) {
+
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+    public function getHospitalSearchOrId(Request $request){
+        
+        $search= $request->search;
+        $id_hospital= $request->id_hospital;
+        
+        if($id_hospital == ""){
+         
+            $hospital = Hospital::orderBy('updated_at', 'DESC')
+            ->where('name', 'like', "%" . $search . "%")
+            ->get();
+
+            if ($hospital) {
+                return response()->json([
+                    'message' => 'Success',
+                    'errors' => false,
+                    'data' => $hospital,
+                ]);
+            } else {
+    
                 return response()->json([
                     'message' => 'Failed',
                     'errors' => true,
                 ]);
             }
+
         } else {
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
+            $hospital = Hospital::where('id',$id_hospital)
+            ->first();
+
+            if ($hospital) {
+                return response()->json([
+                    'message' => 'Success',
+                    'errors' => false,
+                    'hospital' => $hospital,
+                ]);
+            } else {
+    
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
         }
+
     }
-
-    public function editArtikels(Request $request)
-    {
-        $edit = Artikel::find($request->id);
-        $edit->title = $request->title;
-        $edit->hospital = $request->hospital;
-        $edit->hospital_address = $request->hospital_address;
-        $edit->content = $request->content;
-        $edit->save();
-
-        if ($edit) {
-            return response()->json([
-                'message' => 'Success',
-                'errors' => false,
-            ]);
-        } else {
-
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        }
-    }
-
-    public function showArtikels(Request $request)
-    {
-        $artikels = Artikel::where('type',$request->type)->orderBy('updated_at', 'DESC')
-               ->get();
-
-        if ($artikels->isEmpty()) {
-            return response()->json([
-                'message' => 'Failed',
-                'errors' => true,
-            ]);
-        } else {
-
-            return response()->json([
-                'message' => 'Success',
-                'errors' => false,
-                'data' => $artikels,
-            ]);
-        }        
-    }
-
 
 
 }

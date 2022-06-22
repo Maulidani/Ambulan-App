@@ -1,12 +1,15 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.viewmodel.DriverMainViewModel
+import com.skripsi.ambulanapp.util.ScreenState
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 
 class DriverMainActivity : AppCompatActivity() {
@@ -20,9 +23,17 @@ class DriverMainActivity : AppCompatActivity() {
     val fabHistory: FloatingActionButton by lazy { findViewById(R.id.fabHistory) }
     var isFABOpen = false
 
+    private val viewModel: DriverMainViewModel by lazy {
+        ViewModelProvider(this).get(DriverMainViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_driver_main)
+
+        viewModel.driverLiveData.observe(this) {
+            processGetDriverResponse(it)
+        }
 
 //        parentSlideUp.visibility = View.GONE
 
@@ -69,6 +80,30 @@ class DriverMainActivity : AppCompatActivity() {
             slideUp.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         }
 
+    }
 
+    private fun processGetDriverResponse(state: ScreenState<Model.ResponseModel?>) {
+
+//        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+
+        when (state) {
+            is ScreenState.Loading -> {
+//                progressBar.visibility = View.VISIBLE
+            }
+            is ScreenState.Success -> {
+//                progressBar.visibility = View.GONE
+                if (state.data != null) {
+                    for (i in state.data.data) {
+//                        if (i.id == sharedPrefrencesIdDriverLogin) {
+//                            mMap.Clear()
+//                            setMarker(LatLng(i.latitude,i.longitude))
+//                        }
+                    }
+                }
+            }
+            is ScreenState.Error -> {
+//                progressBar.visibility = View.GONE
+            }
+        }
     }
 }
