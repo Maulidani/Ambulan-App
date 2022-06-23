@@ -55,10 +55,7 @@ class Controller
         //            );
         // }
        
-        $orders = Order::where(
-            'status',
-            1
-        )->orderBy('updated_at', 'DESC')
+        $orders = Order::orderBy('updated_at', 'DESC')
                ->get();
 
         if ($orders->isEmpty()) {

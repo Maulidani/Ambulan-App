@@ -1,6 +1,8 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,9 @@ import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.ui.viewmodel.DriverMainViewModel
 import com.skripsi.ambulanapp.util.ScreenState
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DriverMainActivity : AppCompatActivity() {
     val slideUp: SlidingUpPanelLayout by lazy { findViewById(R.id.sliding_layout) }
@@ -31,11 +36,11 @@ class DriverMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_driver_main)
 
-        viewModel.driverLiveData.observe(this) {
-            processGetDriverResponse(it)
-        }
-
 //        parentSlideUp.visibility = View.GONE
+
+        viewModel.orderLiveData.observe(this) {
+            processGetOrderResponse(it)
+        }
 
         onClick()
     }
@@ -82,27 +87,46 @@ class DriverMainActivity : AppCompatActivity() {
 
     }
 
-    private fun processGetDriverResponse(state: ScreenState<Model.ResponseModel?>) {
+    private fun processGetOrderResponse(state: ScreenState<List<Model.DataModel>?>) {
+        CoroutineScope(Dispatchers.Main).launch {
 
 //        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
-        when (state) {
-            is ScreenState.Loading -> {
+            when (state) {
+                is ScreenState.Loading -> {
 //                progressBar.visibility = View.VISIBLE
-            }
-            is ScreenState.Success -> {
+                }
+                is ScreenState.Success -> {
 //                progressBar.visibility = View.GONE
-                if (state.data != null) {
-                    for (i in state.data.data) {
-//                        if (i.id == sharedPrefrencesIdDriverLogin) {
-//                            mMap.Clear()
-//                            setMarker(LatLng(i.latitude,i.longitude))
-//                        }
+
+                    if (state.data != null) {
+
+                        for (i in state.data) {
+                            if (i.id_driver == 3 && i.status == 0) {
+                                //ordering
+                                Toast.makeText(
+                                    applicationContext,
+                                    "lagi ada orderan guys",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                parentSlideUp.visibility = View.VISIBLE
+
+                            } else if (i.id_driver == 3 && i.status == 1) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "lagi tidak ada",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                parentSlideUp.visibility = View.GONE
+
+                            }
+                        }
                     }
                 }
-            }
-            is ScreenState.Error -> {
+                is ScreenState.Error -> {
 //                progressBar.visibility = View.GONE
+                }
             }
         }
     }

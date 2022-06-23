@@ -8,6 +8,10 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.repository.Repository
 import com.skripsi.ambulanapp.util.ScreenState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,43 +19,62 @@ import retrofit2.Response
 class DriverMainViewModel(private val repository: Repository = Repository(ApiClient.instances)) :
     ViewModel() {
 
-    private var _characterLivedata = MutableLiveData<ScreenState<Model.ResponseModel?>>()
+    private var _characterLivedata = MutableLiveData<ScreenState<List<Model.DataModel>?>>()
 
-    val driverLiveData: MutableLiveData<ScreenState<Model.ResponseModel?>>
+    val orderLiveData: LiveData<ScreenState<List<Model.DataModel>?>>
         get() = _characterLivedata
 
     init {
-        getDriver()
+        getOrder()
     }
 
-    private fun getDriver() {
+    private fun getOrder() {
 
-        _characterLivedata.postValue(ScreenState.Loading(null))
+        CoroutineScope(Dispatchers.Default).launch {
+            var loop = true
 
-       ApiClient.instances.getDriverUser().enqueue(object : Callback<Model.ResponseModel> {
-            override fun onResponse(
-                call: Call<Model.ResponseModel>,
-                response: Response<Model.ResponseModel>
-            ) {
-                val responseBody = response.body()
-                val message = response.body()?.message
-                val data = response.body()?.data
+            while (true) {
 
-                if (response.isSuccessful) {
-                    Log.e("driver", "$message: $data")
-                    _characterLivedata.postValue(ScreenState.Success(responseBody))
+                _characterLivedata.postValue(ScreenState.Loading(null))
 
-                } else {
-                    Log.e("character", "not success: " + response.code().toString())
-                    _characterLivedata.postValue(ScreenState.Error(response.code().toString(),null))
-                }
+                val client = repository.getOrdering()
+                client.enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = response.body()?.message
+                        val data = response.body()?.data
+
+                        if (response.isSuccessful) {
+                            Log.e("order", "$message: $data")
+                            _characterLivedata.postValue(ScreenState.Success(data))
+
+                        } else {
+                            Log.e("order", "not success: " + response.code().toString())
+                            _characterLivedata.postValue(
+                                ScreenState.Error(
+                                    response.code().toString(),
+                                    null
+                                )
+                            )
+
+                            loop = false
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        Log.e("character", "failure: " + t.message.toString())
+                        _characterLivedata.postValue(ScreenState.Error(t.message.toString(), null))
+
+                        loop = false
+                    }
+
+                })
+
+                delay(7000)
             }
-
-            override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                Log.e("character", "failure: " + t.message.toString())
-                _characterLivedata.postValue(ScreenState.Error(t.message.toString(),null))
-            }
-
-        })
+        }
     }
 }

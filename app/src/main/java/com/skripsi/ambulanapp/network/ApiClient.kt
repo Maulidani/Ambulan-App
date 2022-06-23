@@ -9,8 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ApiClient {
-//    private const val URL = "${Constant.BASE_URL}api/"
-    private const val URL = ""
+    private const val URL = "http://192.168.62.5:8000/api/"
 
     private val interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

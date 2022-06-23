@@ -4,33 +4,33 @@ class Model {
     data class ResponseModel(
         val message: String,
         val errors: Boolean,
-        val data: List<DataModel>,
-        val user: DataModel,
-        val order: DataOrderModel,
-        val hospital: DataHospitalModel
+        val data: List<DataModel>?,
+        val user: DataModel?,
+        val order: DataOrderModel?,
+        val hospital: DataHospitalModel?
     )
 
     data class DataModel(
-        val id: Int,
-        val type: String,
-        val name: String,
-        val phone: String,
-        val username: String,
-        val password: String,
-        val latitude: String,
-        val longitude: String,
-        val image: String,
-        val status: Int,
+        val id: Int?,
+        val type: String?,
+        val name: String?,
+        val phone: String?,
+        val username: String?,
+        val password: String?,
+        val latitude: String?,
+        val longitude: String?,
+        val image: String?,
+        val status: Int?,
 
-        val id_driver: String,
-        val pick_up_latitude: String,
-        val pick_up_longitude: String,
-        val id_hospital: String,
+        val id_driver: Int?,
+        val pick_up_latitude: String?,
+        val pick_up_longitude: String?,
+        val id_hospital: String?,
 
-        val address: String,
+        val address: String?,
 
-        val updated_at: String,
-        val created_at: String,
+        val updated_at: String?,
+        val created_at: String?,
 
         )
 
