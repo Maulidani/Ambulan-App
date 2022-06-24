@@ -14,6 +14,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
@@ -25,8 +26,14 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.viewmodel.DriverMainViewModel
+import com.skripsi.ambulanapp.util.ScreenState
 import com.skripsi.ambulanapp.util.SetIconMarkerMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -86,11 +93,17 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    private val viewModel: DriverMainViewModel by lazy {
+        ViewModelProvider(this).get(DriverMainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_main)
 
+        viewModel.orderLiveData.observe(this) {
+            processGetOrderResponse(it)
+        }
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -105,6 +118,56 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    private fun processGetOrderResponse(state: ScreenState<List<Model.DataModel>?>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            //action start
+            loadingMap.visibility = View.VISIBLE
+
+//        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+
+            when (state) {
+                is ScreenState.Loading -> {
+//                progressBar.visibility = View.VISIBLE
+                }
+                is ScreenState.Success -> {
+//                progressBar.visibility = View.GONE
+
+                    if (state.data != null) {
+
+                        for (i in state.data) {
+                            if (i.id == 3 && i.status == 0) { // if id == idOrderan
+                                //ordering
+                                Toast.makeText(
+                                    applicationContext,
+                                    "lagi ada orderan guys",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+
+                                parentAddOrder.visibility = View.GONE
+                                parentOrderan.visibility = View.VISIBLE
+
+                            } else if (i.id == 0) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "lagi tidak ada",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                parentAddOrder.visibility = View.VISIBLE
+                                parentOrderan.visibility = View.GONE
+
+                            }
+                        }
+                    }
+                }
+                is ScreenState.Error -> {
+//                progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         if (ContextCompat.checkSelfPermission(
@@ -117,11 +180,6 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback {
             askLocationPermission()
         }
 
-        //action start
-        loadingMap.visibility = View.VISIBLE
-
-        parentAddOrder.visibility = View.VISIBLE
-        parentOrderan.visibility = View.GONE
     }
 
     override fun onStop() {

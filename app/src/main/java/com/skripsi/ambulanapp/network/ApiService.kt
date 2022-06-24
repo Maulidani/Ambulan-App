@@ -58,9 +58,9 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("add-status-users")
-    fun addLatlngDriverUser(
+    fun addStatusDriverUser(
         @Field("id_user") idUSer: Int,
-        @Field("status") status: String,
+        @Field("status") status: Int,
     ): Call<Model.ResponseModel>
 
     //order
@@ -82,7 +82,7 @@ interface ApiService {
     @POST("add-status-orders")
     fun addStatusOrder(
         @Field("id_order") idOrder: Int,
-        @Field("status") name: Int,
+        @Field("status") status: Int,
     ): Call<Model.ResponseModel>
 
     //hospital
@@ -116,7 +116,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("delete-hospitals")
-    fun getHospital(
+    fun deleteHospital(
         @Field("id_hospital") idHospital: Int,
     ): Call<Model.ResponseModel>
 

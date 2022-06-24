@@ -25,7 +25,7 @@ class Model {
         val id_driver: Int?,
         val pick_up_latitude: String?,
         val pick_up_longitude: String?,
-        val id_hospital: String?,
+        val id_hospital: Int?,
 
         val address: String?,
 
@@ -49,12 +49,11 @@ class Model {
 
     data class DataHospitalModel(
         val id: Int,
-        val id_driver: String,
         val name: String,
-        val phone: String,
-        val pick_up_latitude: String,
-        val pick_up_longitude: String,
-        val id_hospital: String,
+        val address: String,
+        val latitude: String,
+        val longitude: String,
+        val image: String,
 
         val updated_at: String,
         val created_at: String,
