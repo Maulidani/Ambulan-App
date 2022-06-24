@@ -1,6 +1,7 @@
 package com.skripsi.ambulanapp.ui.driver
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -30,7 +31,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.admin.AdminAddAccountDriverActivity
 import com.skripsi.ambulanapp.ui.viewmodel.DriverMainViewModel
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import com.skripsi.ambulanapp.util.ScreenState
 import com.skripsi.ambulanapp.util.SetIconMarkerMap
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +45,7 @@ import retrofit2.Response
 
 
 class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var sharedPref: PreferencesHelper
 
     private lateinit var mMap: GoogleMap
     private var isReady = false
@@ -64,11 +68,12 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //    val fabMore: FloatingActionButton by lazy { findViewById(R.id.fabMore) }
     val fabProfile: FloatingActionButton by lazy { findViewById(R.id.fabProfile) }
+    val fablogout: FloatingActionButton by lazy { findViewById(R.id.fabLogout) }
 
     //    val fabHistory: FloatingActionButton by lazy { findViewById(R.id.fabHistory) }
     var isFABOpen = false
 
-    var idUser = 3
+    var idUser = 0
 
     var idOrder = 0
 
@@ -90,6 +95,10 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
 
             if (isReady) {
+
+                if (idUser != 0) {
+                    addLatLngDriver(myLocation)
+                }
                 if (!cameraZoom) {
 
                     cameraUpdate = CameraUpdateFactory.newCameraPosition(
@@ -118,14 +127,17 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_driver_main)
 
+        sharedPref = PreferencesHelper(this)
+        idUser = sharedPref.getString(PreferencesHelper.PREF_ID_USER)!!.toInt()
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create()
-        locationRequest.interval = 4000
-        locationRequest.fastestInterval = 2000
+        locationRequest.interval = 7000
+        locationRequest.fastestInterval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         viewModel.orderLiveData.observe(this) {
@@ -133,6 +145,16 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         onClick()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            finish()
+        } else {
+            //
+        }
     }
 //
 //    override fun onBackPressed() {
@@ -159,6 +181,42 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     private fun onClick() {
+
+        fablogout.setOnClickListener {
+            val dialogLogout = BottomSheetDialog(this)
+            val viewLogout =
+                layoutInflater.inflate(R.layout.item_dialog_logout, null)
+            val btnYes = viewLogout.findViewById<MaterialButton>(R.id.btnYes)
+            val btnNo = viewLogout.findViewById<MaterialButton>(R.id.btnNo)
+
+            dialogLogout.setCancelable(false)
+            dialogLogout.setContentView(viewLogout)
+            dialogLogout.show()
+
+            btnNo.setOnClickListener {
+                dialogLogout.dismiss()
+
+            }
+
+            btnYes.setOnClickListener {
+                dialogLogout.dismiss()
+                sharedPref.logout()
+                finish()
+            }
+        }
+
+        fabProfile.setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AdminAddAccountDriverActivity::class.java
+                )
+                    .putExtra("id", idUser.toString())
+                    .putExtra("action", "show")
+                    .putExtra("user", "driver")
+            )
+        }
+
 //        fabMore.setOnClickListener {
 //            if (!isFABOpen) {
 //                showFABMenu()
@@ -167,14 +225,14 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 //            }
 //        }
 
-        var statusDriver = 1
-        if (statusDriver == 1) {
-            tvStatusDriver.text = "Akun anda sudah aktif"
-            switchStatusDriver.isChecked = true
-        } else {
-            tvStatusDriver.text = "Akun anda tidak aktif"
-            switchStatusDriver.isChecked = false
-        }
+        val statusDriver = getDataStatus(idUser)
+//        if (statusDriver == 1) {
+//            tvStatusDriver.text = "Akun anda sudah aktif"
+//            switchStatusDriver.isChecked = true
+//        } else {
+//            tvStatusDriver.text = "Akun anda tidak aktif"
+//            switchStatusDriver.isChecked = false
+//        }
 
         switchStatusDriver.setOnClickListener {
             if (!switchStatusDriver.isChecked) {
@@ -195,13 +253,16 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 btnYes.setOnClickListener {
                     dialogOrder.dismiss()
+                    tvStatusDriver.text = "Menonaktifkan..."
                     addStatusDriver(idUser, 0)
                     switchStatusDriver.isChecked = false
                 }
             } else {
+                tvStatusDriver.text = "Mengaktifkan..."
                 addStatusDriver(idUser, 1)
             }
         }
+
         switchStatusDriver.setOnCheckedChangeListener { _, isChecked ->
             Log.e(
                 "Switch State=",
@@ -209,10 +270,10 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
 
             if (isChecked) {
-                tvStatusDriver.text = "Akun anda sudah aktif"
+//                tvStatusDriver.text = "Akun anda sudah aktif"
 
             } else {
-                tvStatusDriver.text = "Akun anda tidak aktif"
+//                tvStatusDriver.text = "Akun anda tidak aktif"
             }
         }
 
@@ -246,8 +307,9 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 //        btnDropOff.setOnClickListener {
 //            slideUp.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
 //        }
-
     }
+
+
 
     private fun processGetOrderResponse(state: ScreenState<List<Model.DataModel>?>) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -265,12 +327,6 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 idOrder = i.id!!
 
                                 //ordering
-                                Toast.makeText(
-                                    applicationContext,
-                                    "lagi ada orderan guys",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
 
                                 parentOrdering.visibility = View.VISIBLE
                                 parentNotOrdering.visibility = View.GONE
@@ -288,11 +344,6 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 i.id_hospital?.let { getHospital(it) }
 
                             } else if (i.id_driver == idUser && i.status == 1) {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "lagi tidak ada",
-                                    Toast.LENGTH_SHORT
-                                ).show()
 
                                 parentOrdering.visibility = View.GONE
                                 parentNotOrdering.visibility = View.VISIBLE
@@ -456,7 +507,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                         val message = response.body()?.message
                         val hospital = response.body()?.hospital
 
-                        if (response.isSuccessful) {
+                        if (response.isSuccessful && message == "Success") {
                             val latLngHospital =
                                 hospital?.latitude?.let {
                                     LatLng(
@@ -493,14 +544,14 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                         val responseBody = response.body()
                         val message = response.body()?.message
 
-                        if (response.isSuccessful) {
+                        if (response.isSuccessful && message == "Success") {
 
                             parentOrdering.visibility = View.GONE
                             parentNotOrdering.visibility = View.VISIBLE
                             mMap.clear()
 
                         } else {
-                            Toast.makeText(this@DriverMainActivity, message, Toast.LENGTH_SHORT)
+                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
                                 .show()
 
                         }
@@ -510,7 +561,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
                         Toast.makeText(
-                            this@DriverMainActivity,
+                            applicationContext,
                             t.message.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
@@ -539,13 +590,15 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                         if (response.isSuccessful) {
 
                             if (status == 1) {
+                                tvStatusDriver.text = "Akun anda sudah aktif"
                                 switchStatusDriver.isChecked = true
                             } else {
+                                tvStatusDriver.text = "Akun anda tidak aktif"
                                 switchStatusDriver.isChecked = false
                             }
 
                         } else {
-                            Toast.makeText(this@DriverMainActivity, message, Toast.LENGTH_SHORT)
+                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
                                 .show()
 
                         }
@@ -554,7 +607,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
                         Toast.makeText(
-                            this@DriverMainActivity,
+                            applicationContext,
                             t.message.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
@@ -563,6 +616,100 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 })
         }
+    }
 
+    private fun addLatLngDriver(myLocation: LatLng) {
+        CoroutineScope(Dispatchers.Default).launch {
+
+            ApiClient.instances.addLatlngDriverUser(
+                idUser,
+                myLocation.latitude.toString(),
+                myLocation.longitude.toString()
+            )
+                .enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = response.body()?.message
+                        val data = response.body()?.data
+
+                        if (response.isSuccessful && message == "Success") {
+                            Log.e("driver", "$message")
+
+                        } else {
+                            Log.e("driver", "not success: " + response.code().toString())
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        Log.e("driver", "failure: " + t.message.toString())
+
+                    }
+
+                })
+        }
+    }
+    private fun getDataStatus(id: Int) : Int{
+        var status = 0
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            tvStatusDriver.text = "Tunggu..."
+            switchStatusDriver.isChecked = false
+
+            ApiClient.instances.getDriverUser()
+                .enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = response.body()?.message
+                        val data = response.body()?.data
+
+                        if (response.isSuccessful && message == "Success") {
+
+                            Log.e("onResponse: ", data.toString())
+
+                            if (data != null) {
+                                for (i in data){
+                                    if (i.id == id.toInt()) {
+                                        status = i.status!!
+
+                                        if (i.status == 1){
+                                            tvStatusDriver.text = "Akun anda sudah aktif"
+                                            switchStatusDriver.isChecked = true
+                                        } else {
+                                            tvStatusDriver.text = "Akun anda tidak aktif"
+                                            switchStatusDriver.isChecked = false
+                                        }
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(applicationContext, "Data tidak ada", Toast.LENGTH_SHORT)
+                                    .show()
+                                finish()
+                            }
+
+                        } else {
+                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        Toast.makeText(
+                            applicationContext,
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+
+        }
+        return status
     }
 }

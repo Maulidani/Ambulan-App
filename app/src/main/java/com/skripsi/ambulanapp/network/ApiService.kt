@@ -32,6 +32,17 @@ interface ApiService {
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
+    @POST("edit-users")
+    fun editWithoutImgUser(
+        @Field("id_user") idUser: String,
+        @Field("name") name: String,
+        @Field("phone") phone: String,
+        @Field("image") image: String,
+        @Field("username") username: String,
+        @Field("password") password: String,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
     @POST("delete-users")
     fun deleteUser(
         @Field("id_user") idUser: Int,
@@ -43,12 +54,12 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("type") type: String,
-    ): Call<Model.ResponseModel>
+    ): Call<Model.ResponseModel> // response : user
 
     @FormUrlEncoded
     @POST("add-latlng-driver-users")
     fun addLatlngDriverUser(
-        @Field("id_user") idUSer: Int,
+        @Field("id_user") idUser: Int,
         @Field("latitude") latitude: String,
         @Field("longitude") longitude: String,
     ): Call<Model.ResponseModel>
@@ -112,6 +123,17 @@ interface ApiService {
         @Part("longitude") longitude: RequestBody,
         @Part parts: MultipartBody.Part,
         @Part("id_hospital") idHospital: RequestBody,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("edit-hospitals")
+    fun editWithoutImgHospital(
+        @Field("name") name: String,
+        @Field("address") address: String,
+        @Field("latitude") latitude: String,
+        @Field("longitude") longitude: String,
+        @Field("image") image: String,
+        @Field("id_hospital") idHospital: String,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded

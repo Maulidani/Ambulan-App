@@ -23,8 +23,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="60dp"
-            android:layout_marginLeft="20dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/logo_i_care" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -40,15 +40,16 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/parent_head" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvSubHead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:gravity="left|top"
-        android:textSize="12sp"
         android:text="Silahkan masuk dengan akun yang sudah terdaftar di Admin"
         android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@+id/tvHead" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -101,8 +102,8 @@
         android:layout_marginTop="24dp"
         android:gravity="left|top"
         android:text="Masuk Admin"
-        android:textSize="12sp"
         android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
 
     <com.google.android.material.button.MaterialButton
@@ -115,5 +116,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:cornerRadius="60dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,23 +43,21 @@
         app:layout_constraintTop_toBottomOf="@+id/parent_head" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/parentImgNamePhone"
-        app:layout_constraintTop_toBottomOf="@id/tvHead"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp">
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/tvHead">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgProfile"
             android:layout_width="110dp"
             android:layout_height="120dp"
             android:background="@color/grey"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameTextField"
@@ -122,9 +120,9 @@
         android:hint="   Username"
         app:boxCornerRadiusBottomEnd="60dp"
         app:boxCornerRadiusBottomStart="60dp"
-        app:layout_constraintTop_toBottomOf="@+id/parentImgNamePhone"
         app:boxCornerRadiusTopEnd="60dp"
-        app:boxCornerRadiusTopStart="60dp">
+        app:boxCornerRadiusTopStart="60dp"
+        app:layout_constraintTop_toBottomOf="@+id/parentImgNamePhone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputUsername"
@@ -137,7 +135,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextField"
-        app:layout_constraintTop_toBottomOf="@id/usernameTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,7 +144,8 @@
         app:boxCornerRadiusBottomStart="60dp"
         app:boxCornerRadiusTopEnd="60dp"
         app:boxCornerRadiusTopStart="60dp"
-        app:endIconMode="password_toggle">
+        app:endIconMode="password_toggle"
+        app:layout_constraintTop_toBottomOf="@id/usernameTextField">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputPassword"
@@ -163,13 +161,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:paddingVertical="8dp"
         android:text="Tambah akun driver"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:cornerRadius="60dp" />
+        app:cornerRadius="60dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit_loading_account"
+        style="@style/SpinKitView.ThreeBounce"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="80dp"
+        android:layout_marginBottom="80dp"
+        app:SpinKit_Color="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/parent_head"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

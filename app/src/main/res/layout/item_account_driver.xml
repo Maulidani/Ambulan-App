@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:backgroundTint="@color/grey"
     android:layout_height="wrap_content"
+    android:id="@+id/itemAccount"
     android:layout_marginBottom="8dp"
     app:cardCornerRadius="14dp">
 
@@ -16,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="18dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="24dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -36,29 +38,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAccountName"
             tools:text="0857329432" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAccountCarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="18dp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/black"
-            app:layout_constraintLeft_toRightOf="@+id/imgAccount"
-            app:layout_constraintTop_toBottomOf="@id/tvAccountPhone"
-            tools:text="Toyota" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAccountCarNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="18dp"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/black"
-            app:layout_constraintLeft_toRightOf="@+id/tvAccountCarName"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvAccountPhone"
-            tools:text="DD 999 xx" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgAccount"

@@ -47,7 +47,7 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
                         val message = response.body()?.message
                         val data = response.body()?.data
 
-                        if (response.isSuccessful) {
+                        if (response.isSuccessful && message == "Success") {
                             Log.e("order", "$message: $data")
                             _characterLivedata.postValue(ScreenState.Success(data))
 
@@ -65,7 +65,7 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
                     }
 
                     override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                        Log.e("character", "failure: " + t.message.toString())
+                        Log.e("order", "failure: " + t.message.toString())
                         _characterLivedata.postValue(ScreenState.Error(t.message.toString(), null))
 
                         loop = false
