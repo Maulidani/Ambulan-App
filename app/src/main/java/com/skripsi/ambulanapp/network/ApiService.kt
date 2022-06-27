@@ -81,7 +81,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("add-orders")
     fun addOrder(
-        @Field("id_user") idUSer: Int,
+        @Field("id_user") idUser: Int,
         @Field("name") name: String,
         @Field("phone") phone: String,
         @Field("pick_up_latitude") pickUpLatitude: String,

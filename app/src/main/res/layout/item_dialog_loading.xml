@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="18dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:text="Tunggu..."
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit_loading_ordering"
+            style="@style/SpinKitView.ThreeBounce"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="80dp"
+            app:SpinKit_Color="@color/red"
+            app:layout_constraintTop_toBottomOf="@id/tvHead" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

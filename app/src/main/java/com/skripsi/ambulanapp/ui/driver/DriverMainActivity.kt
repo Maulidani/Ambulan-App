@@ -66,12 +66,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
     val switchStatusDriver: SwitchCompat by lazy { findViewById(R.id.switchDriverStatus) }
     val tvStatusDriver: TextView by lazy { findViewById(R.id.tvStatusDriver) }
 
-    //    val fabMore: FloatingActionButton by lazy { findViewById(R.id.fabMore) }
     val fabProfile: FloatingActionButton by lazy { findViewById(R.id.fabProfile) }
     val fablogout: FloatingActionButton by lazy { findViewById(R.id.fabLogout) }
-
-    //    val fabHistory: FloatingActionButton by lazy { findViewById(R.id.fabHistory) }
-    var isFABOpen = false
 
     var idUser = 0
 
@@ -140,7 +136,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest.fastestInterval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        viewModel.orderLiveData.observe(this) {
+        viewModel.liveData.observe(this) {
             processGetOrderResponse(it)
         }
 
@@ -150,35 +146,14 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
+        getDataStatus(idUser) //get status driver
+
         if (!sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
             finish()
         } else {
             //
         }
     }
-//
-//    override fun onBackPressed() {
-//        if (!isFABOpen) {
-//            super.onBackPressed()
-//        } else {
-//            closeFABMenu()
-//        }
-//    }
-//
-//    private fun showFABMenu() {
-//        isFABOpen = true
-//        fabMore.animate().translationY(0f)
-//        fabProfile.animate().translationY(112f)
-//        fabHistory.animate().translationY(224f)
-//    }
-//
-//    private fun closeFABMenu() {
-//        isFABOpen = false
-//        fabMore.animate().translationY(0f)
-//        fabProfile.animate().translationY(0f)
-//        fabHistory.animate().translationY(0f)
-//    }
-
 
     private fun onClick() {
 
@@ -216,23 +191,6 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                     .putExtra("user", "driver")
             )
         }
-
-//        fabMore.setOnClickListener {
-//            if (!isFABOpen) {
-//                showFABMenu()
-//            } else {
-//                closeFABMenu()
-//            }
-//        }
-
-        val statusDriver = getDataStatus(idUser)
-//        if (statusDriver == 1) {
-//            tvStatusDriver.text = "Akun anda sudah aktif"
-//            switchStatusDriver.isChecked = true
-//        } else {
-//            tvStatusDriver.text = "Akun anda tidak aktif"
-//            switchStatusDriver.isChecked = false
-//        }
 
         switchStatusDriver.setOnClickListener {
             if (!switchStatusDriver.isChecked) {
@@ -342,6 +300,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 mMap.clear()
                                 setMarker(latlngPickUp, "Lokasi pick up / jemput", "pick_up")
                                 i.id_hospital?.let { getHospital(it) }
+                                break
 
                             } else if (i.id_driver == idUser && i.status == 1) {
 
@@ -598,9 +557,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
 
                         } else {
-                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
-
+                            Log.e(this.toString(), "onResponse:Failed ", )
                         }
 
                     }
@@ -695,8 +652,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
 
                         } else {
-                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
+                            Log.e(this.toString(), "onResponse: Failed", )
                         }
                     }
 

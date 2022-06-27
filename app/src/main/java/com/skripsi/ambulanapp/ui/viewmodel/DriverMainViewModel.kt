@@ -19,10 +19,10 @@ import retrofit2.Response
 class DriverMainViewModel(private val repository: Repository = Repository(ApiClient.instances)) :
     ViewModel() {
 
-    private var _characterLivedata = MutableLiveData<ScreenState<List<Model.DataModel>?>>()
+    private var _Livedata = MutableLiveData<ScreenState<List<Model.DataModel>?>>()
 
-    val orderLiveData: LiveData<ScreenState<List<Model.DataModel>?>>
-        get() = _characterLivedata
+    val liveData: LiveData<ScreenState<List<Model.DataModel>?>>
+        get() = _Livedata
 
     init {
         getOrder()
@@ -35,7 +35,7 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
 
             while (true) {
 
-                _characterLivedata.postValue(ScreenState.Loading(null))
+                _Livedata.postValue(ScreenState.Loading(null))
 
                 val client = repository.getOrdering()
                 client.enqueue(object : Callback<Model.ResponseModel> {
@@ -49,11 +49,11 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
 
                         if (response.isSuccessful && message == "Success") {
                             Log.e("order", "$message: $data")
-                            _characterLivedata.postValue(ScreenState.Success(data))
+                            _Livedata.postValue(ScreenState.Success(data))
 
                         } else {
                             Log.e("order", "not success: " + response.code().toString())
-                            _characterLivedata.postValue(
+                            _Livedata.postValue(
                                 ScreenState.Error(
                                     response.code().toString(),
                                     null
@@ -66,7 +66,7 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
 
                     override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
                         Log.e("order", "failure: " + t.message.toString())
-                        _characterLivedata.postValue(ScreenState.Error(t.message.toString(), null))
+                        _Livedata.postValue(ScreenState.Error(t.message.toString(), null))
 
                         loop = false
                     }

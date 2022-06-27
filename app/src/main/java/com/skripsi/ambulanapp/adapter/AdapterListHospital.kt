@@ -1,7 +1,6 @@
 package com.skripsi.ambulanapp.adapter
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.Link
 import com.skripsi.ambulanapp.network.model.Model
-import com.skripsi.ambulanapp.ui.admin.AdminAddAccountDriverActivity
 import com.skripsi.ambulanapp.ui.admin.AdminAddHospitalActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,10 +27,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AdapterListHospital(
+    private val type: String,
     private val list: List<Model.DataModel>,
     private val mListener: IUserRecycler
 ) :
     RecyclerView.Adapter<AdapterListHospital.ListViewHolder>() {
+
+    val _type = type
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -51,7 +52,12 @@ class AdapterListHospital(
             addressHospital.text = result.address
 
             itemHospital.setOnClickListener {
-                optionAlert(itemView, result)
+                if (_type == "add_order") {
+                    mListener.refreshView(true, result)
+
+                } else {
+                    optionAlert(itemView, result)
+                }
             }
         }
     }
@@ -156,7 +162,7 @@ class AdapterListHospital(
 
                         if (response.isSuccessful && message == "Success") {
 
-                            mListener.refreshView(true)
+                            mListener.refreshView(true, null)
                             notifyDataSetChanged()
 
                         } else {
@@ -178,7 +184,7 @@ class AdapterListHospital(
     }
 
     interface IUserRecycler {
-        fun refreshView(onUpdate: Boolean)
+        fun refreshView(onUpdate: Boolean, result: Model.DataModel?)
     }
 
 }

@@ -137,7 +137,7 @@
                         android:id="@+id/tvOrderByName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Andi Shalsabila"
+                        android:text="Tunggu . . ."
                         android:textColor="@color/black"
                         app:layout_constraintLeft_toRightOf="@id/tvInfoOrderByName"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -155,7 +155,7 @@
                         android:id="@+id/tvOrderByPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="089123123123"
+                        android:text="tunggu . . ."
                         android:textColor="@color/black"
                         app:layout_constraintLeft_toRightOf="@id/tvInfoOrderByPhone"
                         app:layout_constraintTop_toBottomOf="@id/tvOrderByName" />

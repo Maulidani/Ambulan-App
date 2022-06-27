@@ -68,6 +68,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
                             val adapter =
                                 data?.let {
                                     AdapterListHospital(
+                                        "",
                                         it,
                                         this@AdminListHospitalActivity
                                     )
@@ -106,7 +107,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
         }
     }
 
-    override fun refreshView(onUpdate: Boolean) {
+    override fun refreshView(onUpdate: Boolean, result: Model.DataModel?) {
         getHospitalList()
     }
 

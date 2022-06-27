@@ -3,7 +3,9 @@ package com.skripsi.ambulanapp.ui
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,30 +19,41 @@ import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.customer.CustomerMainActivity
 import com.skripsi.ambulanapp.ui.driver.DriverLoginActivity
+import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var sharedPref: PreferencesHelper
 
-    private val btnOrderAmbulance: MaterialButton by lazy{ findViewById(R.id.btnOrderAmbulance)}
-    private val btnDriverIn: MaterialButton by lazy{ findViewById(R.id.btnDriverIn)}
+    private val btnOrderAmbulance: MaterialButton by lazy { findViewById(R.id.btnOrderAmbulance) }
+    private val btnDriverIn: MaterialButton by lazy { findViewById(R.id.btnDriverIn) }
 
     private lateinit var mMap: GoogleMap
     private val locationRequestCode = 1001
     private lateinit var locationRequest: LocationRequest
 
-    private fun onClick(){
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun onClick() {
+
+        val isLogin = sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)
+        val isCustomerOrder = sharedPref.getString(PreferencesHelper.PREF_ID_ORDER_CUSTOMER)
+
         btnOrderAmbulance.setOnClickListener {
+
             if (ContextCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-
+                if (isLogin) {
+                    sharedPref.logout()
+                }
                 startActivity(Intent(this, CustomerMainActivity::class.java))
 
             } else {
                 askLocationPermission()
             }
         }
+
         btnDriverIn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -48,6 +61,9 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
 
+                if (isCustomerOrder != null) {
+                    sharedPref.logout()
+                }
                 startActivity(Intent(this, DriverLoginActivity::class.java))
 
             } else {
@@ -57,9 +73,11 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        sharedPref = PreferencesHelper(this)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
