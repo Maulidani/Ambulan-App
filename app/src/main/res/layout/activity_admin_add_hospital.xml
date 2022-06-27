@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/parent_head" />
 
     <ScrollView
+        android:id="@+id/parentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="160dp"
@@ -57,6 +58,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
+                android:id="@+id/imgHospital"
                 android:background="@color/grey"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_add" />
@@ -147,6 +149,17 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit_loading_account"
+        style="@style/SpinKitView.ThreeBounce"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="80dp"
+        android:layout_marginBottom="80dp"
+        app:SpinKit_Color="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/parent_head"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAdd"

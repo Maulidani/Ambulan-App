@@ -110,30 +110,30 @@ interface ApiService {
     @FormUrlEncoded
     @POST("get-hospitals")
     fun getHospital(
-        @Field("id_hospital") idhospital: Int,
+        @Field("id_hospital") idhospital: Int?,
         @Field("search") search: String,
     ): Call<Model.ResponseModel> // response = idHospital? hospital : data
 
     @Multipart
     @POST("edit-hospitals")
     fun editHospital(
+        @Part("id_hospital") idHospital: RequestBody,
         @Part("name") name: RequestBody,
         @Part("address") address: RequestBody,
         @Part("latitude") latitude: RequestBody,
         @Part("longitude") longitude: RequestBody,
         @Part parts: MultipartBody.Part,
-        @Part("id_hospital") idHospital: RequestBody,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
     @POST("edit-hospitals")
     fun editWithoutImgHospital(
+        @Field("id_hospital") idHospital: String,
         @Field("name") name: String,
         @Field("address") address: String,
         @Field("latitude") latitude: String,
         @Field("longitude") longitude: String,
         @Field("image") image: String,
-        @Field("id_hospital") idHospital: String,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
