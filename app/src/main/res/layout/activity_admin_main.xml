@@ -79,8 +79,7 @@
                     android:id="@+id/imgMenu"
                     android:layout_width="60dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_ambulance"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -121,8 +120,7 @@
                     android:id="@+id/imgMenu3"
                     android:layout_width="60dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_hospital"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -163,8 +161,7 @@
                     android:id="@+id/imgMenu2"
                     android:layout_width="60dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_history_red"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -174,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="Riwayat Order"
+                    android:text="Riwayat"
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintLeft_toLeftOf="parent"
