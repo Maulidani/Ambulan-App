@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="120dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvHospitalName"
@@ -30,9 +30,12 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvHospitalAddress"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:ellipsize="end"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="18dp"
             android:layout_marginTop="12dp"
+            android:maxLines="2"
             android:textColor="@color/black"
             app:layout_constraintLeft_toRightOf="@+id/imgHospital"
             app:layout_constraintRight_toRightOf="parent"
@@ -42,7 +45,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgHospital"
             android:layout_width="100dp"
-            android:layout_height="120dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

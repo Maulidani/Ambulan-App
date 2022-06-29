@@ -6,9 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Color.RED
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Bundle
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -20,6 +18,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +45,7 @@ import com.skripsi.ambulanapp.ui.viewmodel.CustomerMainViewModel
 import com.skripsi.ambulanapp.util.PreferencesHelper
 import com.skripsi.ambulanapp.util.ScreenState
 import com.skripsi.ambulanapp.util.SetIconMarkerMap
+import com.sothree.slidinguppanel.ScrollableViewHelper
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,8 +55,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.stream.Stream
 
+
 @RequiresApi(Build.VERSION_CODES.N)
-class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
+class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
     AdapterListHospital.IUserRecycler {
     private lateinit var sharedPref: PreferencesHelper
 
@@ -70,6 +71,7 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
     private var myLocation: LatLng? = null
 
+    private val nestedScrollView: NestedScrollView by lazy { findViewById(R.id.nestedScrollView) }
     private val parentAddOrder: ConstraintLayout by lazy { findViewById(R.id.parentAddOrder) }
     private val parentOrderan: ConstraintLayout by lazy { findViewById(R.id.parentOrderan) }
     private val tvHospitalNotFound: TextView by lazy { findViewById(R.id.tvHospitalNotFound) }
@@ -93,6 +95,7 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
     private var chooseHospital = false
     private var driverList: List<Model.DataModel>? = null
     private var hospitalList: List<Model.DataModel>? = null
+    var dataForSortDistanceDriver = ArrayList<Array<String>>()
 
 //    private dataHospitalForOrder =
 
@@ -134,7 +137,9 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
         if (isReady) {
             mMap.setOnMapClickListener {
 //                Toast.makeText(applicationContext, it.toString(), Toast.LENGTH_SHORT).show()
-                mMap.addMarker(MarkerOptions().position(it).title("Lokasi jemput / pick up : pasien"))
+                mMap.addMarker(
+                    MarkerOptions().position(it).title("Lokasi jemput / pick up : pasien")
+                )
                 tvChoosePickUp.setTextColor(RED)
                 tvChoosePickUp.text = "${it.latitude}, ${it.longitude}"
                 pickUpOrderLatLng = it
@@ -526,9 +531,19 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                 for (i in dataList) {
                     if (i.status == 1) {
 
+                        var lat = i.latitude!!.toDoubleOrNull()
+                        var long = i.longitude!!.toDoubleOrNull()
+
+                        if (lat == null ){
+                            lat = 0.0
+                        }
+                        if (long == null){
+                            long = 0.0
+                        }
+
                         val driverLatLng = LatLng(
-                            i.latitude!!.toDouble(),
-                            i.longitude!!.toDouble()
+                           lat,
+                           long
                         )
                         mMap.addMarker(
                             MarkerOptions()
@@ -553,9 +568,19 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
             if (dataList != null) {
                 for (i in dataList) {
 
+                    var lat = i.latitude!!.toDoubleOrNull()
+                    var long = i.longitude!!.toDoubleOrNull()
+
+                    if (lat == null ){
+                        lat = 0.0
+                    }
+                    if (long == null){
+                        long = 0.0
+                    }
+
                     val hospitalLatLng = LatLng(
-                        i.latitude!!.toDouble(),
-                        i.longitude!!.toDouble()
+                        lat,
+                        long
                     )
                     mMap.addMarker(
                         MarkerOptions()
@@ -583,9 +608,18 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                         tvDriverName.text = i.name
                         tvDriverPhone.text = i.phone
 
+                        var lat = i.latitude!!.toDoubleOrNull()
+                        var long = i.longitude!!.toDoubleOrNull()
+
+                        if (lat == null ){
+                            lat = 0.0
+                        }
+                        if (long == null){
+                            long = 0.0
+                        }
                         val driverLatlng = LatLng(
-                            i.latitude!!.toDouble(),
-                            i.longitude!!.toDouble()
+                           lat,
+                           long
                         )
                         mMap.addMarker(
                             MarkerOptions()
@@ -677,8 +711,6 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
 
         }
     }
-
-    var dataForSortDistanceDriver = ArrayList<Array<String>>()
 
     private fun haversine(
         latPickUp: Double, longPickUp: Double,
@@ -917,5 +949,4 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
 //
 //        return myOrderExist
 //    }
-
 }

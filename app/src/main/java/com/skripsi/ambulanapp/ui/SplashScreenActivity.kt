@@ -44,9 +44,7 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                if (isLogin) {
-                    sharedPref.logout()
-                }
+
                 startActivity(Intent(this, CustomerMainActivity::class.java))
 
             } else {
@@ -61,9 +59,6 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
 
-                if (isCustomerOrder != null) {
-                    sharedPref.logout()
-                }
                 startActivity(Intent(this, DriverLoginActivity::class.java))
 
             } else {

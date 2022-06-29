@@ -30,7 +30,7 @@ class DriverMainViewModel(private val repository: Repository = Repository(ApiCli
 
     private fun getOrder() {
 
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             var loop = true
 
             while (true) {

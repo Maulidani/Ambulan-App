@@ -157,6 +157,7 @@ class DriverLoginActivity : AppCompatActivity() {
 
     private fun saveSession(user: Model.DataModel?) {
 
+        sharedPref.logout()
         sharedPref.put(PreferencesHelper.PREF_ID_USER, user?.id.toString())
         sharedPref.put(PreferencesHelper.PREF_TYPE, user?.type!!)
         sharedPref.put(PreferencesHelper.PREF_IS_LOGIN, true)

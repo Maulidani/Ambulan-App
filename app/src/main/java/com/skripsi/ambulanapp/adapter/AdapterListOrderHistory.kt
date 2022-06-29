@@ -33,7 +33,7 @@ class AdapterListOrderHistory(
         fun bindData(result: Model.DataModel) {
 
             nameOrder.text = result.name
-            getHospital(result.id)
+            getHospital(result.id_hospital)
         }
 
         fun getHospital(id: Int?) {

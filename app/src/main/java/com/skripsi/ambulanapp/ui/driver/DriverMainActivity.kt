@@ -312,6 +312,9 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 parentNotOrdering.visibility = View.VISIBLE
                             }
                         }
+                    } else {
+                        parentOrdering.visibility = View.GONE
+                        parentNotOrdering.visibility = View.VISIBLE
                     }
                 }
                 is ScreenState.Error -> {
@@ -612,7 +615,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getDataStatus(id: Int) : Int{
         var status = 0
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
 
             tvStatusDriver.text = "Tunggu..."
             switchStatusDriver.isChecked = false
