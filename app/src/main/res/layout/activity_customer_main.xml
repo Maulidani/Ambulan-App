@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoOverlay="true"
-        sothree:umanoPanelHeight="185dp"
+        sothree:umanoPanelHeight="170dp"
         sothree:umanoShadowHeight="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +23,7 @@
                 android:id="@+id/mapFragment"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="168dp"
                 android:layout_height="match_parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -300,6 +301,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Hospital;
+use App\Models\Article;
 
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -587,6 +588,179 @@ class Controller
         }
 
     }
+
+
+    public function addArticles(Request $request)
+    {
+
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
+
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
+
+                $check = in_array($extension, $allowedfileExtension);
+
+                if ($check) {
+
+                    $files->move(public_path() . '/image/article/', $filename);
+
+                    $article = new Article;
+                    $article->title = $request->title;
+                    $article->description = $request->description;
+                    $article->image = $filename;
+                    $article->save();
+
+                    if ($article) {
+
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+
+                    } else {
+
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+                } else {
+                    return response()->json([
+                        'message' => 'Failed',
+                        'errors' => true,
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
+
+    }
+
+    public function editArticles(Request $request){
+       
+        $exist = Article::where([
+            ['id', '=', $request->id_article],
+        ])->exists();
+
+        if($exist){
+
+            $files = $request->image;
+            $allowedfileExtension = ['jpeg', 'jpg', 'png', 'JPG', 'JPEG'];
+            if ($request->hasfile('image')) {
+
+                $filename = time() . '.' . $files->getClientOriginalName();
+                $extension = $files->getClientOriginalExtension();
+
+                $check = in_array($extension, $allowedfileExtension);
+
+                if ($check) {
+
+                    $files->move(public_path() . '/image/article/', $filename);
+
+                        $article = Article::find($request->id_article);
+                        $article->title = $request->title;
+                        $article->description = $request->description;
+                        $article->image = $filename;
+                        $article->save();
+            
+                    if ($article) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+                
+                } else {
+
+                    return response()->json([
+                        'message' => 'Failed',
+                        'errors' => true,
+                    ]);
+                }
+
+            } else {
+
+                    $article = Article::find($request->id_article);
+                    $article->title = $request->title;
+                    $article->description = $request->description;
+                    $article->save();
+                  
+                    if ($article) {
+                        return response()->json([
+                            'message' => 'Success',
+                            'errors' => false,
+                        ]);
+                    } else {
+            
+                        return response()->json([
+                            'message' => 'Failed',
+                            'errors' => true,
+                        ]);
+                    }
+            }
+
+        } else {
+            return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+        }
+    }
+
+    public function deleteArticles(Request $request)
+    {
+       $delete =  Article::where(
+            'id',
+            $request->id_article
+        )->delete();
+
+        if($delete) {
+
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+            ]);
+        } else {
+
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        }
+    }
+
+    public function getArticles()
+    {
+        $article = Article::orderBy('updated_at', 'DESC')
+               ->get();
+
+        if ($article->isEmpty()) {
+            return response()->json([
+                'message' => 'Failed',
+                'errors' => true,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Success',
+                'errors' => false,
+                'data' => $article,
+            ]);
+        }        
+    }
+
+
+
 
 
 }

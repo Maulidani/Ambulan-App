@@ -32,3 +32,7 @@ Route::post('add-hospitals', 'App\Http\Controllers\Controller@addHospitals');
 Route::post('edit-hospitals', 'App\Http\Controllers\Controller@editHospitals');
 Route::post('delete-hospitals', 'App\Http\Controllers\Controller@deleteHospitals');
 Route::post('get-hospitals', 'App\Http\Controllers\Controller@getHospitalSearchOrId');
+Route::post('add-articles', 'App\Http\Controllers\Controller@addArticles');
+Route::post('edit-articles', 'App\Http\Controllers\Controller@editArticles');
+Route::post('delete-articles', 'App\Http\Controllers\Controller@deleteArticles');
+Route::get('get-articles', 'App\Http\Controllers\Controller@getArticles');
