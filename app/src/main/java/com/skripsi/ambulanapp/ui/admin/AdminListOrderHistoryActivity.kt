@@ -39,7 +39,7 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
         imgBack.setOnClickListener { finish() }
     }
 
-    private fun getAccountUserList() {
+    private fun getOrderList() {
         CoroutineScope(Dispatchers.IO).launch {
 
             ApiClient.instances.getOrder()
@@ -74,8 +74,11 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
                             }
 
                         } else {
-                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Tidak ada data",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }
 
@@ -99,7 +102,7 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loading.visibility = View.VISIBLE
-        getAccountUserList()
+        getOrderList()
 
     }
 

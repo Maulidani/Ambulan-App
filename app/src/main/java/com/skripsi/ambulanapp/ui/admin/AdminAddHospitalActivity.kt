@@ -49,7 +49,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
     private val inputLatitude: TextInputEditText by lazy { findViewById(R.id.inputLatitude) }
     private val inputLongitude: TextInputEditText by lazy { findViewById(R.id.inputLongitude) }
     private val imgHospital: ImageView by lazy { findViewById(R.id.imgHospital) }
-    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAdd) }
+    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAddHospital) }
 
     private var intentAction = ""
     private var intentUser = ""
@@ -96,6 +96,8 @@ class AdminAddHospitalActivity : AppCompatActivity() {
 
             } else if (intentAction == "edit") {
                 btnAdd.text = "Edit rumah sakit"
+            } else if(intentAction == "add"){
+                btnAdd.text = "Tambah rumah sakit"
             }
         }
 
@@ -171,7 +173,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
 
         iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Login driver"
+        text = if (showProgress == true) "" else "Coba lagi"
 
         icon = if (showProgress == true) {
             CircularProgressDrawable(context!!).apply {
@@ -319,8 +321,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
                                     finish()
 
                                 } else {
-                                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                        .show()
+                                    Log.e("onResponse: " , response.toString())
                                 }
                                 btnAdd.setShowProgress(false)
 
@@ -372,6 +373,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         if (imgNewSource) {
             Log.e("", "image attached: new source")
         } else {

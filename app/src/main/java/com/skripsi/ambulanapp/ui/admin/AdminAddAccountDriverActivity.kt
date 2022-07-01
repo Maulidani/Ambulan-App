@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -23,11 +22,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.skripsi.ambulanapp.R
-import com.skripsi.ambulanapp.adapter.AdapterListAccount
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.Link
 import com.skripsi.ambulanapp.network.model.Model
-import com.skripsi.ambulanapp.util.PreferencesHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,7 +51,7 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
     private val inputUsername: TextInputEditText by lazy { findViewById(R.id.inputUsername) }
     private val inputPassword: TextInputEditText by lazy { findViewById(R.id.inputPassword) }
     private val imgProfile: ImageView by lazy { findViewById(R.id.imgProfile) }
-    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAdd) }
+    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAddAccount) }
 
     private var intentAction = ""
     private var intentUser = ""
@@ -113,6 +110,9 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
 
             } else if (intentAction == "edit") {
                 btnAdd.text = "Edit akun driver"
+
+            } else if (intentAction == "add") {
+                btnAdd.text = "Tambah akun driver"
             }
         }
 
@@ -188,7 +188,7 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
 
         iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Login driver"
+        text = if (showProgress == true) "" else "Coba lagi"
 
         icon = if (showProgress == true) {
             CircularProgressDrawable(context!!).apply {
@@ -400,7 +400,7 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
 
     }
 
-    private fun getDataProfile(id:String){
+    private fun getDataProfile(id: String) {
         CoroutineScope(Dispatchers.IO).launch {
 
             ApiClient.instances.getDriverUser()
@@ -418,7 +418,7 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
                             Log.e("onResponse: ", data.toString())
 
                             if (data != null) {
-                                for (i in data){
+                                for (i in data) {
                                     if (i.id == id.toInt()) {
                                         loading.visibility = View.GONE
                                         parentImgNamePhone.visibility = View.VISIBLE
@@ -438,7 +438,11 @@ class AdminAddAccountDriverActivity : AppCompatActivity() {
                                     }
                                 }
                             } else {
-                                Toast.makeText(applicationContext, "Data tidak ada", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Data tidak ada",
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                                 finish()
                             }

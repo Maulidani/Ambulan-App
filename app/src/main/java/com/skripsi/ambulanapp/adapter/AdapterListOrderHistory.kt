@@ -55,8 +55,7 @@ class AdapterListOrderHistory(
                                 hospitalDestination.text = hospital?.name
 
                             } else {
-                                Toast.makeText(itemView.context, message, Toast.LENGTH_SHORT)
-                                    .show()
+                                Log.e("onResponse: ", response.toString())
                             }
                         }
 

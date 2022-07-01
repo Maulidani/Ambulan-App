@@ -51,9 +51,15 @@ class CustomerMainViewModel(private val repository: Repository = Repository(ApiC
                         val message = response.body()?.message
                         val data = response.body()?.data
 
-                        if (response.isSuccessful && message == "Success") {
-                            Log.e("order", "$message: $data")
-                            _Livedata.postValue(ScreenState.Success(data))
+                        if (response.isSuccessful) {
+                           if( message == "Success"){
+                               Log.e("order", "$message: $data")
+                               _Livedata.postValue(ScreenState.Success(data))
+                           }else {
+                               Log.e("order", "$message: $data")
+                               _Livedata.postValue(ScreenState.Success(data))
+                           }
+
 
                         } else {
                             Log.e("order", "not success: " + response.code().toString())
@@ -76,7 +82,7 @@ class CustomerMainViewModel(private val repository: Repository = Repository(ApiC
                     }
 
                 })
-                delay(20000)
+                delay(12000)
             }
         }
     }

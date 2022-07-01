@@ -225,7 +225,15 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                             parentOrderan.visibility = View.GONE
                         }
                     }
+                } else {
+                    getDriver(null)
+                    parentAddOrder.visibility = View.VISIBLE
+                    parentOrderan.visibility = View.GONE
+
+                    setMarker(hospitalList, null, "hospital", null)
+
                 }
+
             }
             is ScreenState.Error -> {
 //                progressBar.visibility = View.GONE
@@ -253,6 +261,7 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                         if (response.isSuccessful && message == "Success") {
 
                             driverList = data
+                            Log.e(this.toString(), "driver list: $driverList")
 
                             if (data != null && idDriver != null) {
                                 for (i in data) {
@@ -458,30 +467,56 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
         name: String,
         phone: String
     ) {
+        var exist = false
 
-        for (i in driverList!!) {
-            if (i.status == 1) {
-                var distance = haversine(
-                    pickUpOrderLatLng!!.latitude,
-                    pickUpOrderLatLng!!.longitude,
-                    i.latitude!!.toDouble(),
-                    i.longitude!!.toDouble()
-                )
+        if (driverList != null) {
+            for (i in driverList!!) {
 
-                dataForSortDistanceDriver.add(
-                    arrayOf(
-                        distance.toString(),
-                        i.name.toString(),
-                        i.id.toString(),
+                if (i.status == 1) {
+
+
+                    var lat = i.latitude!!.toDoubleOrNull()
+                    var long = i.longitude!!.toDoubleOrNull()
+
+                    if (lat == null) {
+                        lat = 0.0
+                    }
+                    if (long == null) {
+                        long = 0.0
+                    }
+
+                    var distance = haversine(
+                        pickUpOrderLatLng!!.latitude,
+                        pickUpOrderLatLng!!.longitude,
+                        lat,
+                        long
                     )
-                )
+
+                    dataForSortDistanceDriver.add(
+                        arrayOf(
+                            distance.toString(),
+                            i.name.toString(),
+                            i.id.toString(),
+                        )
+                    )
+                    exist = true
+                }
             }
+
+            if (exist) {
+                val tes1: Array<Array<String>?> = arrayOfNulls(dataForSortDistanceDriver.size)
+                for (i in dataForSortDistanceDriver.indices) {
+                    tes1[i] = dataForSortDistanceDriver[i]
+                }
+                sortMintoMax(tes1, btnOrderAmbulance, dialogOrder, name, phone)
+            } else {
+                Toast.makeText(applicationContext, "Tidak ada driver aktif", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        } else {
+            Toast.makeText(applicationContext, "Tidak ada driver aktif", Toast.LENGTH_SHORT).show()
         }
-        val tes1: Array<Array<String>?> = arrayOfNulls(dataForSortDistanceDriver.size)
-        for (i in dataForSortDistanceDriver.indices) {
-            tes1[i] = dataForSortDistanceDriver[i]
-        }
-        sortMintoMax(tes1, btnOrderAmbulance, dialogOrder, name, phone)
 
 
     }
@@ -543,6 +578,7 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
 
             if (dataList != null) {
                 for (i in dataList) {
+
                     if (i.status == 1) {
 
                         var lat = i.latitude!!.toDoubleOrNull()
@@ -769,7 +805,6 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                 list.add(dataSort)
             }
 
-
         addOrder(btnOrderAmbulance, dialogOrder, name, phone, list[0][2])
     }
 
@@ -806,7 +841,6 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
                         ).toString()
 
                         Log.e("onResponse: ", order.toString())
-
 
                         parentAddOrder.visibility = View.GONE
                         parentOrderan.visibility = View.VISIBLE

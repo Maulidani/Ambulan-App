@@ -133,6 +133,7 @@ class DriverLoginActivity : AppCompatActivity() {
 
                         } else {
                             Log.e(applicationContext.toString(), "onResponse: "+response.message().toString(), )
+                            Toast.makeText(applicationContext, "Failed", Toast.LENGTH_SHORT).show()
 
                         }
                         btnLogin.setShowProgress(false)

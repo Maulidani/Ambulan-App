@@ -83,9 +83,11 @@ class AdminListAccountDriverActivity : AppCompatActivity(), AdapterListAccount.I
                             }
 
                         } else {
-                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
-
+                            Toast.makeText(
+                                applicationContext,
+                                "Tidak ada data akun",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         loading.visibility = View.GONE

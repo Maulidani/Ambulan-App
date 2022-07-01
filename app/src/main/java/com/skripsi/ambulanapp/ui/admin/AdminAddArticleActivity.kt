@@ -40,7 +40,7 @@ class AdminAddArticleActivity : AppCompatActivity() {
     private val imgArticle: ImageView by lazy { findViewById(R.id.imgArticle) }
     private val inputTitle: TextInputEditText by lazy { findViewById(R.id.inputTitle) }
     private val inputDescription: TextInputEditText by lazy { findViewById(R.id.inputDescription) }
-    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAdd) }
+    private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAddArticle) }
 
     private var intentAction = ""
     private var intentUser = ""
@@ -79,6 +79,8 @@ class AdminAddArticleActivity : AppCompatActivity() {
 
             } else if (intentAction == "edit") {
                 btnAdd.text = "Edit artikel"
+            }else if (intentAction == "add") {
+                btnAdd.text = "Tambah artikel"
             }
         }
 
@@ -148,7 +150,7 @@ class AdminAddArticleActivity : AppCompatActivity() {
 
         iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Login driver"
+        text = if (showProgress == true) "" else "Coba lagi"
 
         icon = if (showProgress == true) {
             CircularProgressDrawable(context!!).apply {
