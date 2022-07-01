@@ -86,7 +86,7 @@ class DriverLoginActivity : AppCompatActivity() {
 
         iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
         isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Login driver"
+        text = if (showProgress == true) "" else "Coba lagi"
 
         icon = if (showProgress == true) {
             CircularProgressDrawable(context!!).apply {

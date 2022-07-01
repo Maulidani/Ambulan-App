@@ -26,19 +26,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="165dp" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/fabArticle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="18dp"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="18dp"
-                android:text="Artikel >"
-                android:gravity="center"
-                android:textAllCaps="false"
-                android:src="@drawable/ic_article"
-                sothree:layout_constraintBottom_toBottomOf="@id/mapFragment"
-                sothree:layout_constraintRight_toRightOf="parent" />
+<!--            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--                android:id="@+id/fabArticle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="18dp"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:layout_marginBottom="18dp"-->
+<!--                android:text="Artikel >"-->
+<!--                android:gravity="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:src="@drawable/ic_article"-->
+<!--                sothree:layout_constraintBottom_toBottomOf="@id/mapFragment"-->
+<!--                sothree:layout_constraintRight_toRightOf="parent" />-->
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabBack"

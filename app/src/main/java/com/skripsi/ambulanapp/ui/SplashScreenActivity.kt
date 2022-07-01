@@ -5,6 +5,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.ui.admin.AdminListArticleActivity
 import com.skripsi.ambulanapp.ui.customer.CustomerMainActivity
 import com.skripsi.ambulanapp.ui.driver.DriverLoginActivity
 import com.skripsi.ambulanapp.util.PreferencesHelper
@@ -25,7 +27,8 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var sharedPref: PreferencesHelper
 
     private val btnOrderAmbulance: MaterialButton by lazy { findViewById(R.id.btnOrderAmbulance) }
-    private val btnDriverIn: MaterialButton by lazy { findViewById(R.id.btnDriverIn) }
+    private val btnArticle: MaterialButton by lazy { findViewById(R.id.btnArticle) }
+    private val tvDriverIn: TextView by lazy { findViewById(R.id.tvDriverIn) }
 
     private lateinit var mMap: GoogleMap
     private val locationRequestCode = 1001
@@ -52,16 +55,26 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        btnDriverIn.setOnClickListener {
+        btnArticle.setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AdminListArticleActivity::class.java
+                ).putExtra("type", "customer")
+            )
+        }
+
+        tvDriverIn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 if (sharedPref.getString(PreferencesHelper.PREF_TYPE) == "driver") {
-                    sharedPref.logout()
+//                    sharedPref.logout()
                 }
                 startActivity(Intent(this, DriverLoginActivity::class.java))
+
             } else {
                 askLocationPermission()
             }

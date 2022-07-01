@@ -80,7 +80,7 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
     private val parentOrderan: ConstraintLayout by lazy { findViewById(R.id.parentOrderan) }
     private val tvHospitalNotFound: TextView by lazy { findViewById(R.id.tvHospitalNotFound) }
 
-    private val btnArticle: ExtendedFloatingActionButton by lazy { findViewById(R.id.fabArticle) }
+//    private val btnArticle: ExtendedFloatingActionButton by lazy { findViewById(R.id.fabArticle) }
     private val tvDriverName: TextView by lazy { findViewById(R.id.tvDriverName) }
     private val tvDriverPhone: TextView by lazy { findViewById(R.id.tvDriverPhone) }
     private val fabBack: FloatingActionButton by lazy { findViewById(R.id.fabBack) }
@@ -321,14 +321,14 @@ class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
 
         fabBack.setOnClickListener { finish() }
 
-        btnArticle.setOnClickListener {
-            startActivity(
-                Intent(
-                    applicationContext,
-                    AdminListArticleActivity::class.java
-                ).putExtra("type", "customer")
-            )
-        }
+//        btnArticle.setOnClickListener {
+//            startActivity(
+//                Intent(
+//                    applicationContext,
+//                    AdminListArticleActivity::class.java
+//                ).putExtra("type", "customer")
+//            )
+//        }
 
         tvChoosePickUp.setOnClickListener {
 

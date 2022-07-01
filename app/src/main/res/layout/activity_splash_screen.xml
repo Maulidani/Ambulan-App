@@ -34,17 +34,31 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:cornerRadius="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnDriverIn" />
+        app:layout_constraintBottom_toTopOf="@+id/btnArticle" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDriverIn"
+        android:id="@+id/btnArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/grey"
-        android:text="Masuk Driver"
+        android:text="Info Pelayanan"
         android:textAllCaps="false"
         android:textColor="@color/red"
         android:textStyle="bold"
+        app:cornerRadius="60dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvDriverIn" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDriverIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grey"
+        android:gravity="center"
+        android:text="Masuk Driver"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="12sp"
         app:cornerRadius="60dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
