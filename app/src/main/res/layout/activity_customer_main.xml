@@ -23,8 +23,22 @@
                 android:id="@+id/mapFragment"
                 class="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="168dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="165dp" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fabArticle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="18dp"
+                android:text="Artikel >"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:src="@drawable/ic_article"
+                sothree:layout_constraintBottom_toBottomOf="@id/mapFragment"
+                sothree:layout_constraintRight_toRightOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabBack"
@@ -173,9 +187,9 @@
                     app:layout_constraintTop_toBottomOf="@id/tvHospitalCloser" />
 
                 <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nestedScrollView"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:id="@+id/nestedScrollView"
                     android:layout_marginHorizontal="18dp"
                     android:layout_marginTop="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"

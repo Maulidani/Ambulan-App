@@ -18,6 +18,7 @@ class AdminMainActivity : AppCompatActivity() {
     private val cardDriver: CardView by lazy { findViewById(R.id.cardDriver) }
     private val cardHopital: CardView by lazy { findViewById(R.id.cardHospital) }
     private val cardOrderHistory: CardView by lazy { findViewById(R.id.cardHistoryOrder) }
+    private val cardArticle: CardView by lazy { findViewById(R.id.cardArticle) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,9 @@ class AdminMainActivity : AppCompatActivity() {
         }
         cardOrderHistory.setOnClickListener {
             startActivity(Intent(this, AdminListOrderHistoryActivity::class.java))
+        }
+        cardArticle.setOnClickListener {
+            startActivity(Intent(this, AdminListArticleActivity::class.java))
         }
     }
 }

@@ -142,5 +142,40 @@ interface ApiService {
         @Field("id_hospital") idHospital: Int,
     ): Call<Model.ResponseModel>
 
+    //artikel
+    @Multipart
+    @POST("add-articles")
+    fun addArticle(
+        @Part("title") title: RequestBody,
+        @Part("description") desc: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel> // response : hospital
 
+    @GET("get-articles")
+    fun getArticle(
+    ): Call<Model.ResponseModel> // response = data[]
+
+    @Multipart
+    @POST("edit-articles")
+    fun editArticle(
+        @Part("id_article") idArticle: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("description") desc: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("edit-articles")
+    fun editWithoutImgArticle(
+        @Field("id_article") idArticle: String,
+        @Field("title") title: String,
+        @Field("description") desc: String,
+        @Field("image") image: String,
+    ): Call<Model.ResponseModel>
+
+    @FormUrlEncoded
+    @POST("delete-articles")
+    fun deleteArticle(
+        @Field("id_article") idArticle: Int,
+    ): Call<Model.ResponseModel>
 }

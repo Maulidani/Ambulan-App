@@ -29,6 +29,9 @@ class Model {
 
         val address: String?,
 
+        val title: String?,
+        val description: String?,
+
         val updated_at: String?,
         val created_at: String?,
 

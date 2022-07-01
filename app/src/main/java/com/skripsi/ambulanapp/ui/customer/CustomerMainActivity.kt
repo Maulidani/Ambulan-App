@@ -1,12 +1,15 @@
 package com.skripsi.ambulanapp.ui.customer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Color.RED
 import android.graphics.drawable.Drawable
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -35,17 +38,18 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterListHospital
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.admin.AdminListArticleActivity
 import com.skripsi.ambulanapp.ui.viewmodel.CustomerMainViewModel
 import com.skripsi.ambulanapp.util.PreferencesHelper
 import com.skripsi.ambulanapp.util.ScreenState
 import com.skripsi.ambulanapp.util.SetIconMarkerMap
-import com.sothree.slidinguppanel.ScrollableViewHelper
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +61,7 @@ import java.util.stream.Stream
 
 
 @RequiresApi(Build.VERSION_CODES.N)
-class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
+class CustomerMainActivity : AppCompatActivity(), OnMapReadyCallback,
     AdapterListHospital.IUserRecycler {
     private lateinit var sharedPref: PreferencesHelper
 
@@ -76,6 +80,7 @@ class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
     private val parentOrderan: ConstraintLayout by lazy { findViewById(R.id.parentOrderan) }
     private val tvHospitalNotFound: TextView by lazy { findViewById(R.id.tvHospitalNotFound) }
 
+    private val btnArticle: ExtendedFloatingActionButton by lazy { findViewById(R.id.fabArticle) }
     private val tvDriverName: TextView by lazy { findViewById(R.id.tvDriverName) }
     private val tvDriverPhone: TextView by lazy { findViewById(R.id.tvDriverPhone) }
     private val fabBack: FloatingActionButton by lazy { findViewById(R.id.fabBack) }
@@ -307,6 +312,15 @@ class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
 
         fabBack.setOnClickListener { finish() }
 
+        btnArticle.setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AdminListArticleActivity::class.java
+                ).putExtra("type", "customer")
+            )
+        }
+
         tvChoosePickUp.setOnClickListener {
 
             if (myLocation != null) {
@@ -534,16 +548,16 @@ class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
                         var lat = i.latitude!!.toDoubleOrNull()
                         var long = i.longitude!!.toDoubleOrNull()
 
-                        if (lat == null ){
+                        if (lat == null) {
                             lat = 0.0
                         }
-                        if (long == null){
+                        if (long == null) {
                             long = 0.0
                         }
 
                         val driverLatLng = LatLng(
-                           lat,
-                           long
+                            lat,
+                            long
                         )
                         mMap.addMarker(
                             MarkerOptions()
@@ -571,10 +585,10 @@ class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
                     var lat = i.latitude!!.toDoubleOrNull()
                     var long = i.longitude!!.toDoubleOrNull()
 
-                    if (lat == null ){
+                    if (lat == null) {
                         lat = 0.0
                     }
-                    if (long == null){
+                    if (long == null) {
                         long = 0.0
                     }
 
@@ -611,15 +625,15 @@ class CustomerMainActivity() : AppCompatActivity(), OnMapReadyCallback,
                         var lat = i.latitude!!.toDoubleOrNull()
                         var long = i.longitude!!.toDoubleOrNull()
 
-                        if (lat == null ){
+                        if (lat == null) {
                             lat = 0.0
                         }
-                        if (long == null){
+                        if (long == null) {
                             long = 0.0
                         }
                         val driverLatlng = LatLng(
-                           lat,
-                           long
+                            lat,
+                            long
                         )
                         mMap.addMarker(
                             MarkerOptions()

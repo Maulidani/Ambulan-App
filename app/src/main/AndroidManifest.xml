@@ -28,10 +28,14 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.customer.DetailArticleActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.AdminListArticleActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.AdminAddArticleActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".ui.admin.AdminMainActivity"

@@ -58,7 +58,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:id="@+id/imgHospital"
+                android:id="@+id/imgArticle"
                 android:background="@color/grey"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_add" />

@@ -58,9 +58,10 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-
+                if (sharedPref.getString(PreferencesHelper.PREF_TYPE) == "driver") {
+                    sharedPref.logout()
+                }
                 startActivity(Intent(this, DriverLoginActivity::class.java))
-
             } else {
                 askLocationPermission()
             }

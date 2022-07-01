@@ -47,8 +47,9 @@
         <entry key="app/src/main/res/layout/activity_admin_list_hospital.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/activity_admin_list_order_history.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_admin_login.xml" value="0.15" />
-        <entry key="app/src/main/res/layout/activity_admin_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_admin_main.xml" value="0.21980676328502416" />
+        <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_detail_article.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_detail_artikel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_detail_order.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_driver_login.xml" value="0.1" />
@@ -72,6 +73,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.16802536231884058" />
         <entry key="app/src/main/res/layout/item_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_account_driver.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_artikel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_dialog_add_order.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_dialog_delete_item.xml" value="0.18" />

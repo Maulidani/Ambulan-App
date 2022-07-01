@@ -76,7 +76,7 @@ class CustomerMainViewModel(private val repository: Repository = Repository(ApiC
                     }
 
                 })
-                delay(10000)
+                delay(20000)
             }
         }
     }

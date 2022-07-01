@@ -79,7 +79,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
                             if ("${data?.size}" == "0") {
                                 Toast.makeText(
                                     applicationContext,
-                                    "Tidak ada data akun driver",
+                                    "Tidak ada data",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }

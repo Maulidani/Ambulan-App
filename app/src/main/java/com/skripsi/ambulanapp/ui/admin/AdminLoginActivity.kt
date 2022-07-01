@@ -121,8 +121,7 @@ class AdminLoginActivity : AppCompatActivity() {
                             Log.e("onResponse: ", user.toString())
 
                         } else {
-                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
+                            Log.e(applicationContext.toString(), "onResponse: "+response.message().toString(), )
 
                         }
                         btnLogin.setShowProgress(false)
