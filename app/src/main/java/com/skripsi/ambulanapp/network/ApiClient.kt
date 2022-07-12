@@ -1,5 +1,6 @@
 package com.skripsi.ambulanapp.network
 
+import com.skripsi.ambulanapp.util.Constant
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ApiClient {
-    private const val URL = "${Link.BASE_URL}api/"
+    private const val URL = "${Constant.BASE_URL}/api/"
 
     private val interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

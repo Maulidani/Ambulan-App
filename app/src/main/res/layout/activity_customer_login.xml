@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="18dp"
     android:paddingBottom="18dp"
-    tools:context=".ui.admin.AdminLoginActivity">
+    tools:context=".ui.customer.CustomerLoginActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/parent_head"
@@ -35,19 +35,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:gravity="left|top"
-        android:text="Masuk Admin"
+        android:text="Masuk"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/parent_head" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usernameTextField"
+        android:id="@+id/phoneTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:hint="   Username"
+        android:hint="   Telepon"
         app:boxCornerRadiusBottomEnd="60dp"
         app:boxCornerRadiusBottomStart="60dp"
         app:boxCornerRadiusTopEnd="60dp"
@@ -55,10 +55,10 @@
         app:layout_constraintTop_toBottomOf="@id/tvHead">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputUsername"
+            android:id="@+id/inputPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="number"
             android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +73,7 @@
         app:boxCornerRadiusBottomStart="60dp"
         app:boxCornerRadiusTopEnd="60dp"
         app:boxCornerRadiusTopStart="60dp"
-        app:layout_constraintTop_toBottomOf="@id/usernameTextField"
+        app:layout_constraintTop_toBottomOf="@id/phoneTextField"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -84,12 +84,22 @@
             android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Belum mempunyai akun ?. Daftar disini."
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLoginAdmin"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
-        android:text="Masuk admin"
+        android:text="Masuk"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textStyle="bold"

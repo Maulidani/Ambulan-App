@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1130095923261391" />
+        <entry key="../../Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2.xml" value="0.19583333333333333" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_customer.xml" value="0.13451086956521738" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_main_driver.xml" value="0.18667679837892603" />
         <entry key="..\:/Project AndroidStudio/AmbulanApp/app/src/main/res/layout/activity_order_history.xml" value="0.32065217391304346" />
@@ -25,9 +26,12 @@
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_location.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/ic_login.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_more.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/ic_more_black.xml" value="0.1255" />
         <entry key="app/src/main/res/drawable/ic_person.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/ic_person_black.xml" value="0.11" />
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_right.xml" value="0.1225" />
@@ -39,16 +43,18 @@
         <entry key="app/src/main/res/layout/activity_add_edit_car.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_add_lat_lng_order.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_add_registration.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/activity_admin_add_account_driver.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_admin_add_account_driver.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_admin_add_article.xml" value="0.19583333333333333" />
-        <entry key="app/src/main/res/layout/activity_admin_add_hospital.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/layout/activity_admin_add_hospital.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_admin_list_account_driver.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_admin_list_article.xml" value="0.19583333333333333" />
-        <entry key="app/src/main/res/layout/activity_admin_list_hospital.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/layout/activity_admin_list_hospital.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_admin_list_order_history.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_admin_login.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_admin_main.xml" value="0.21980676328502416" />
+        <entry key="app/src/main/res/layout/activity_customer_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_customer_register_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_detail_article.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_detail_artikel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_detail_order.xml" value="0.19583333333333333" />
@@ -62,7 +68,7 @@
         <entry key="app/src/main/res/layout/activity_order_history.xml" value="0.19429347826086957" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_profile_driver.xml" value="0.14583333333333334" />
-        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
         <entry key="app/src/main/res/layout/dashboard_example.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_accounts_list.xml" value="0.1828125" />
@@ -77,9 +83,12 @@
         <entry key="app/src/main/res/layout/item_artikel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_dialog_add_order.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_dialog_delete_item.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/item_dialog_example.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_dialog_finish_order.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_dialog_loading.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_dialog_login.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_dialog_logout.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/item_dialog_pickup.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_dialog_switch_status_driver.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_hospital.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/item_order.xml" value="0.25" />

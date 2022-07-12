@@ -1,9 +1,9 @@
 package com.skripsi.ambulanapp.ui.admin
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -11,11 +11,12 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class AdminMainActivity : AppCompatActivity() {
+    private val TAG = "AdminMainActivity"
+    private val userType = "admin"
     private lateinit var sharedPref: PreferencesHelper
 
     private val imgLogout: ImageView by lazy { findViewById(R.id.imgLogout) }
-
-    private val cardDriver: CardView by lazy { findViewById(R.id.cardDriver) }
+    private val cardAccount: CardView by lazy { findViewById(R.id.cardAccount) }
     private val cardHopital: CardView by lazy { findViewById(R.id.cardHospital) }
     private val cardOrderHistory: CardView by lazy { findViewById(R.id.cardHistoryOrder) }
     private val cardArticle: CardView by lazy { findViewById(R.id.cardArticle) }
@@ -24,7 +25,7 @@ class AdminMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_main)
 
-        sharedPref = PreferencesHelper(this)
+        sharedPref = PreferencesHelper(applicationContext)
 
         onClick()
     }
@@ -33,29 +34,30 @@ class AdminMainActivity : AppCompatActivity() {
 
         imgLogout.setOnClickListener {
 
-            val dialogLogout = BottomSheetDialog(this)
-            val viewLogout =
+            val dialog = BottomSheetDialog(this)
+            val view =
                 layoutInflater.inflate(R.layout.item_dialog_logout, null)
-            val btnYes = viewLogout.findViewById<MaterialButton>(R.id.btnYes)
-            val btnNo = viewLogout.findViewById<MaterialButton>(R.id.btnNo)
+            val btnYes = view.findViewById<MaterialButton>(R.id.btnYes)
+            val btnNo = view.findViewById<MaterialButton>(R.id.btnNo)
 
-            dialogLogout.setCancelable(false)
-            dialogLogout.setContentView(viewLogout)
-            dialogLogout.show()
+            dialog.setCancelable(false)
+            dialog.setContentView(view)
+            dialog.show()
 
             btnNo.setOnClickListener {
-                dialogLogout.dismiss()
+                dialog.dismiss()
             }
 
             btnYes.setOnClickListener {
-                dialogLogout.dismiss()
+                dialog.dismiss()
                 sharedPref.logout()
+
                 finish()
             }
         }
 
-        cardDriver.setOnClickListener {
-            startActivity(Intent(this, AdminListAccountDriverActivity::class.java))
+        cardAccount.setOnClickListener {
+            startActivity(Intent(this, AdminListAccountActivity::class.java))
         }
         cardHopital.setOnClickListener {
             startActivity(Intent(this, AdminListHospitalActivity::class.java))

@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\UserController;
+// use App\Http\Controllers\ChatController;
+// use App\Http\Controllers\HospitalController;
+// use App\Http\Controllers\OrderController;
+// use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,21 +23,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('get-orders', 'App\Http\Controllers\Controller@getOrders');
-Route::post('add-orders', 'App\Http\Controllers\Controller@addOrders');
-Route::post('add-status-orders', 'App\Http\Controllers\Controller@addStatusOrders');
-Route::post('add-users', 'App\Http\Controllers\Controller@addUsers');
-Route::post('edit-users', 'App\Http\Controllers\Controller@editUsers');
-Route::post('delete-users', 'App\Http\Controllers\Controller@deleteUsers');
-Route::post('login-users', 'App\Http\Controllers\Controller@loginUsers');
-Route::post('add-latlng-driver-users', 'App\Http\Controllers\Controller@addLatlngUsers');
-Route::get('get-driver-users', 'App\Http\Controllers\Controller@getDriverUsers');
-Route::post('add-status-users', 'App\Http\Controllers\Controller@addStatusUsers');
-Route::post('add-hospitals', 'App\Http\Controllers\Controller@addHospitals');
-Route::post('edit-hospitals', 'App\Http\Controllers\Controller@editHospitals');
-Route::post('delete-hospitals', 'App\Http\Controllers\Controller@deleteHospitals');
-Route::post('get-hospitals', 'App\Http\Controllers\Controller@getHospitalSearchOrId');
-Route::post('add-articles', 'App\Http\Controllers\Controller@addArticles');
-Route::post('edit-articles', 'App\Http\Controllers\Controller@editArticles');
-Route::post('delete-articles', 'App\Http\Controllers\Controller@deleteArticles');
-Route::get('get-articles', 'App\Http\Controllers\Controller@getArticles');
+Route::post('add-user', 'App\Http\Controllers\UserController@addUsers');
+Route::post('edit-user', 'App\Http\Controllers\UserController@editUsers');
+Route::post('login-user', 'App\Http\Controllers\UserController@loginUsers');
+Route::post('add-latlng-user', 'App\Http\Controllers\UserController@addLatlngUsers');
+Route::post('get-user', 'App\Http\Controllers\UserController@getusers');
+Route::post('add-status-user-driver', 'App\Http\Controllers\UserController@addStatusUserDrivers');
+Route::post('delete-user', 'App\Http\Controllers\UserController@deleteUsers');
+
+Route::post('add-hospital', 'App\Http\Controllers\HospitalController@addHospitals');
+Route::post('edit-hospital', 'App\Http\Controllers\HospitalController@editHospitals');
+Route::post('get-hospital', 'App\Http\Controllers\HospitalController@getHospitals');
+Route::post('delete-hospital', 'App\Http\Controllers\HospitalController@deleteHospitals');
+
+Route::post('add-article', 'App\Http\Controllers\ArticleController@addArticles');
+Route::post('edit-article', 'App\Http\Controllers\ArticleController@editArticles');
+Route::post('get-article', 'App\Http\Controllers\ArticleController@getArticles');
+Route::post('delete-article', 'App\Http\Controllers\ArticleController@deleteArticles');
+
+Route::post('add-order', 'App\Http\Controllers\OrderController@addOrders');
+Route::post('edit-status-order', 'App\Http\Controllers\OrderController@editStatusOrders');
+Route::post('get-order', 'App\Http\Controllers\OrderController@getOrders');
+
+Route::post('add-chat', 'App\Http\Controllers\ChatController@addChats');
+Route::post('get-chat', 'App\Http\Controllers\ChatController@getChats');
+Route::post('get-user-chat', 'App\Http\Controllers\ChatController@getUserChats');
+Route::post('get-user-admin-chat', 'App\Http\Controllers\ChatController@getUserAdminChats');
+

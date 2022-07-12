@@ -4,61 +4,110 @@ class Model {
     data class ResponseModel(
         val message: String,
         val errors: Boolean,
-        val data: List<DataModel>?,
-        val user: DataModel?,
-        val order: DataOrderModel?,
-        val hospital: DataHospitalModel?
+        val data: List<DataModel>, // user,hospital,article,order,chat,userChat,
+        val user: UserModel, // add,edit,login
+        val hospital: HospitalModel, //add,edit,
+        val article: ArticleModel, //add,edit,
+        val order: OrderModel, //add
+        val chat: ChatModel,
     )
 
     data class DataModel(
-        val id: Int?,
-        val type: String?,
-        val name: String?,
-        val phone: String?,
-        val username: String?,
-        val password: String?,
-        val latitude: String?,
-        val longitude: String?,
-        val image: String?,
-        val status: Int?,
+        val id : String,
 
-        val id_driver: Int?,
-        val pick_up_latitude: String?,
-        val pick_up_longitude: String?,
-        val id_hospital: Int?,
+        val name : String, // user,hospital , getUserAdminChat
+        val phone : String, // user
+        val password : String, // user
+        val image : String, // user,hospital,article
+        val latitude : String, // user,hospital
+        val longitude : String, // user,hospital
+        val status : String, // user,order
 
-        val address: String?,
+        val address : String, // hospital
 
-        val title: String?,
-        val description: String?,
+        val title : String, // article
+        val description : String, // article
 
-        val updated_at: String?,
-        val created_at: String?,
+        val user_customer_id : String, // order
+        val user_driver_id : String, // order
+        val hospital_id : String, // order
+        val pick_up_latitude : String, // order
+        val pick_up_longitude : String, // order
 
-        )
+        val from_user_type : String, // chat
+        val to_user_type : String, // chat
+        val from_user_id : String, // chat
+        val to_user_id : String, // chat
+        val message : String, // chat
 
-    data class DataOrderModel(
-        val id: Int,
-        val id_driver: String,
-        val name: String,
-        val phone: String,
-        val pick_up_latitude: String,
-        val pick_up_longitude: String,
-        val id_hospital: String,
+        val updated_at : String,
+        val created_at : String,
+    )
 
-        val updated_at: String,
-        val created_at: String,
-        )
+    data class UserModel(
+        val id : String,
+        val name : String,
+        val phone : String,
+        val password : String,
+        val image : String,
+        val latitude : String,
+        val longitude : String,
+        val status : String,
+        val updated_at : String,
+        val created_at : String,
+    )
 
-    data class DataHospitalModel(
-        val id: Int,
-        val name: String,
-        val address: String,
-        val latitude: String,
-        val longitude: String,
-        val image: String,
+    data class HospitalModel(
+        val id : String,
 
-        val updated_at: String,
-        val created_at: String,
-        )
+        val name : String,
+        val address : String,
+        val image : String,
+        val latitude : String,
+        val longitude : String,
+
+        val updated_at : String,
+        val created_at : String,
+    )
+
+    data class ArticleModel(
+        val id : String,
+
+        val title : String,
+        val description : String,
+        val image : String,
+
+        val updated_at : String,
+        val created_at : String,
+    )
+
+    data class OrderModel(
+        val id : String,
+
+        val user_customer_id : String,
+        val user_driver_id : String,
+        val hospital_id : String,
+        val pick_up_latitude : String,
+        val pick_up_longitude : String,
+        val status : String,
+
+        val updated_at : String,
+        val created_at : String,
+    )
+
+    data class ChatModel(
+        val id : String,
+
+        val from_user_type : String,
+        val to_user_type : String,
+        val from_user_id : String,
+        val to_user_id : String,
+        val message : String,
+
+        val updated_at : String,
+        val created_at : String,
+    )
+
+
+
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="18dp"
-    tools:context=".ui.admin.AdminListAccountDriverActivity">
+    tools:context=".ui.admin.AdminListArticleActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/parent_head"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:gravity="left|top"
-        android:text="Artikel untuk anda"
+        android:text="Info Pelayanan"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -50,23 +50,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/parent_head" />
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etSearchArticle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:hint="Cari..."
+        android:drawableEnd="@drawable/ic_search"
+        app:layout_constraintTop_toBottomOf="@id/tvHeadtitle" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvArticle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHeadtitle"
+        app:layout_constraintTop_toBottomOf="@id/etSearchArticle"
         tools:listitem="@layout/item_article" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="18dp"
         android:layout_marginBottom="18dp"
         android:backgroundTint="@color/red"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,174 +8,212 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    //order
     @Multipart
-    @POST("add-users")
+    @POST("add-user")
     fun addUser(
-        @Part("type") type: RequestBody,
+        @Part("user_type") userType: RequestBody,
         @Part("name") name: RequestBody,
         @Part("phone") phone: RequestBody,
-        @Part parts: MultipartBody.Part,
-        @Part("username") username: RequestBody,
         @Part("password") password: RequestBody,
-    ): Call<Model.ResponseModel> // response : user
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel> // response : user{}
 
     @Multipart
-    @POST("edit-users")
+    @POST("edit-user")
     fun editUser(
-        @Part("id_user") idUser: RequestBody,
+        @Part("user_id") userId: RequestBody,
+        @Part("user_type") userType: RequestBody,
         @Part("name") name: RequestBody,
         @Part("phone") phone: RequestBody,
-        @Part parts: MultipartBody.Part,
-        @Part("username") username: RequestBody,
         @Part("password") password: RequestBody,
-    ): Call<Model.ResponseModel>
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel> // response : user{}
 
     @FormUrlEncoded
-    @POST("edit-users")
+    @POST("edit-user")
     fun editWithoutImgUser(
-        @Field("id_user") idUser: String,
+        @Field("user_id") userId: String,
+        @Field("user_type") userType: String,
         @Field("name") name: String,
         @Field("phone") phone: String,
-        @Field("image") image: String,
-        @Field("username") username: String,
         @Field("password") password: String,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
-    @POST("delete-users")
+    @POST("delete-user")
     fun deleteUser(
-        @Field("id_user") idUser: Int,
-    ): Call<Model.ResponseModel>
+        @Field("user_type") userType: String,
+        @Field("user_id") userId: String,
+    ): Call<Model.ResponseModel> // response : user{}
 
     @FormUrlEncoded
-    @POST("login-users")
+    @POST("login-user")
     fun loginUser(
-        @Field("username") username: String,
+        @Field("user_type") userType: String,
+        @Field("phone") phone: String,
         @Field("password") password: String,
-        @Field("type") type: String,
-    ): Call<Model.ResponseModel> // response : user
+        @Field("username") username: String, // for user_type = admin
+    ): Call<Model.ResponseModel> // response : user{}
 
     @FormUrlEncoded
-    @POST("add-latlng-driver-users")
+    @POST("add-latlng-user")
     fun addLatlngDriverUser(
-        @Field("id_user") idUser: Int,
+        @Field("user_type") userType: String,
+        @Field("user_id") userId: String,
         @Field("latitude") latitude: String,
         @Field("longitude") longitude: String,
     ): Call<Model.ResponseModel>
 
-    @GET("get-driver-users")
-    fun getDriverUser(): Call<Model.ResponseModel> // response : data[]
+    @FormUrlEncoded
+    @POST("get-user")
+    fun getUser(
+        @Field("user_type") userType: String,
+        @Field("get_type") getType: String, // ('for_order','for_admin')
+    ): Call<Model.ResponseModel> // response : data[{}]
 
     @FormUrlEncoded
-    @POST("add-status-users")
+    @POST("add-status-user-driver")
     fun addStatusDriverUser(
-        @Field("id_user") idUSer: Int,
-        @Field("status") status: Int,
+        @Field("user_driver_id") userDriverId: Int,
+        @Field("status") status: String,
     ): Call<Model.ResponseModel>
 
-    //order
-    @GET("get-orders")
-    fun getOrder(): Call<Model.ResponseModel> // response : data[]
-
-    @FormUrlEncoded
-    @POST("add-orders")
-    fun addOrder(
-        @Field("id_user") idUser: Int,
-        @Field("name") name: String,
-        @Field("phone") phone: String,
-        @Field("pick_up_latitude") pickUpLatitude: String,
-        @Field("pick_up_longitude") pickUpLongitude: String,
-        @Field("id_hospital") idHospital: Int,
-    ): Call<Model.ResponseModel> // response : order
-
-    @FormUrlEncoded
-    @POST("add-status-orders")
-    fun addStatusOrder(
-        @Field("id_order") idOrder: Int,
-        @Field("status") status: Int,
-    ): Call<Model.ResponseModel>
-
-    //hospital
     @Multipart
-    @POST("add-hospitals")
+    @POST("add-article")
+    fun addArticle(
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel> // response : article{}
+
+    @Multipart
+    @POST("edit-article")
+    fun editArticle(
+        @Part("article_id") articleId: RequestBody,
+        @Part("title") userType: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part parts: MultipartBody.Part,
+    ): Call<Model.ResponseModel> // response : article{}
+
+    @FormUrlEncoded
+    @POST("edit-article")
+    fun editWithoutImgArticle(
+        @Field("article_id") articleId: String,
+        @Field("title") userType: String,
+        @Field("description") description: String,
+    ): Call<Model.ResponseModel> // response : article{}
+
+    @FormUrlEncoded
+    @POST("get-article")
+    fun getArticle(
+        @Field("search") search: String,
+    ): Call<Model.ResponseModel> // response : data[{}]
+
+    @FormUrlEncoded
+    @POST("delete-article")
+    fun deleteArticle(
+        @Field("article_id") articleId: String,
+    ): Call<Model.ResponseModel>
+
+    @Multipart
+    @POST("add-hospital")
     fun addHospital(
         @Part("name") name: RequestBody,
         @Part("address") address: RequestBody,
+        @Part parts: MultipartBody.Part,
         @Part("latitude") latitude: RequestBody,
         @Part("longitude") longitude: RequestBody,
-        @Part parts: MultipartBody.Part,
-    ): Call<Model.ResponseModel> // response : hospital
-
-    @FormUrlEncoded
-    @POST("get-hospitals")
-    fun getHospital(
-        @Field("id_hospital") idhospital: Int?,
-        @Field("search") search: String,
-    ): Call<Model.ResponseModel> // response = idHospital? hospital : data
+    ): Call<Model.ResponseModel> // response : hospital{}
 
     @Multipart
-    @POST("edit-hospitals")
+    @POST("edit-hospital")
     fun editHospital(
-        @Part("id_hospital") idHospital: RequestBody,
+        @Part("hospital_id") hospitalId: RequestBody,
         @Part("name") name: RequestBody,
         @Part("address") address: RequestBody,
+        @Part parts: MultipartBody.Part,
         @Part("latitude") latitude: RequestBody,
         @Part("longitude") longitude: RequestBody,
-        @Part parts: MultipartBody.Part,
-    ): Call<Model.ResponseModel>
+    ): Call<Model.ResponseModel> // response : hospital{}
 
     @FormUrlEncoded
-    @POST("edit-hospitals")
+    @POST("edit-hospital")
     fun editWithoutImgHospital(
-        @Field("id_hospital") idHospital: String,
+        @Field("hospital_id") hospital_id: String,
         @Field("name") name: String,
         @Field("address") address: String,
         @Field("latitude") latitude: String,
         @Field("longitude") longitude: String,
-        @Field("image") image: String,
-    ): Call<Model.ResponseModel>
+    ): Call<Model.ResponseModel> // response : hospital{}
 
     @FormUrlEncoded
-    @POST("delete-hospitals")
+    @POST("get-hospital")
+    fun getHospital(
+        @Field("search") search: String,
+    ): Call<Model.ResponseModel> // response : data[{}]
+
+    @FormUrlEncoded
+    @POST("delete-hospital")
     fun deleteHospital(
-        @Field("id_hospital") idHospital: Int,
-    ): Call<Model.ResponseModel>
-
-    //artikel
-    @Multipart
-    @POST("add-articles")
-    fun addArticle(
-        @Part("title") title: RequestBody,
-        @Part("description") desc: RequestBody,
-        @Part parts: MultipartBody.Part,
-    ): Call<Model.ResponseModel> // response : hospital
-
-    @GET("get-articles")
-    fun getArticle(
-    ): Call<Model.ResponseModel> // response = data[]
-
-    @Multipart
-    @POST("edit-articles")
-    fun editArticle(
-        @Part("id_article") idArticle: RequestBody,
-        @Part("title") title: RequestBody,
-        @Part("description") desc: RequestBody,
-        @Part parts: MultipartBody.Part,
+        @Field("hospital_id") hospitalId: String,
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
-    @POST("edit-articles")
-    fun editWithoutImgArticle(
-        @Field("id_article") idArticle: String,
-        @Field("title") title: String,
-        @Field("description") desc: String,
-        @Field("image") image: String,
+    @POST("add-order")
+    fun addOrder(
+        @Field("user_customer_id") userCustomerId: String,
+        @Field("user_driver_id") userDriverId: String,
+        @Field("hospital_id") hospitalId: String,
+        @Field("pick_up_latitude") pickUpLatitude: String,
+        @Field("pick_up_longitude") pickUpLongitude: String,
+        @Field("status") status: String, // 'to_pick_up' ('to_pick_up','to_drop_off','finish','cancel')
+    ): Call<Model.ResponseModel> // response : order{}
+
+    @FormUrlEncoded
+    @POST("edit-status-order")
+    fun editStatusOrder(
+        @Field("order_id") orderId: String,
+        @Field("status") status: String, // ('to_pick_up','to_drop_off','finish','cancel')
     ): Call<Model.ResponseModel>
 
     @FormUrlEncoded
-    @POST("delete-articles")
-    fun deleteArticle(
-        @Field("id_article") idArticle: Int,
-    ): Call<Model.ResponseModel>
+    @POST("get-order")
+    fun getOrder(
+        @Field("user_type") userType: String, // show order by user('customer','driver')
+        @Field("get_type") getType: String, // ('ordering','show_list')
+        @Field("user_customer_id") userCustomerId: String, // if getType = ordering-> only userCustomerID
+        @Field("user_driver_id") userDriverId: String, // if getType = ordering-> only userDriverId
+        @Field("status") status: String, // ('to_pick_up','to_drop_off','finish','cancel')
+    ): Call<Model.ResponseModel> // if getType = ordering -> order{}, getType = show_list -> data{[]}
+
+    @FormUrlEncoded
+    @POST("add-chat")
+    fun addChat(
+        @Field("from_user_type") fromUserType: String, // ('admin','driver','customer')
+        @Field("to_user_type") toUserType: String, // ('admin','driver','customer')
+        @Field("from_user_id") fromUserId: String,
+        @Field("to_user_id") toUserId: String,
+        @Field("message") message: String,
+    ): Call<Model.ResponseModel> // response : chat{}
+
+    @FormUrlEncoded
+    @POST("get-chat")
+    fun getChat(
+        @Field("from_user_type") fromUserType: String, // ('admin','driver','customer')
+        @Field("to_user_type") toUserType: String, // ('admin','driver','customer')
+        @Field("from_user_id") fromUserId: String,
+        @Field("to_user_id") toUserId: String,
+    ): Call<Model.ResponseModel> // response : data[{}]
+
+    @FormUrlEncoded
+    @POST("get-user-chat")
+    fun getUserChat( // need filter don show if fromUserType && fromUserId == userTypeLogin && userIdLogin
+        @Field("from_user_type") fromUserType: String, // ('admin','driver','customer')
+        @Field("from_user_id") fromUserId: String,
+    ): Call<Model.ResponseModel> // response : data[{}]
+
+    @FormUrlEncoded
+    @POST("get-user-admin-chat") // for driver
+    fun getUserAdminChat(): Call<Model.ResponseModel> // response : data{[]}
+
 }

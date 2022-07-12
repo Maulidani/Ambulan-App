@@ -47,8 +47,20 @@
         android:layout_height="80dp"
         android:layout_marginBottom="80dp"
         app:SpinKit_Color="@color/red"
-        app:layout_constraintTop_toBottomOf="@id/parent_head"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/parent_head" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etSearchHospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:hint="Cari..."
+        android:drawableEnd="@drawable/ic_search"
+        app:layout_constraintTop_toBottomOf="@id/tvHeadtitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHospital"
@@ -56,7 +68,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHeadtitle"
+        app:layout_constraintTop_toBottomOf="@id/etSearchHospital"
         tools:listitem="@layout/item_hospital" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

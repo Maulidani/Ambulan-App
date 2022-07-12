@@ -7,12 +7,9 @@ import android.content.SharedPreferences
 class PreferencesHelper(context: Context) {
     companion object {
 
-        const val PREF_ID_USER = "ID"
-        const val PREF_TYPE = "TYPE"
+        const val PREF_USER_ID = "ID"
+        const val PREF_USER_TYPE = "TYPE"
         const val PREF_IS_LOGIN = "LOGIN"
-
-        const val PREF_IS_ORDER_CUSTOMER = "ORDER"
-        const val PREF_ID_ORDER_CUSTOMER = "ID"
 
     }
 

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Hospital extends Model
+class Chat extends Model
 {
     use HasFactory;
 
-    protected $table = 'hospitals';
+    protected $table = 'chats';
 
     protected $fillable = [
-       'id', 'name','address','image','latitude', 'longitude','updated_at','created_at',
+       'id','from_user_type','to_user_type','from_user_id', 'to_user_id','message','updated_at','created_at',
     ];
 
 }

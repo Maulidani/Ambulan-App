@@ -1,181 +1,101 @@
 package com.skripsi.ambulanapp.ui.driver
 
-import android.content.Intent
-import android.graphics.drawable.Drawable
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
-import com.skripsi.ambulanapp.ui.admin.AdminLoginActivity
-import com.skripsi.ambulanapp.ui.admin.AdminMainActivity
+import com.skripsi.ambulanapp.util.Constant.setShowProgress
 import com.skripsi.ambulanapp.util.PreferencesHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DriverLoginActivity : AppCompatActivity() {
+    private val TAG = "DriverLoginActivity"
+    private val userType = "driver"
     private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
-
-    private val inputUsername: TextInputEditText by lazy { findViewById(R.id.inputUsername) }
+    private val inputPhone: TextInputEditText by lazy { findViewById(R.id.inputPhone) }
     private val inputPassword: TextInputEditText by lazy { findViewById(R.id.inputPassword) }
     private val btnLogin: MaterialButton by lazy { findViewById(R.id.btnLoginDriver) }
-    private val tvLoginAdmin: TextView by lazy { findViewById(R.id.tvLoginAdmin) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_driver_login)
 
-        sharedPref = PreferencesHelper(this)
-
-        onClick()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
-            if (sharedPref.getString(PreferencesHelper.PREF_TYPE) == "driver") {
-                startActivity(Intent(applicationContext, DriverMainActivity::class.java))
-                finish()
-            } else {
-                //
-            }
-        } else {
-            //
-        }
-    }
-
-    private fun onClick() {
-        imgBack.setOnClickListener { finish() }
+        sharedPref = PreferencesHelper(applicationContext)
 
         btnLogin.setOnClickListener {
-            val username = inputUsername.text.toString()
+            val phone = inputPhone.text.toString()
             val password = inputPassword.text.toString()
 
-            if (username.isNotEmpty() && password.isNotEmpty()) {
-
-                btnLogin.setShowProgress(true)
-                login(username, password, "driver")
-
+            if (phone.isNotEmpty() && password.isNotEmpty()) {
+                login(phone, password, userType)
             } else {
-                Toast.makeText(applicationContext, "Lengkapi data untuk login", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(applicationContext, "Lengkapi data", Toast.LENGTH_SHORT).show()
             }
         }
 
-        tvLoginAdmin.setOnClickListener {
-            startActivity(Intent(this, AdminLoginActivity::class.java))
-        }
-    }
-
-    fun MaterialButton.setShowProgress(showProgress: Boolean?) {
-
-        iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
-        isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Coba lagi"
-
-        icon = if (showProgress == true) {
-            CircularProgressDrawable(context!!).apply {
-                setStyle(CircularProgressDrawable.DEFAULT)
-                setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
-                start()
-            }
-        } else null
-
-        if (icon != null) { // callback to redraw button icon
-            icon.callback = object : Drawable.Callback {
-                override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-                }
-
-                override fun invalidateDrawable(who: Drawable) {
-                    this@setShowProgress.invalidate()
-                }
-
-                override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
-                }
-            }
+        imgBack.setOnClickListener {
+            finish()
         }
     }
 
+    private fun login(phone: String, password: String, type: String) {
+        btnLogin.setShowProgress(true)
 
-    private fun login(username: String, password: String, type: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        ApiClient.instances.loginUser(type, phone, password, "")
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+                    val responseBody = response.body()
+                    val message = responseBody?.message
+                    val user = responseBody?.user
 
-            ApiClient.instances.loginUser(username, password, type)
-                .enqueue(object : Callback<Model.ResponseModel> {
-                    override fun onResponse(
-                        call: Call<Model.ResponseModel>,
-                        response: Response<Model.ResponseModel>
-                    ) {
-                        val responseBody = response.body()
-                        val message = response.body()?.message
-                        val user = response.body()?.user
+                    if (response.isSuccessful && message == "Success") {
+                        Log.e(TAG, "onResponse: $responseBody")
+                        saveSession(user)
 
-                        if (response.isSuccessful && message == "Success") {
-
-                            saveSession(user)
-
-                            Log.e("onResponse: ", user.toString())
-
-                        } else {
-                            Log.e(applicationContext.toString(), "onResponse: "+response.message().toString(), )
-                            Toast.makeText(applicationContext, "Failed", Toast.LENGTH_SHORT).show()
-
-                        }
-                        btnLogin.setShowProgress(false)
+                    } else {
+                        Log.e(TAG, "onResponse: $response")
+                        Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT).show()
 
                     }
+                    btnLogin.setShowProgress(false)
 
-                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                        Toast.makeText(
-                            applicationContext,
-                            t.message.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                }
 
-                        btnLogin.setShowProgress(false)
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
 
-                    }
+                    Toast.makeText(applicationContext,  t.message.toString(), Toast.LENGTH_SHORT).show()
+                    btnLogin.setShowProgress(false)
+                }
 
-                })
-        }
+            })
     }
 
-    private fun saveSession(user: Model.DataModel?) {
+    private fun saveSession(user: Model.UserModel?) {
 
         sharedPref.logout()
-        sharedPref.put(PreferencesHelper.PREF_ID_USER, user?.id.toString())
-        sharedPref.put(PreferencesHelper.PREF_TYPE, user?.type!!)
+        sharedPref.put(PreferencesHelper.PREF_USER_ID, user!!.id)
+        sharedPref.put(PreferencesHelper.PREF_USER_TYPE, userType)
         sharedPref.put(PreferencesHelper.PREF_IS_LOGIN, true)
-        Log.e(
-            "sharedPreferences",
-            "user login: " + sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)
-        )
-        Log.e(
-            "sharedPreferences",
-            "user id: " + sharedPref.getString(PreferencesHelper.PREF_ID_USER)
-        )
-        Log.e(
-            "sharedPreferences",
-            "user type: " + sharedPref.getString(PreferencesHelper.PREF_TYPE)
-        )
 
-        startActivity(Intent(applicationContext, DriverMainActivity::class.java))
+        Log.e(TAG, "saveSession: "+sharedPref.getString(PreferencesHelper.PREF_USER_ID).toString(), )
+        Log.e(TAG, "saveSession: "+sharedPref.getString(PreferencesHelper.PREF_USER_TYPE).toString(), )
+        Log.e(TAG, "saveSession: "+sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN).toString(), )
 
-        finish()
+//        startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
+//        finish()
     }
+
 }

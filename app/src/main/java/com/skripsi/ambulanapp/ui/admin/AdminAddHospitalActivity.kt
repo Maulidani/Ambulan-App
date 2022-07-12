@@ -2,31 +2,24 @@ package com.skripsi.ambulanapp.ui.admin
 
 import android.app.Activity
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.ScrollView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import coil.load
-import coil.transform.CircleCropTransformation
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
-import com.skripsi.ambulanapp.network.Link
 import com.skripsi.ambulanapp.network.model.Model
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.skripsi.ambulanapp.util.Constant
+import com.skripsi.ambulanapp.util.Constant.setShowProgress
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,12 +31,9 @@ import retrofit2.Response
 import java.io.File
 
 class AdminAddHospitalActivity : AppCompatActivity() {
+    private val TAG = "AdminAddHospitalActvty"
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
-
-//    private val parentScrollView: ScrollView by lazy { findViewById(R.id.parentScrollView) }
-//    private val loading: SpinKitView by lazy { findViewById(R.id.spin_kit_loading_account) }
-
     private val inputName: TextInputEditText by lazy { findViewById(R.id.inputName) }
     private val inputAddress: TextInputEditText by lazy { findViewById(R.id.inputAddress) }
     private val inputLatitude: TextInputEditText by lazy { findViewById(R.id.inputLatitude) }
@@ -51,37 +41,36 @@ class AdminAddHospitalActivity : AppCompatActivity() {
     private val imgHospital: ImageView by lazy { findViewById(R.id.imgHospital) }
     private val btnAdd: MaterialButton by lazy { findViewById(R.id.btnAddHospital) }
 
-    private var intentAction = ""
-    private var intentUser = ""
-    private var intentId = ""
-    private var intentName = ""
-    private var intentAddress = ""
-    private var intentLatitude = ""
-    private var intentLongitude = ""
-    private var intentImage = ""
-
     private var imgNewSource = false
     private var reqBody: RequestBody? = null
     private var partImage: MultipartBody.Part? = null
+
+    private var intentAction = ""
+    private var intentUserType = ""
+    private var intentId = ""
+    private var intentName = ""
+    private var intentAddress = ""
+    private var intentImage = ""
+    private var intentLatitude = ""
+    private var intentLongitude = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_add_hospital)
 
         intentAction = intent.getStringExtra("action").toString()
-        intentUser = intent.getStringExtra("user").toString()
+        intentUserType = intent.getStringExtra("user_type").toString()
         intentId = intent.getStringExtra("id").toString()
-        intentImage = intent.getStringExtra("image").toString()
         intentName = intent.getStringExtra("name").toString()
         intentAddress = intent.getStringExtra("address").toString()
+        intentImage = intent.getStringExtra("image").toString()
         intentLatitude = intent.getStringExtra("latitude").toString()
         intentLongitude = intent.getStringExtra("longitude").toString()
 
         if (intentAction == "show" || intentAction == "edit") {
+            val linkImage = "${Constant.BASE_URL}${intentImage}"
 
-            val linkImage = "${Link.URL_IMAGE_HOSPITAL}${intentImage}"
             imgHospital.load(linkImage)
-
             inputName.setText(intentName)
             inputAddress.setText(intentAddress)
             inputLatitude.setText(intentLatitude)
@@ -89,6 +78,10 @@ class AdminAddHospitalActivity : AppCompatActivity() {
 
             if (intentAction == "show") {
                 btnAdd.visibility = View.GONE
+                inputName.setTextColor(Color.BLACK)
+                inputAddress.setTextColor(Color.BLACK)
+                inputLatitude.setTextColor(Color.BLACK)
+                inputLongitude.setTextColor(Color.BLACK)
                 inputName.isEnabled = false
                 inputAddress.isEnabled = false
                 inputLatitude.isEnabled = false
@@ -96,7 +89,8 @@ class AdminAddHospitalActivity : AppCompatActivity() {
 
             } else if (intentAction == "edit") {
                 btnAdd.text = "Edit rumah sakit"
-            } else if(intentAction == "add"){
+
+            } else {
                 btnAdd.text = "Tambah rumah sakit"
             }
         }
@@ -109,10 +103,10 @@ class AdminAddHospitalActivity : AppCompatActivity() {
         imgBack.setOnClickListener { finish() }
 
         imgHospital.setOnClickListener {
-            if (intentAction == "add" || intentAction == "edit") {
+            if (intentAction != "show") {
                 ImagePicker.with(this)
-                    .cropSquare()
-                    .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                    .crop()
+                    .compress(512)         //Final image size will be less than 512 KB(Optional)
                     .createIntent { intent ->
                         startForProfileImageResult.launch(intent)
                     }
@@ -130,217 +124,198 @@ class AdminAddHospitalActivity : AppCompatActivity() {
                 name.isNotEmpty() && address.isNotEmpty() &&
                 latitude.isNotEmpty() && longitude.isNotEmpty()
             ) {
-                //do
-                if (intentAction == "add") {
-                    if (partImage != null) {
-                        addEdithospital(name, address, latitude, longitude)
-                    } else {
-                        Toast.makeText(
-                            applicationContext,
-                            "Foto tidak boleh kosong",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                } else { // intentAction == "edit"
-                    if (name == intentName && address == intentAddress &&
-                        latitude == intentLatitude && longitude == intentLongitude &&
-                        !imgNewSource
-                    ) {
 
-                        Toast.makeText(
-                            applicationContext,
-                            "Tidak ada data yang berubah",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                if (latitude.toDoubleOrNull() == null) {
+                    Toast.makeText(
+                        applicationContext, "Data latitude tidak valid",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else if (longitude.toDoubleOrNull() == null) {
+                    Toast.makeText(
+                        applicationContext, "Data longitude tidak valid",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+
+                    if (intentAction == "edit") {
+                        if (name == intentName && address == intentAddress &&
+                            latitude == intentLatitude && longitude == intentLongitude &&
+                            !imgNewSource
+                        ) {
+                            Toast.makeText(
+                                applicationContext, "Tidak ada data yang berubah",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else {
+                            editHospital(name, address, latitude, longitude)
+                        }
 
                     } else {
-                        addEdithospital(name, address, latitude, longitude)
+
+                        if (partImage != null) {
+                            addHospital(name, address, latitude, longitude)
+                        } else {
+                            Toast.makeText(
+                                applicationContext, "Lengkapi data foto rumah sakit",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
 
             } else {
-
-                Toast.makeText(applicationContext, "Data tidak boleh kosong", Toast.LENGTH_SHORT)
+                Toast.makeText(applicationContext, "Lengkapi data", Toast.LENGTH_SHORT)
                     .show()
             }
         }
     }
 
-
-    fun MaterialButton.setShowProgress(showProgress: Boolean?) {
-
-        iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
-        isCheckable = showProgress == false
-        text = if (showProgress == true) "" else "Coba lagi"
-
-        icon = if (showProgress == true) {
-            CircularProgressDrawable(context!!).apply {
-                setStyle(CircularProgressDrawable.DEFAULT)
-                setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
-                start()
-            }
-        } else null
-
-        if (icon != null) { // callback to redraw button icon
-            icon.callback = object : Drawable.Callback {
-                override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-                }
-
-                override fun invalidateDrawable(who: Drawable) {
-                    this@setShowProgress.invalidate()
-                }
-
-                override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
-                }
-            }
-        }
-    }
-
-    private fun addEdithospital(
-        name: String,
-        address: String,
-        latitude: String,
-        longitude: String
-    ) {
+    private fun addHospital(name: String, address: String, latitude: String, longitude: String) {
         btnAdd.setShowProgress(true)
 
-        val partId: RequestBody = intentId.toRequestBody("text/plain".toMediaTypeOrNull())
         val partName: RequestBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
         val partAddress: RequestBody = address.toRequestBody("text/plain".toMediaTypeOrNull())
         val partLatitude: RequestBody = latitude.toRequestBody("text/plain".toMediaTypeOrNull())
         val partLongitude: RequestBody = longitude.toRequestBody("text/plain".toMediaTypeOrNull())
-//        var partImgNull: RequestBody? = "".toRequestBody("text/plain".toMediaTypeOrNull())
 
-        if (intentAction == "add") {
+        ApiClient.instances.addHospital(
+            partName,
+            partAddress,
+            partImage!!,
+            partLatitude,
+            partLongitude,
+        )
+            .enqueue(object : Callback<Model.ResponseModel> {
+                override fun onResponse(
+                    call: Call<Model.ResponseModel>,
+                    response: Response<Model.ResponseModel>
+                ) {
+                    val responseBody = response.body()
+                    val message = responseBody?.message
+                    val hospital = responseBody?.hospital
 
-            CoroutineScope(Dispatchers.IO).launch {
+                    if (response.isSuccessful && message == "Success") {
+                        Log.e(TAG, "onResponse: $responseBody")
+                        Toast.makeText(
+                            applicationContext,
+                            "Berhasil menambah rumah sakit",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                ApiClient.instances.addHospital(
-                    partName,
-                    partAddress,
-                    partLatitude,
-                    partLongitude,
-                    partImage!!,
-                )
-                    .enqueue(object : Callback<Model.ResponseModel> {
-                        override fun onResponse(
-                            call: Call<Model.ResponseModel>,
-                            response: Response<Model.ResponseModel>
-                        ) {
-                            val responseBody = response.body()
-                            val message = response.body()?.message
+                        finish()
 
-                            if (response.isSuccessful && message == "Success") {
+                    } else {
+                        Log.e(TAG, "onResponse: $response")
+                        Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT).show()
 
-                                finish()
+                    }
+                    btnAdd.setShowProgress(false)
 
-                            } else {
-                                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                            btnAdd.setShowProgress(false)
-
-                        }
-
-                        override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                            Toast.makeText(
-                                applicationContext,
-                                t.message.toString(),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            btnAdd.setShowProgress(false)
-                        }
-                    })
-            }
-
-        } else if (intentAction == "edit") {
-
-            CoroutineScope(Dispatchers.IO).launch {
-
-                if (imgNewSource) {
-                    ApiClient.instances.editHospital(
-                        partId,
-                        partName,
-                        partAddress,
-                        partLatitude,
-                        partLongitude,
-                        partImage!!
-                    )
-                        .enqueue(object : Callback<Model.ResponseModel> {
-                            override fun onResponse(
-                                call: Call<Model.ResponseModel>,
-                                response: Response<Model.ResponseModel>
-                            ) {
-                                val responseBody = response.body()
-                                val message = response.body()?.message
-
-                                if (response.isSuccessful && message == "Success") {
-
-                                    finish()
-
-                                } else {
-                                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-                                btnAdd.setShowProgress(false)
-
-                            }
-
-                            override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                                Toast.makeText(
-                                    applicationContext,
-                                    t.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                                btnAdd.setShowProgress(false)
-                            }
-                        })
-                } else {
-                    ApiClient.instances.editWithoutImgHospital(
-                        intentId,
-                        name,
-                        address,
-                        latitude,
-                        longitude,
-                        ""
-                    )
-                        .enqueue(object : Callback<Model.ResponseModel> {
-                            override fun onResponse(
-                                call: Call<Model.ResponseModel>,
-                                response: Response<Model.ResponseModel>
-                            ) {
-                                val responseBody = response.body()
-                                val message = response.body()?.message
-
-                                if (response.isSuccessful && message == "Success") {
-
-                                    finish()
-
-                                } else {
-                                    Log.e("onResponse: " , response.toString())
-                                }
-                                btnAdd.setShowProgress(false)
-
-                            }
-
-                            override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                                Toast.makeText(
-                                    applicationContext,
-                                    t.message.toString(),
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-                                btnAdd.setShowProgress(false)
-                            }
-                        })
                 }
-            }
-        }
 
+                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+
+                    Toast.makeText(applicationContext, t.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                    btnAdd.setShowProgress(false)
+                }
+
+            })
+    }
+
+    private fun editHospital(name: String, address: String, latitude: String, longitude: String) {
+        btnAdd.setShowProgress(true)
+
+        if (imgNewSource) {
+            val partHospitalId: RequestBody = intentId.toRequestBody("text/plain".toMediaTypeOrNull())
+            val partName: RequestBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
+            val partAddress: RequestBody = address.toRequestBody("text/plain".toMediaTypeOrNull())
+            val partLatitude: RequestBody = latitude.toRequestBody("text/plain".toMediaTypeOrNull())
+            val partLongitude: RequestBody = longitude.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            ApiClient.instances.editHospital(
+                partHospitalId,
+                partName,
+                partAddress,
+                partImage!!,
+                partLatitude,
+                partLongitude,
+            )
+                .enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = responseBody?.message
+                        val hospital = responseBody?.hospital
+
+                        if (response.isSuccessful && message == "Success") {
+                            Log.e(TAG, "onResponse: $responseBody")
+
+                            finish()
+
+                        } else {
+                            Log.e(TAG, "onResponse: $response")
+                            Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT).show()
+
+                        }
+                        btnAdd.setShowProgress(false)
+
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+
+                        Toast.makeText(applicationContext, t.message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        btnAdd.setShowProgress(false)
+                    }
+
+                })
+
+        } else {
+            ApiClient.instances.editWithoutImgHospital(
+                intentId,
+                name,
+                address,
+                latitude,
+                longitude,
+            )
+                .enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = responseBody?.message
+                        val hospital = responseBody?.hospital
+
+                        if (response.isSuccessful && message == "Success") {
+                            Log.e(TAG, "onResponse: $responseBody")
+
+                            finish()
+
+                        } else {
+                            Log.e(TAG, "onResponse: $response")
+                            Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT).show()
+
+                        }
+                        btnAdd.setShowProgress(false)
+
+                    }
+
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+
+                        Toast.makeText(applicationContext, t.message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        btnAdd.setShowProgress(false)
+                    }
+
+                })
+        }
     }
 
     private val startForProfileImageResult =
@@ -356,9 +331,9 @@ class AdminAddHospitalActivity : AppCompatActivity() {
                 val image: File = File(fileUri.path!!)
                 imgHospital.setImageBitmap(BitmapFactory.decodeFile(image.absolutePath))
 
-                Log.e("", "image format: uri = $fileUri")
-                Log.e("", "image format: file path = $image")
-                Log.e("", "image format: file absolute path = ${image.absolutePath}")
+                Log.e(TAG, "image format: uri = $fileUri")
+                Log.e(TAG, "image format: file path = $image")
+                Log.e(TAG, "image format: file absolute path = ${image.absolutePath}")
 
                 reqBody = image.asRequestBody("image/*".toMediaTypeOrNull())
                 partImage = MultipartBody.Part.createFormData("image", image.name, reqBody!!)
@@ -367,18 +342,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
             } else if (resultCode == ImagePicker.RESULT_ERROR) {
                 Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (imgNewSource) {
-            Log.e("", "image attached: new source")
-        } else {
-            Log.e("", "image attached: nothing new source")
-        }
-    }
-
 }
