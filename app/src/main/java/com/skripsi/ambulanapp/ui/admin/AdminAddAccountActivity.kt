@@ -327,7 +327,6 @@ class AdminAddAccountActivity : AppCompatActivity() {
         }
     }
 
-
     private val startForProfileImageResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode

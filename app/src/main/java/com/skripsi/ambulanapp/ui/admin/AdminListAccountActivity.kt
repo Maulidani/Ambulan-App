@@ -29,7 +29,5 @@ class AdminListAccountActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-//        loadFragment(AdminListUserContainerFragment())
     }
 }

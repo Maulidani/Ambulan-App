@@ -31,7 +31,6 @@ class AdminMainActivity : AppCompatActivity() {
     }
 
     private fun onClick() {
-
         imgLogout.setOnClickListener {
 
             val dialog = BottomSheetDialog(this)

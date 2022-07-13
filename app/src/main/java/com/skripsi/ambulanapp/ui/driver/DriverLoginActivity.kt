@@ -1,5 +1,6 @@
 package com.skripsi.ambulanapp.ui.driver
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -94,7 +95,7 @@ class DriverLoginActivity : AppCompatActivity() {
         Log.e(TAG, "saveSession: "+sharedPref.getString(PreferencesHelper.PREF_USER_TYPE).toString(), )
         Log.e(TAG, "saveSession: "+sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN).toString(), )
 
-//        startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
+//        startActivity(Intent(applicationContext, DriverMainActivity::class.java))
 //        finish()
     }
 

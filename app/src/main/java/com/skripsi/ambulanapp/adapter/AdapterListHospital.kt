@@ -29,7 +29,6 @@ class AdapterListHospital(
     private val mListener: IUserRecycler
 ) :
     RecyclerView.Adapter<AdapterListHospital.ListViewHolder>() {
-
     val _type = type
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

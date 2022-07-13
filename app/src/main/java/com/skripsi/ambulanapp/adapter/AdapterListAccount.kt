@@ -31,7 +31,6 @@ class AdapterListAccount (
     private val mListener: IUserRecycler
 ) :
     RecyclerView.Adapter<AdapterListAccount.ListViewHolder>() {
-
     val userType = type
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

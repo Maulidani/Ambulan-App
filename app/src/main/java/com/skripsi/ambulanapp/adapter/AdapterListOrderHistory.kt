@@ -37,8 +37,8 @@ class AdapterListOrderHistory (
 
         fun bindData(result: Model.DataModel) {
 
-            orderByName.text = result.user_customer_id
-            hospitalDestination.text = result.hospital_id
+            orderByName.text = result.customer_name
+            hospitalDestination.text = result.hospital_name
 
             itemOrder.setOnClickListener {
 

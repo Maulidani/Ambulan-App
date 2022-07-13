@@ -51,7 +51,6 @@ class AdminAddArticleActivity : AppCompatActivity() {
     private var intentDescription = ""
     private var intentImage = ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_add_article)
@@ -86,7 +85,6 @@ class AdminAddArticleActivity : AppCompatActivity() {
 
         onClick()
     }
-
 
     private fun onClick() {
 

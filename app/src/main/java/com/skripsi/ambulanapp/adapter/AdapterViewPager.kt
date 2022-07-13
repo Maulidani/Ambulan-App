@@ -29,13 +29,6 @@ class AdapterViewPager (
                     else -> Fragment()
                 }
             }
-//            "report" -> {
-//                return when (position) {
-//                    0 -> ReportFragment("today")
-//                    1 -> ReportFragment("all")
-//                    else -> Fragment()
-//                }
-//            }
             else -> {
                 Fragment()
             }

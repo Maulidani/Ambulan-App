@@ -186,24 +186,58 @@ class OrderController
 
             $order;
             if($user_type == 'driver'){
-                $order = Order::join('hospitals', 'hospitals.id', 'orders.hospital_id')
-                ->where([
-                    ['orders.user_driver_id', '=', $user_driver_id],
-                    ['orders.status', '=', $status],
-                ])->orderBy('orders.updated_at', 'DESC')->get();
+                $order = Order::join('user_customers', 'user_customers.id', 'orders.user_customer_id')
+                ->join('user_drivers', 'user_drivers.id', '=', 'orders.user_driver_id')
+                ->join('hospitals', 'hospitals.id', 'orders.hospital_id')
+                ->where('orders.user_driver_id', $user_driver_id)
+                ->where('orders.status', $status)
+                ->orderBy('orders.updated_at', 'DESC')
+                ->get(['orders.id','orders.pick_up_latitude','orders.pick_up_longitude',
+                        'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
+                        'user_customers.image as customer_image',
+                        'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
+                        'user_drivers.image as driver_image',
+                        'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
+                        'hospitals.longitude as hospital_longitude',
+                        'orders.status','orders.updated_at','orders.created_at'
+                        ]
+                );
     
             } else if ($user_type == 'customer'){
-                $order = Order::join('hospitals', 'hospitals.id', 'orders.hospital_id')
-                ->where([
-                    ['orders.user_customer_id', '=', $user_customer_id],
-                    ['orders.status', '=', $status],
-                ])->orderBy('orders.updated_at', 'DESC')->get();
+                $order = Order::join('user_customers', 'user_customers.id', 'orders.user_customer_id')
+                ->join('user_drivers', 'user_drivers.id', '=', 'orders.user_driver_id')
+                ->join('hospitals', 'hospitals.id', 'orders.hospital_id')
+                ->where('orders.user_customer_id', $user_customer_id)
+                ->where('orders.status', $status)
+                ->orderBy('orders.updated_at', 'DESC')
+                ->get(['orders.id','orders.pick_up_latitude','orders.pick_up_longitude',
+                        'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
+                        'user_customers.image as customer_image',
+                        'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
+                        'user_drivers.image as driver_image',
+                        'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
+                        'hospitals.longitude as hospital_longitude',
+                        'orders.status','orders.updated_at','orders.created_at'
+                        ]
+                );
     
             } else if ($user_type == 'admin'){
-                $order = Order::where([
-                    ['orders.status', '=', $status],
-                ])->orderBy('orders.updated_at', 'DESC')->get();
-    
+                $order = Order::join('user_customers', 'user_customers.id', 'orders.user_customer_id')
+                ->join('user_drivers', 'user_drivers.id', '=', 'orders.user_driver_id')
+                ->join('hospitals', 'hospitals.id', 'orders.hospital_id')
+                ->where('orders.status', $status)
+                ->orderBy('orders.updated_at', 'DESC')
+                ->get(['orders.id','orders.pick_up_latitude','orders.pick_up_longitude',
+                        'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
+                        'user_customers.image as customer_image',
+                        'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
+                        'user_drivers.image as driver_image',
+                        'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
+                        'hospitals.longitude as hospital_longitude',
+                        'orders.status','orders.updated_at','orders.created_at'
+                        ]
+                );
+
             } else {
                 return response()->json([
                     'message' => 'Failed',

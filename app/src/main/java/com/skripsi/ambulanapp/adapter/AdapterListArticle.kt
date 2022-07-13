@@ -30,7 +30,6 @@ class AdapterListArticle (
     private val mListener: IUserRecycler
 ) :
     RecyclerView.Adapter<AdapterListArticle.ListViewHolder>() {
-
     val _type = type
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

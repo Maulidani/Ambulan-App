@@ -21,7 +21,7 @@ class Model {
         val image : String, // user,hospital,article
         val latitude : String, // user,hospital
         val longitude : String, // user,hospital
-        val status : String, // user,order
+        val status : String, // user,order, order history
 
         val address : String, // hospital
 
@@ -30,15 +30,27 @@ class Model {
 
         val user_customer_id : String, // order
         val user_driver_id : String, // order
-        val hospital_id : String, // order
-        val pick_up_latitude : String, // order
-        val pick_up_longitude : String, // order
+        val hospital_id : String, // order, order history
+        val pick_up_latitude : String, // order, order history
+        val pick_up_longitude : String, // order, order history
 
         val from_user_type : String, // chat
         val to_user_type : String, // chat
         val from_user_id : String, // chat
         val to_user_id : String, // chat
         val message : String, // chat
+
+        val customer_id:String, // order history
+        val customer_name:String, // order history
+        val customer_phone:String, // order history
+        val customer_image:String, // order history
+        val driver_name:String, // order history
+        val driver_id:String, // order history
+        val driver_phone:String, // order history
+        val driver_image:String, // order history
+        val hospital_name:String, // order history
+        val hospital_latitude:String, // order history
+        val hospital_longitude:String, // order history
 
         val updated_at : String,
         val created_at : String,
