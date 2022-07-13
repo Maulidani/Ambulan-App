@@ -21,6 +21,7 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

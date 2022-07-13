@@ -14,13 +14,13 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterListAccount
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AdminListUserCustomerAccountFragment : Fragment(), AdapterListAccount.IUserRecycler {
     private val TAG = "AdminListCustomerFrgmnt"
-    private val userType = "admin"
     private val showUserType = "customer"
     private val actionType = "for_admin"
 

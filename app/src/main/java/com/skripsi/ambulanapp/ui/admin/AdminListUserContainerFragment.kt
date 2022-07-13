@@ -10,10 +10,10 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterViewPager
+import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class AdminListUserContainerFragment : Fragment() {
     private val TAG = "AdminListUserFragment"
-    private val userType = "admin"
     private val actionType = "list_user"
 
     private val viewPager: ViewPager2 by lazy { requireActivity().findViewById(R.id.viewPager) }

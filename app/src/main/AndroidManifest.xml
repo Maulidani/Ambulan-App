@@ -28,6 +28,9 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.DetailOrderHistoryActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ui.admin.AdminAddAccountActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
@@ -80,6 +83,7 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

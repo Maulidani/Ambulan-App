@@ -16,13 +16,14 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterListAccount
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.util.Constant
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AdminListUserDriverAccountFragment : Fragment(),AdapterListAccount.IUserRecycler {
     private val TAG = "AdminListDriverFrgmnt"
-    private val userType = "admin"
     private val showUserType = "driver"
     private val actionType = "for_admin"
 

@@ -12,7 +12,6 @@ import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class AdminMainActivity : AppCompatActivity() {
     private val TAG = "AdminMainActivity"
-    private val userType = "admin"
     private lateinit var sharedPref: PreferencesHelper
 
     private val imgLogout: ImageView by lazy { findViewById(R.id.imgLogout) }

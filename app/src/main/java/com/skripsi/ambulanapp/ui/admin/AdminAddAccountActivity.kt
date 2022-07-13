@@ -21,6 +21,7 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -34,7 +35,6 @@ import java.io.File
 
 class AdminAddAccountActivity : AppCompatActivity() {
     private val TAG = "CustomerRegistActivity"
-    private val userType = "admin"
     private val addUserType = "driver"
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }

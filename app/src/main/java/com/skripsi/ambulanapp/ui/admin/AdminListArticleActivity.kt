@@ -18,13 +18,15 @@ import com.skripsi.ambulanapp.adapter.AdapterListArticle
 import com.skripsi.ambulanapp.adapter.AdapterListHospital
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRecycler {
     private val TAG = "AdminListArticleActvty"
-    private val userType = "admin"
+    private var userType:String? = null
+    private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
     private val fabAddArticle: FloatingActionButton by lazy { findViewById(R.id.fabAddArticle) }
@@ -35,6 +37,9 @@ class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_list_article)
+
+        sharedPref = PreferencesHelper(applicationContext)
+        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
         onClick()
     }
@@ -75,7 +80,7 @@ class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRe
                         val adapter =
                             data?.let {
                                 AdapterListArticle(
-                                    userType,
+                                    userType!!,
                                     it,
                                     this@AdminListArticleActivity
                                 )

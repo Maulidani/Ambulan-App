@@ -16,6 +16,7 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -29,7 +30,8 @@ import java.io.File
 
 class CustomerRegisterAccountActivity : AppCompatActivity() {
     private val TAG = "CustomerRegistActivity"
-    private val userType = "customer"
+    private var userType:String? = null
+    private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
     private val inputName: TextInputEditText by lazy { findViewById(R.id.inputName) }
@@ -44,6 +46,9 @@ class CustomerRegisterAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_register_account)
+
+        sharedPref = PreferencesHelper(applicationContext)
+        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
         onClick()
     }
@@ -98,7 +103,7 @@ class CustomerRegisterAccountActivity : AppCompatActivity() {
         val partName: RequestBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
         val partPhone: RequestBody = phone.toRequestBody("text/plain".toMediaTypeOrNull())
         val partPassword: RequestBody = password.toRequestBody("text/plain".toMediaTypeOrNull())
-        val partType: RequestBody = userType.toRequestBody("text/plain".toMediaTypeOrNull())
+        val partType: RequestBody = userType!!.toRequestBody("text/plain".toMediaTypeOrNull())
 
         ApiClient.instances.addUser(partType, partName, partPhone, partPassword, partImage!!)
             .enqueue(object : Callback<Model.ResponseModel> {

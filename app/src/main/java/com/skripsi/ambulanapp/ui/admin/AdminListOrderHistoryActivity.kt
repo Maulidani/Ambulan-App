@@ -18,14 +18,16 @@ import com.skripsi.ambulanapp.adapter.AdapterListHospital
 import com.skripsi.ambulanapp.adapter.AdapterListOrderHistory
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AdminListOrderHistoryActivity : AppCompatActivity() {
     private val TAG = "AdminListOrderActvty"
-    private val userType = "admin"
+    private var userType:String? = null
     private val actionType = "show_list"
+    private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
     private val rv: RecyclerView by lazy { findViewById(R.id.rvOrderHistory) }
@@ -34,6 +36,9 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_list_order_history)
+
+        sharedPref = PreferencesHelper(applicationContext)
+        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
         onClick()
     }
@@ -101,6 +106,6 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        getOrderHistory(userType,actionType)
+        getOrderHistory(userType!!,actionType)
     }
 }

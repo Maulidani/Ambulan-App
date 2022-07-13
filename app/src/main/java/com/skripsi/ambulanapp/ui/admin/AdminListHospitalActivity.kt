@@ -17,13 +17,15 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterListHospital
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUserRecycler {
     private val TAG = "AdminListHospitalActvty"
-    private val userType = "admin"
+    private var userType: String? = null
+    private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
     private val fabAddHospital: FloatingActionButton by lazy { findViewById(R.id.fabAddHospital) }
@@ -34,6 +36,9 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_list_hospital)
+
+        sharedPref = PreferencesHelper(applicationContext)
+        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
         onClick()
     }
@@ -54,7 +59,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
         }
     }
 
-    private fun getHospitalList(search:String) {
+    private fun getHospitalList(search: String) {
         loading.visibility = View.VISIBLE
 
         ApiClient.instances.getHospital(search)
@@ -74,7 +79,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
                         val adapter =
                             data?.let {
                                 AdapterListHospital(
-                                    userType,
+                                    userType!!,
                                     it,
                                     this@AdminListHospitalActivity
                                 )

@@ -60,6 +60,7 @@
         <entry key="app/src/main/res/layout/activity_detail_article.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_detail_artikel.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_detail_order.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/activity_detail_order_history.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_driver_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_driver_main.xml" value="0.22479338842975208" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19429347826086957" />
