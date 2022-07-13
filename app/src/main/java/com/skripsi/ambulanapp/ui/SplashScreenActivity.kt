@@ -141,7 +141,6 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onStop()
         stopLocationUpdates()
 
-        Log.e(TAG, "onStop: ", )
     }
 
     private fun stopLocationUpdates() {
