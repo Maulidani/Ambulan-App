@@ -179,7 +179,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("get-order")
     fun getOrder(
-        @Field("user_type") userType: String, // show order by user('customer','driver')
+        @Field("user_type") userType: String, // show order by user('admin','customer','driver')
         @Field("get_type") getType: String, // ('ordering','show_list')
         @Field("user_customer_id") userCustomerId: String, // if getType = ordering-> only userCustomerID
         @Field("user_driver_id") userDriverId: String, // if getType = ordering-> only userDriverId

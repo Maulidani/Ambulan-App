@@ -1,63 +1,54 @@
 package com.skripsi.ambulanapp.ui.admin
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ybq.android.spinkit.SpinKitView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.skripsi.ambulanapp.R
-import com.skripsi.ambulanapp.adapter.AdapterListHospital
+import com.skripsi.ambulanapp.adapter.AdapterListAccount
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUserRecycler {
-    private val TAG = "AdminListHospitalActvty"
+class AdminListUserCustomerAccountFragment : Fragment(), AdapterListAccount.IUserRecycler {
+    private val TAG = "AdminListCustomerFrgmnt"
     private val userType = "admin"
+    private val showUserType = "customer"
+    private val actionType = "for_admin"
 
-    private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
-    private val fabAddHospital: FloatingActionButton by lazy { findViewById(R.id.fabAddHospital) }
-    private val rv: RecyclerView by lazy { findViewById(R.id.rvHospital) }
-    private val etSearchHospital: EditText by lazy { findViewById(R.id.etSearchHospital) }
-    private val loading: SpinKitView by lazy { findViewById(R.id.spin_kit_loading_hospital) }
+    private val loading: SpinKitView by lazy { requireView().findViewById(R.id.spin_kit_loading_accountCustomer) }
+    private val rv: RecyclerView by lazy { requireView().findViewById(R.id.rvAccount) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin_list_hospital)
-
-        onClick()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(
+            R.layout.fragment_admin_list_user_customer_account,
+            container,
+            false
+        )
     }
 
-    private fun onClick() {
-        imgBack.setOnClickListener { finish() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        fabAddHospital.setOnClickListener {
-            startActivity(
-                Intent(this, AdminAddHospitalActivity::class.java)
-                    .putExtra("action", "add")
-            )
-        }
-
-        etSearchHospital.addTextChangedListener {
-            val search = it.toString()
-            getHospitalList(search)
-        }
+        getUser(showUserType, actionType)
     }
 
-    private fun getHospitalList(search:String) {
+    private fun getUser(showUserType: String, actionType: String) {
         loading.visibility = View.VISIBLE
 
-        ApiClient.instances.getHospital(search)
+        ApiClient.instances.getUser(showUserType, actionType)
             .enqueue(object : Callback<Model.ResponseModel> {
                 override fun onResponse(
                     call: Call<Model.ResponseModel>,
@@ -73,13 +64,13 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
 
                         val adapter =
                             data?.let {
-                                AdapterListHospital(
-                                    userType,
+                                AdapterListAccount(
+                                    showUserType,
                                     it,
-                                    this@AdminListHospitalActivity
+                                    this@AdminListUserCustomerAccountFragment
                                 )
                             }
-                        rv.layoutManager = LinearLayoutManager(applicationContext)
+                        rv.layoutManager = LinearLayoutManager(requireContext())
                         rv.adapter = adapter
 
                         if ("${data?.size}" == "0") {
@@ -90,7 +81,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
                         }
 
                     } else {
-                        Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), "Gagal", Toast.LENGTH_SHORT)
                             .show()
 
                     }
@@ -100,7 +91,7 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
 
                 override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
                     Toast.makeText(
-                        applicationContext,
+                        requireContext(),
                         t.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -112,12 +103,12 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
     }
 
     override fun refreshView(onUpdate: Boolean, result: Model.DataModel?) {
-        getHospitalList("")
+        getUser(showUserType, actionType)
     }
 
     override fun onResume() {
         super.onResume()
 
-        getHospitalList("")
+        getUser(showUserType, actionType)
     }
 }

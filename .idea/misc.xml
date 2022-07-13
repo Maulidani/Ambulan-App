@@ -43,9 +43,11 @@
         <entry key="app/src/main/res/layout/activity_add_edit_car.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_add_lat_lng_order.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_add_registration.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_admin_add_account.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_admin_add_account_driver.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_admin_add_article.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_admin_add_hospital.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_admin_list_account.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_admin_list_account_driver.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_admin_list_article.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_admin_list_hospital.xml" value="0.25" />
@@ -72,6 +74,9 @@
         <entry key="app/src/main/res/layout/dashboard_example.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_accounts_list.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_user_container.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_user_customer_account.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_user_driver_account.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_ambulance.xml" value="0.19429347826086957" />
         <entry key="app/src/main/res/layout/fragment_artikel.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19583333333333333" />

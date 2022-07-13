@@ -91,7 +91,7 @@ class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRe
                         }
 
                     } else {
-                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(applicationContext, "Gagal", Toast.LENGTH_SHORT)
                             .show()
 
                     }
