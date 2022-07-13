@@ -273,7 +273,6 @@ class AdminAddHospitalActivity : AppCompatActivity() {
                             .show()
                         btnAdd.setShowProgress(false)
                     }
-
                 })
 
         } else {

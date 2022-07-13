@@ -282,9 +282,7 @@ class AdminAddAccountActivity : AppCompatActivity() {
                             .show()
                         btnAddAccount.setShowProgress(false)
                     }
-
                 })
-
         } else {
             ApiClient.instances.editWithoutImgUser(
                 intentId,

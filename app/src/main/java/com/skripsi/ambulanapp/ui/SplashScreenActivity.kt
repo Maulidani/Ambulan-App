@@ -6,6 +6,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ import com.skripsi.ambulanapp.util.PreferencesHelper
 
 
 class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
+    private val TAG = "SplashScreenActivity" 
     private lateinit var sharedPref: PreferencesHelper
 
     private val icLogin: ImageView by lazy { findViewById(R.id.imgLoginAs) }
@@ -133,12 +135,13 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
         } else {
             askLocationPermission()
         }
-
     }
 
     override fun onStop() {
         super.onStop()
         stopLocationUpdates()
+
+        Log.e(TAG, "onStop: ", )
     }
 
     private fun stopLocationUpdates() {

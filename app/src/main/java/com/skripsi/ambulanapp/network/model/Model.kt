@@ -120,6 +120,4 @@ class Model {
         val created_at : String,
     )
 
-
-
 }

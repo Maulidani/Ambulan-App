@@ -18,14 +18,12 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.ui.admin.AdminAddAccountActivity
-import com.skripsi.ambulanapp.ui.admin.AdminAddArticleActivity
-import com.skripsi.ambulanapp.ui.admin.AdminAddHospitalActivity
 import com.skripsi.ambulanapp.util.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AdapterListAccount (
+class AdapterListAccount(
     type: String,
     private val list: List<Model.DataModel>,
     private val mListener: IUserRecycler
@@ -52,7 +50,7 @@ class AdapterListAccount (
                 if (userType == "driver") {
                     optionAlert(result)
 
-                } else if (userType == "customer"){
+                } else if (userType == "customer") {
                     // lihat detail
                     ContextCompat.startActivity(
                         itemView.context,
@@ -63,7 +61,8 @@ class AdapterListAccount (
                             .putExtra("name", result.name)
                             .putExtra("phone", result.phone)
                             .putExtra("password", result.password)
-                            .putExtra("image", result.image),null,
+                            .putExtra("image", result.image),
+                        null,
                     )
 
                 } else {
@@ -90,7 +89,8 @@ class AdapterListAccount (
                                 .putExtra("name", result.name)
                                 .putExtra("phone", result.phone)
                                 .putExtra("password", result.password)
-                                .putExtra("image", result.image),null,
+                                .putExtra("image", result.image),
+                            null,
                         )
                     }
                     1 -> {
@@ -103,7 +103,8 @@ class AdapterListAccount (
                                 .putExtra("name", result.name)
                                 .putExtra("phone", result.phone)
                                 .putExtra("password", result.password)
-                                .putExtra("image", result.image),null,
+                                .putExtra("image", result.image),
+                            null,
                         )
                     }
                     2 -> deleteAlert(result)
@@ -133,7 +134,7 @@ class AdapterListAccount (
 
         private fun delete(id: String) {
 
-            ApiClient.instances.deleteUser(userType,id)
+            ApiClient.instances.deleteUser(userType, id)
                 .enqueue(object : Callback<Model.ResponseModel> {
                     override fun onResponse(
                         call: Call<Model.ResponseModel>,
