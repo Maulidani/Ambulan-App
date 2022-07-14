@@ -23,8 +23,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.ui.admin.AdminLoginActivity
+import com.skripsi.ambulanapp.ui.admin.AdminMainActivity
 import com.skripsi.ambulanapp.ui.customer.CustomerLoginActivity
 import com.skripsi.ambulanapp.ui.driver.DriverLoginActivity
+import com.skripsi.ambulanapp.ui.driver.DriverMainActivity
 import com.skripsi.ambulanapp.util.PreferencesHelper
 
 
@@ -134,6 +136,29 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
             checkSettingAndStartLocationUpdates()
         } else {
             askLocationPermission()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "admin") {
+                startActivity(Intent(applicationContext, AdminMainActivity::class.java))
+
+            } else if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "driver") {
+                startActivity(Intent(applicationContext, DriverMainActivity::class.java))
+
+            } else if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "customer") {
+//                startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
+
+            } else {
+                //
+            }
+
+            finish()
+        } else {
+            //
         }
     }
 

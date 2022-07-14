@@ -21,7 +21,6 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
-import com.skripsi.ambulanapp.util.PreferencesHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -81,31 +80,39 @@ class AdminAddAccountActivity : AppCompatActivity() {
             inputPhone.setText(intentPhone)
             inputPassword.setText(intentPassword)
 
-            if (intentAction == "show") {
-                if (intentUserType == "customer") {
-                    tvHead.text = "Akun customer"
+            when (intentAction) {
+                "show" -> {
+                    if (intentUserType == "detail") {
+                        tvHead.text = "Akun"
+                    }
 
-                } else if (intentUserType == "driver") {
-                    tvHead.text = "Akun driver ambulan"
+                    if (intentUserType == "customer") {
+                        tvHead.text = "Akun customer"
+
+                    } else if (intentUserType == "driver") {
+                        tvHead.text = "Akun driver ambulan"
+                    }
+
+                    btnAddAccount.visibility = View.GONE
+                    inputName.setTextColor(Color.BLACK)
+                    inputPhone.setTextColor(Color.BLACK)
+                    inputPassword.setTextColor(Color.BLACK)
+                    inputName.isEnabled = false
+                    inputPhone.isEnabled = false
+                    inputPassword.isEnabled = false
+
                 }
+                "edit" -> {
+                    if (intentUserType == "driver") {
+                        tvHead.text = "Edit akun driver ambulan"
+                    }
 
-                btnAddAccount.visibility = View.GONE
-                inputName.setTextColor(Color.BLACK)
-                inputPhone.setTextColor(Color.BLACK)
-                inputPassword.setTextColor(Color.BLACK)
-                inputName.isEnabled = false
-                inputPhone.isEnabled = false
-                inputPassword.isEnabled = false
+                    btnAddAccount.text = "Edit akun"
 
-            } else if (intentAction == "edit") {
-                if (intentUserType == "driver") {
-                    tvHead.text = "Edit akun driver ambulan"
                 }
-
-                btnAddAccount.text = "Edit akun"
-
-            } else {
-                btnAddAccount.text = "Buat akun"
+                else -> {
+                    btnAddAccount.text = "Buat akun"
+                }
             }
         }
 
@@ -172,12 +179,15 @@ class AdminAddAccountActivity : AppCompatActivity() {
         }
 
         imgProfile.setOnClickListener {
-            ImagePicker.with(this)
-                .cropSquare()
-                .compress(512)//Final image size will be less than 512 KB(Optional)
-                .createIntent { intent ->
-                    startForProfileImageResult.launch(intent)
-                }
+
+            if (intentAction != "show") {
+                ImagePicker.with(this)
+                    .cropSquare()
+                    .compress(512)//Final image size will be less than 512 KB(Optional)
+                    .createIntent { intent ->
+                        startForProfileImageResult.launch(intent)
+                    }
+            }
         }
 
         imgBack.setOnClickListener {

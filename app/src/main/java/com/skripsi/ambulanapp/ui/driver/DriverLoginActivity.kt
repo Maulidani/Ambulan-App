@@ -49,6 +49,23 @@ class DriverLoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "driver") {
+                startActivity(Intent(applicationContext, DriverMainActivity::class.java))
+                finish()
+
+            } else {
+                //
+            }
+
+        } else {
+            //
+        }
+    }
+
     private fun login(phone: String, password: String, type: String) {
         btnLogin.setShowProgress(true)
 
@@ -95,8 +112,8 @@ class DriverLoginActivity : AppCompatActivity() {
         Log.e(TAG, "saveSession: "+sharedPref.getString(PreferencesHelper.PREF_USER_TYPE).toString(), )
         Log.e(TAG, "saveSession: "+sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN).toString(), )
 
-//        startActivity(Intent(applicationContext, DriverMainActivity::class.java))
-//        finish()
+        startActivity(Intent(applicationContext, DriverMainActivity::class.java))
+        finish()
     }
 
 }

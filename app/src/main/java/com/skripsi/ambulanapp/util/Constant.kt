@@ -1,5 +1,8 @@
 package com.skripsi.ambulanapp.util
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -37,5 +40,12 @@ object Constant {
                 }
             }
         }
+    }
+
+    fun generateSmallIcon(context: Context, vectorResId: Int): Bitmap {
+        val height = 100
+        val width = 100
+        val bitmap = BitmapFactory.decodeResource(context.resources, vectorResId)
+        return Bitmap.createScaledBitmap(bitmap, width, height, false)
     }
 }

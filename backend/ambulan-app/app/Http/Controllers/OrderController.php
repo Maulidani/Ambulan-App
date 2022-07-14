@@ -134,11 +134,13 @@ class OrderController
                 ->where('orders.status', 'to_pick_up')
                 ->orWhere('orders.status', 'to_drop_off')
                 ->orderBy('orders.updated_at', 'DESC')
-                ->first(['orders.id',
-                        'user_customers.name as customer_name','user_customers.phone as customer_phone',
+                ->first(['orders.id','orders.pick_up_latitude','orders.pick_up_longitude',
+                        'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
                         'user_customers.image as customer_image',
-                        'user_drivers.name as driver_name','user_drivers.phone as driver_phone',
+                        'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
                         'user_drivers.image as driver_image',
+                        'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
+                        'hospitals.longitude as hospital_longitude',
                         'orders.status','orders.updated_at','orders.created_at'
                         ]
                 );
@@ -152,11 +154,13 @@ class OrderController
                 ->where('orders.status', 'to_pick_up')
                 ->orWhere('orders.status', 'to_drop_off')
                 ->orderBy('orders.updated_at', 'DESC')
-                ->first(['orders.id',
-                        'user_customers.name as customer_name','user_customers.phone as customer_phone',
+                ->first(['orders.id','orders.pick_up_latitude','orders.pick_up_longitude',
+                        'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
                         'user_customers.image as customer_image',
-                        'user_drivers.name as driver_name','user_drivers.phone as driver_phone',
+                        'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
                         'user_drivers.image as driver_image',
+                        'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
+                        'hospitals.longitude as hospital_longitude',
                         'orders.status','orders.updated_at','orders.created_at'
                         ]
                 );

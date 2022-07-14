@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.driver.DriverMainActivity
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
 import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
@@ -47,6 +48,23 @@ class AdminLoginActivity : AppCompatActivity() {
 
         imgBack.setOnClickListener {
             finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "admin") {
+                startActivity(Intent(applicationContext, AdminMainActivity::class.java))
+                finish()
+
+            } else {
+                //
+            }
+
+        } else {
+            //
         }
     }
 

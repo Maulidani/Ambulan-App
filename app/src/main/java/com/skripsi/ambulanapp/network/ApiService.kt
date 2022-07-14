@@ -67,14 +67,15 @@ interface ApiService {
     @FormUrlEncoded
     @POST("get-user")
     fun getUser(
+        @Field("user_id") userDriverId: String, // only for 'for_driver_status' , 'user_detail'
         @Field("user_type") userType: String,
-        @Field("get_type") getType: String, // ('for_order','for_admin')
+        @Field("get_type") getType: String, // ('for_order','for_admin','for_driver_status','user_detail')
     ): Call<Model.ResponseModel> // response : data[{}]
 
     @FormUrlEncoded
     @POST("add-status-user-driver")
     fun addStatusDriverUser(
-        @Field("user_driver_id") userDriverId: Int,
+        @Field("user_driver_id") userDriverId: String,
         @Field("status") status: String,
     ): Call<Model.ResponseModel>
 

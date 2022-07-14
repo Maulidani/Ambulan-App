@@ -103,6 +103,19 @@ class Model {
         val pick_up_longitude : String,
         val status : String,
 
+        val customer_id:String,
+        val customer_name:String,
+        val customer_phone:String,
+        val customer_image:String,
+        val driver_name:String,
+        val driver_id:String,
+        val driver_phone:String,
+        val driver_image:String,
+
+        val hospital_name:String,
+        val hospital_latitude:String,
+        val hospital_longitude:String,
+
         val updated_at : String,
         val created_at : String,
     )

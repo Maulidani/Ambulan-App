@@ -374,8 +374,9 @@ class UserController
 
     public function getusers(Request $request)
     {
+        $user_id = $request->user_id; // only for_driver_status , user_detail
         $user_type = $request->user_type; // show user('customer','driver')
-        $get_type = $request->get_type; // ('for_order','for_admin')
+        $get_type = $request->get_type; // ('for_order','for_admin','for_driver_status','user_detail')
 
         $statusDriver = '1'; // is active
 
@@ -421,6 +422,64 @@ class UserController
                     'message' => 'Success',
                     'errors' => false,
                     'data' => $user,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }      
+
+        } else if($get_type == 'for_driver_status'){
+
+            $user;
+            if ($user_type == 'driver'){
+                $user = UserDriver::where('id',$user_id)
+                       ->first();
+    
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
+          
+            if ($user) {
+                return response()->json([
+                    'message' => 'Success',
+                    'errors' => false,
+                    'user' => $user,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }      
+
+        } else if($get_type == 'user_detail'){
+
+            $user;
+            if ($user_type == 'driver'){
+                $user = UserDriver::where('id',$user_id)
+                       ->first();
+    
+            } else if ($user_type == 'customer'){
+                $user = UserCustomer::where('id',$user_id)
+                       ->first();
+    
+            } else {
+                return response()->json([
+                    'message' => 'Failed',
+                    'errors' => true,
+                ]);
+            }
+          
+            if ($user) {
+                return response()->json([
+                    'message' => 'Success',
+                    'errors' => false,
+                    'user' => $user,
                 ]);
             } else {
                 return response()->json([

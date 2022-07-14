@@ -26,6 +26,7 @@ import retrofit2.Response
 class AdminListOrderHistoryActivity : AppCompatActivity() {
     private val TAG = "AdminListOrderActvty"
     private var userType:String? = null
+    private var userId:String? = null
     private val actionType = "show_list"
     private lateinit var sharedPref: PreferencesHelper
 
@@ -39,6 +40,7 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
 
         sharedPref = PreferencesHelper(applicationContext)
         userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
+        userId = sharedPref.getString(PreferencesHelper.PREF_USER_ID)
 
         onClick()
     }
@@ -51,7 +53,7 @@ class AdminListOrderHistoryActivity : AppCompatActivity() {
     private fun getOrderHistory(userType:String, actionType:String) {
         loading.visibility = View.VISIBLE
 
-        ApiClient.instances.getOrder(userType,actionType,"","","finish")
+        ApiClient.instances.getOrder(userType,actionType,userId!!,userId!!,"finish")
             .enqueue(object : Callback<Model.ResponseModel> {
                 override fun onResponse(
                     call: Call<Model.ResponseModel>,

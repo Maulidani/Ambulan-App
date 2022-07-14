@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.ui.SplashScreenActivity
 import com.skripsi.ambulanapp.util.PreferencesHelper
 
 class AdminMainActivity : AppCompatActivity() {
@@ -50,6 +51,7 @@ class AdminMainActivity : AppCompatActivity() {
                 dialog.dismiss()
                 sharedPref.logout()
 
+                startActivity(Intent(applicationContext,SplashScreenActivity::class.java))
                 finish()
             }
         }

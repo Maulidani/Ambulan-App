@@ -48,7 +48,7 @@ class AdminListUserCustomerAccountFragment : Fragment(), AdapterListAccount.IUse
     private fun getUser(showUserType: String, actionType: String) {
         loading.visibility = View.VISIBLE
 
-        ApiClient.instances.getUser(showUserType, actionType)
+        ApiClient.instances.getUser("",showUserType, actionType)
             .enqueue(object : Callback<Model.ResponseModel> {
                 override fun onResponse(
                     call: Call<Model.ResponseModel>,
