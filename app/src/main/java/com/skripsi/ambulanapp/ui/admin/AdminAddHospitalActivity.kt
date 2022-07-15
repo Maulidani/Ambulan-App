@@ -88,6 +88,7 @@ class AdminAddHospitalActivity : AppCompatActivity() {
                 inputLatitude.isEnabled = false
                 inputLongitude.isEnabled = false
 
+
             } else if (intentAction == "edit") {
                 btnAdd.text = "Edit rumah sakit"
 

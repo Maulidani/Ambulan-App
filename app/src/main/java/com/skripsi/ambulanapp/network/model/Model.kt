@@ -111,6 +111,8 @@ class Model {
         val driver_id:String,
         val driver_phone:String,
         val driver_image:String,
+        val driver_latitude:String,
+        val driver_longitude:String,
 
         val hospital_name:String,
         val hospital_latitude:String,

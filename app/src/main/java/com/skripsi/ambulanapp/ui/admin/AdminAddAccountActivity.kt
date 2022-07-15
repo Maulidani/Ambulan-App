@@ -38,6 +38,7 @@ class AdminAddAccountActivity : AppCompatActivity() {
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
     private val tvHead: TextView by lazy { findViewById(R.id.tvHead) }
+    private val tvSubHead: TextView by lazy { findViewById(R.id.tvSubHead) }
     private val inputName: TextInputEditText by lazy { findViewById(R.id.inputName) }
     private val inputPhone: TextInputEditText by lazy { findViewById(R.id.inputPhone) }
     private val inputPassword: TextInputEditText by lazy { findViewById(R.id.inputPassword) }
@@ -82,15 +83,12 @@ class AdminAddAccountActivity : AppCompatActivity() {
 
             when (intentAction) {
                 "show" -> {
-                    if (intentUserType == "detail") {
-                        tvHead.text = "Akun"
-                    }
-
                     if (intentUserType == "customer") {
                         tvHead.text = "Akun customer"
 
                     } else if (intentUserType == "driver") {
                         tvHead.text = "Akun driver ambulan"
+                        tvSubHead.visibility = View.VISIBLE
                     }
 
                     btnAddAccount.visibility = View.GONE
@@ -105,9 +103,13 @@ class AdminAddAccountActivity : AppCompatActivity() {
                 "edit" -> {
                     if (intentUserType == "driver") {
                         tvHead.text = "Edit akun driver ambulan"
-                    }
+                    } else if (intentUserType == "customer") {
+                        tvHead.text = "Akun saya"
+                        btnAddAccount.text = "Edit akun"
 
-                    btnAddAccount.text = "Edit akun"
+                    } else {
+                        btnAddAccount.text = "Edit akun"
+                    }
 
                 }
                 else -> {

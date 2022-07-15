@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,14 +24,16 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
+import com.skripsi.ambulanapp.ui.admin.AdminListArticleActivity
 import com.skripsi.ambulanapp.ui.admin.AdminLoginActivity
 import com.skripsi.ambulanapp.ui.admin.AdminMainActivity
 import com.skripsi.ambulanapp.ui.customer.CustomerLoginActivity
+import com.skripsi.ambulanapp.ui.customer.CustomerMainActivity
 import com.skripsi.ambulanapp.ui.driver.DriverLoginActivity
 import com.skripsi.ambulanapp.ui.driver.DriverMainActivity
 import com.skripsi.ambulanapp.util.PreferencesHelper
 
-
+@RequiresApi(Build.VERSION_CODES.N)
 class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
     private val TAG = "SplashScreenActivity" 
     private lateinit var sharedPref: PreferencesHelper
@@ -122,7 +126,7 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         btnArticle.setOnClickListener {
-//            startActivity(Intent(applicationContext,AdminListArticleActivity::class.java))
+            startActivity(Intent(applicationContext, AdminListArticleActivity::class.java))
         }
     }
 
@@ -145,9 +149,11 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
         if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
             if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "admin") {
                 startActivity(Intent(applicationContext, AdminMainActivity::class.java))
+                finish()
 
             } else if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "driver") {
                 startActivity(Intent(applicationContext, DriverMainActivity::class.java))
+                finish()
 
             } else if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "customer") {
 //                startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
@@ -156,7 +162,6 @@ class SplashScreenActivity : AppCompatActivity(), OnMapReadyCallback {
                 //
             }
 
-            finish()
         } else {
             //
         }

@@ -50,11 +50,25 @@ class AdapterListHospital(
                 if (_type == "admin") {
                     optionAlert(result)
 
-                } else if (_type == "customer"){
-//                    mListener.refreshView(true, result)
-//                    lihat detail
-                } else {
-//                    lihat detail
+                } else if (_type == "customer") {
+
+                    ContextCompat.startActivity(
+                        itemView.context,
+                        Intent(itemView.context, AdminAddHospitalActivity::class.java)
+                            .putExtra("action", "show")
+                            .putExtra("user_type", _type)
+                            .putExtra("id", result.id)
+                            .putExtra("name", result.name)
+                            .putExtra("address", result.address)
+                            .putExtra("image", result.image)
+                            .putExtra("latitude", result.latitude)
+                            .putExtra("longitude", result.longitude),
+                        null,
+                    )
+
+                } else if (_type == "hospital_destination") {
+                    mListener.refreshView(true, result)
+
                 }
             }
         }
@@ -78,7 +92,8 @@ class AdapterListHospital(
                                 .putExtra("address", result.address)
                                 .putExtra("image", result.image)
                                 .putExtra("latitude", result.latitude)
-                                .putExtra("longitude", result.longitude),null,
+                                .putExtra("longitude", result.longitude),
+                            null,
                         )
                     }
                     1 -> {
@@ -92,7 +107,8 @@ class AdapterListHospital(
                                 .putExtra("address", result.address)
                                 .putExtra("image", result.image)
                                 .putExtra("latitude", result.latitude)
-                                .putExtra("longitude", result.longitude),null,
+                                .putExtra("longitude", result.longitude),
+                            null,
                         )
                     }
                     2 -> deleteAlert(result)
@@ -177,7 +193,14 @@ class AdapterListHospital(
         holder.bindData(list[position])
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int {
+        return if (_type == "hospital_destination" && list.size <= 3) {
+            list.size
+        } else {
+            list.size
+
+        }
+    }
 
 
     interface IUserRecycler {

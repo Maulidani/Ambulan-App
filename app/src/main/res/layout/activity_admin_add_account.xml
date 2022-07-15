@@ -66,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:id="@+id/parentImgPhonePassword"
         app:layout_constraintTop_toBottomOf="@id/nameTextField">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -127,6 +128,18 @@
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSubHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="left|top"
+        android:visibility="gone"
+        android:text="Hubungi admin jika ingin mengubah / edit akun"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/parentImgPhonePassword" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddAccount"

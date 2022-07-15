@@ -28,6 +28,9 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.customer.CustomerMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.driver.DriverMainActivity"
             android:exported="false" />
         <activity

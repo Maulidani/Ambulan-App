@@ -3,11 +3,11 @@ package com.skripsi.ambulanapp.ui.admin
 import android.app.Activity
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.icu.text.CaseMap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,7 +21,6 @@ import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
 import com.skripsi.ambulanapp.util.Constant
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
-import com.skripsi.ambulanapp.util.PreferencesHelper
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +35,7 @@ class AdminAddArticleActivity : AppCompatActivity() {
     private val TAG = "AdminAddHospitalActvty"
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
+    private val tvHead: TextView by lazy { findViewById(R.id.tvHead) }
     private val inputTitle: TextInputEditText by lazy { findViewById(R.id.inputTitle) }
     private val inputDescription: TextInputEditText by lazy { findViewById(R.id.inputDescription) }
     private val imgArticle: ImageView by lazy { findViewById(R.id.imgArticle) }
@@ -70,6 +70,7 @@ class AdminAddArticleActivity : AppCompatActivity() {
             inputDescription.setText(intentDescription)
 
             if (intentAction == "show") {
+                tvHead.text = "Artikel, Info Pelayanan"
                 btnAdd.visibility = View.GONE
                 inputTitle.setTextColor(Color.BLACK)
                 inputDescription.setTextColor(Color.BLACK)
@@ -146,7 +147,8 @@ class AdminAddArticleActivity : AppCompatActivity() {
         btnAdd.setShowProgress(true)
 
         val partTitle: RequestBody = title.toRequestBody("text/plain".toMediaTypeOrNull())
-        val partDescription: RequestBody = description.toRequestBody("text/plain".toMediaTypeOrNull())
+        val partDescription: RequestBody =
+            description.toRequestBody("text/plain".toMediaTypeOrNull())
 
         ApiClient.instances.addArticle(
             partTitle,
@@ -198,7 +200,8 @@ class AdminAddArticleActivity : AppCompatActivity() {
             val partArticleId: RequestBody =
                 intentId.toRequestBody("text/plain".toMediaTypeOrNull())
             val partTitle: RequestBody = title.toRequestBody("text/plain".toMediaTypeOrNull())
-            val partDescription: RequestBody = description.toRequestBody("text/plain".toMediaTypeOrNull())
+            val partDescription: RequestBody =
+                description.toRequestBody("text/plain".toMediaTypeOrNull())
 
             ApiClient.instances.editArticle(
                 partArticleId,

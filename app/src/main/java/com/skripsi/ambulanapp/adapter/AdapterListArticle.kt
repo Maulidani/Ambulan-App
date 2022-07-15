@@ -52,8 +52,16 @@ class AdapterListArticle (
                     optionAlert(result)
 
                 } else if (_type == "customer"){
-//                    mListener.refreshView(true, result)
-//                    lihat detail
+                    ContextCompat.startActivity(
+                        itemView.context,
+                        Intent(itemView.context, AdminAddArticleActivity::class.java)
+                            .putExtra("action", "show")
+                            .putExtra("user_type", _type)
+                            .putExtra("id", result.id)
+                            .putExtra("title", result.title)
+                            .putExtra("description", result.description)
+                            .putExtra("image", result.image),null,
+                    )
                 } else {
 //                    lihat detail
                 }

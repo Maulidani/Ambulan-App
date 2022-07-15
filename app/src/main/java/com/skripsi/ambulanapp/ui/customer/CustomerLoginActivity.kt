@@ -1,23 +1,27 @@
 package com.skripsi.ambulanapp.ui.customer
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.driver.DriverMainActivity
 import com.skripsi.ambulanapp.util.Constant.setShowProgress
 import com.skripsi.ambulanapp.util.PreferencesHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@RequiresApi(Build.VERSION_CODES.N)
 class CustomerLoginActivity : AppCompatActivity() {
     private val TAG = "CustomerLoginActivity"
     private val userType = "customer"
@@ -52,6 +56,23 @@ class CustomerLoginActivity : AppCompatActivity() {
 
         tvRegister.setOnClickListener {
         startActivity(Intent(applicationContext, CustomerRegisterAccountActivity::class.java))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            if (sharedPref.getString(PreferencesHelper.PREF_USER_TYPE) == "customer") {
+                startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
+                finish()
+
+            } else {
+                //
+            }
+
+        } else {
+            //
         }
     }
 
@@ -101,8 +122,8 @@ class CustomerLoginActivity : AppCompatActivity() {
         Log.e(TAG, "saveSession: "+sharedPref.getString(PreferencesHelper.PREF_USER_TYPE).toString(), )
         Log.e(TAG, "saveSession: "+sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN).toString(), )
 
-//        startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
-//        finish()
+        startActivity(Intent(applicationContext, CustomerMainActivity::class.java))
+        finish()
     }
 
 }

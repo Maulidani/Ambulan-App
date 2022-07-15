@@ -138,7 +138,7 @@ class OrderController
                         'user_customers.id as customer_id','user_customers.name as customer_name','user_customers.phone as customer_phone',
                         'user_customers.image as customer_image',
                         'user_drivers.name as driver_name','user_drivers.id as driver_id','user_drivers.phone as driver_phone',
-                        'user_drivers.image as driver_image',
+                        'user_drivers.image as driver_image','user_drivers.latitude as driver_latitude','user_drivers.longitude as driver_longitude',
                         'hospitals.id as hospital_id', 'hospitals.name as hospital_name', 'hospitals.latitude as hospital_latitude',
                         'hospitals.longitude as hospital_longitude',
                         'orders.status','orders.updated_at','orders.created_at'

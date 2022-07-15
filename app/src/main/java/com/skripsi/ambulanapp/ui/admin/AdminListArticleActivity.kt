@@ -38,8 +38,16 @@ class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_list_article)
 
+        fabAddArticle.visibility = View.GONE
+
         sharedPref = PreferencesHelper(applicationContext)
-        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
+        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+            userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
+
+            if (userType == "admin" ) {
+                fabAddArticle.visibility = View.VISIBLE
+            }
+        }
 
         onClick()
     }
@@ -77,16 +85,31 @@ class AdminListArticleActivity : AppCompatActivity(), AdapterListArticle.IUserRe
 
                         Log.e(TAG, "onResponse: $responseBody")
 
-                        val adapter =
-                            data?.let {
-                                AdapterListArticle(
-                                    userType!!,
-                                    it,
-                                    this@AdminListArticleActivity
-                                )
-                            }
-                        rv.layoutManager = LinearLayoutManager(applicationContext)
-                        rv.adapter = adapter
+                        if (sharedPref.getBoolean(PreferencesHelper.PREF_IS_LOGIN)) {
+                            val adapter =
+                                data?.let {
+                                    AdapterListArticle(
+                                        userType!!,
+                                        it,
+                                        this@AdminListArticleActivity
+                                    )
+                                }
+                            rv.layoutManager = LinearLayoutManager(applicationContext)
+                            rv.adapter = adapter
+
+                        } else {
+                            val adapter =
+                                data?.let {
+                                    AdapterListArticle(
+                                        "customer",
+                                        it,
+                                        this@AdminListArticleActivity
+                                    )
+                                }
+                            rv.layoutManager = LinearLayoutManager(applicationContext)
+                            rv.adapter = adapter
+
+                        }
 
                         if ("${data?.size}" == "0") {
 //                            Toast.makeText(

@@ -40,6 +40,10 @@ class AdminListHospitalActivity : AppCompatActivity(), AdapterListHospital.IUser
         sharedPref = PreferencesHelper(applicationContext)
         userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
+        if (userType == "customer"){
+            fabAddHospital.visibility = View.GONE
+        }
+
         onClick()
     }
 

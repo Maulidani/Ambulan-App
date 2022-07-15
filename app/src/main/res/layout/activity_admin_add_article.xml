@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="18dp"
-    android:paddingBottom="18dp"
     tools:context=".ui.admin.AdminAddArticleActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -123,6 +122,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddArticle"
+        android:layout_marginBottom="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
