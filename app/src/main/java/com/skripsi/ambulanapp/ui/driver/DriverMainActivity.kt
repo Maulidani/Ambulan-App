@@ -451,7 +451,6 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 } else if (statusOrder == "finish") {
 
                                     tvStatusDriver.text = "Loading..."
-
                                     runBlocking { addStatusDriver("1") }
 
                                     switchStatusDriver.isEnabled = false
