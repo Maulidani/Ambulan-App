@@ -28,6 +28,13 @@
         android:theme="@style/Theme.AmbulanApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.admin.AdminListChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.customer.CustomerMainActivity"
             android:exported="false" />
         <activity

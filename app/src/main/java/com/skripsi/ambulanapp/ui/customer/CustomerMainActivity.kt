@@ -11,6 +11,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -39,6 +40,7 @@ import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.adapter.AdapterListHospital
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.ChatActivity
 import com.skripsi.ambulanapp.ui.SplashScreenActivity
 import com.skripsi.ambulanapp.ui.admin.AdminAddAccountActivity
 import com.skripsi.ambulanapp.ui.admin.AdminListHospitalActivity
@@ -73,6 +75,8 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
 
     private var orderId: String? = null
     private var orderUserDriverId: String? = null
+    private var orderUserDriverName: String? = null
+    private var orderUserDriverImage: String? = null
     private var pickUpForOrderLatLng: LatLng? = null
     private var choosePickUp: Boolean = false
     private var chooseDropOff: Boolean = false
@@ -88,6 +92,7 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
     private val tvDriverNameOrder: TextView by lazy { findViewById(R.id.tvDriverName) }
     private val tvDriverPhoneOrder: TextView by lazy { findViewById(R.id.tvDriverPhone) }
     private val tvStatusOrder: TextView by lazy { findViewById(R.id.tvStatusOrder) }
+    private val icChat: ImageView by lazy { findViewById(R.id.imgChat) }
     private val parentOrdering: ConstraintLayout by lazy { findViewById(R.id.parentOrdering) }
     private val parentNotOrdering: ConstraintLayout by lazy { findViewById(R.id.parentNotOrdering) }
     private val fabProfile: FloatingActionButton by lazy { findViewById(R.id.fabProfile) }
@@ -198,7 +203,6 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
             }
         }
 
-
         mMap.setOnMapClickListener {
             if (forChooseInMapLatlng) {
 //                Toast.makeText(applicationContext, it.toString(), Toast.LENGTH_SHORT).show()
@@ -306,6 +310,21 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
         showAllHospital.setOnClickListener {
             startActivity(Intent(applicationContext, AdminListHospitalActivity::class.java))
         }
+
+        icChat.setOnClickListener {
+//            intentYourUserId = intent.getStringExtra("your_user_id").toString()
+//            intentYourUserType = intent.getStringExtra("your_user_type").toString()
+//            intentYourUserName = intent.getStringExtra("your_user_name").toString()
+//            intentYourUserImage = intent.getStringExtra("your_user_image").toString()
+            startActivity(Intent(applicationContext, ChatActivity::class.java)
+                .putExtra("your_user_id",orderUserDriverId)
+                .putExtra("your_user_type","driver")
+                .putExtra("your_user_name",orderUserDriverName)
+                .putExtra("your_user_image",orderUserDriverImage)
+            )
+
+//            Toast.makeText(applicationContext, "chat user_customer_id : $orderUserCustomerId, my_user_id : $userId my_user_type : $userType", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private suspend fun getIsOrdering() {
@@ -346,6 +365,8 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
 
                                     orderId = order?.id
                                     orderUserDriverId = order?.driver_id
+                                    orderUserDriverName = order?.driver_name
+                                    orderUserDriverImage = order?.driver_image
 
                                 } else {
                                     getHospital("")

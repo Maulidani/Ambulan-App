@@ -73,6 +73,7 @@ class AdminMainActivity : AppCompatActivity() {
             startActivity(Intent(this, AdminListArticleActivity::class.java))
         }
         cardChat.setOnClickListener{
+            startActivity(Intent(this, AdminListChatActivity::class.java))
 
         }
     }

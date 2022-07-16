@@ -334,6 +334,19 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvChatAdmin"
+                android:layout_width="wrap_content"
+                sothree:layout_constraintLeft_toLeftOf="parent"
+                sothree:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="  Chat admin"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/ic_chat"
+                sothree:layout_constraintBottom_toBottomOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>

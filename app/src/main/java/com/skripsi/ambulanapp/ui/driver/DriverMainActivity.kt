@@ -34,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.skripsi.ambulanapp.R
 import com.skripsi.ambulanapp.network.ApiClient
 import com.skripsi.ambulanapp.network.model.Model
+import com.skripsi.ambulanapp.ui.ChatActivity
 import com.skripsi.ambulanapp.ui.SplashScreenActivity
 import com.skripsi.ambulanapp.ui.admin.AdminAddAccountActivity
 import com.skripsi.ambulanapp.ui.admin.AdminListOrderHistoryActivity
@@ -64,6 +65,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var orderId: String? = null
     private var orderUserCustomerId: String? = null
+    private var orderUserCustomerName: String? = null
+    private var orderUserCustomerImage: String? = null
     private var orderPickUpLatlng: LatLng? = null
     private var orderDropOffLatlng: LatLng? = null
 
@@ -83,6 +86,7 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val fablogout: FloatingActionButton by lazy { findViewById(R.id.fabLogout) }
     private val fabDropOffOrder: ExtendedFloatingActionButton by lazy { findViewById(R.id.fabDropOff) }
     private val fabPickUpOrder: ExtendedFloatingActionButton by lazy { findViewById(R.id.fabPickUp) }
+    private val chatAdmin: TextView by lazy { findViewById(R.id.tvChatAdmin) }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultCallback: LocationResult) {
@@ -288,7 +292,28 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         icChat.setOnClickListener {
-            Toast.makeText(applicationContext, "chat user_customer_id : $orderUserCustomerId, my_user_id : $userId my_user_type : $userType", Toast.LENGTH_SHORT).show()
+//            intentYourUserId = intent.getStringExtra("your_user_id").toString()
+//            intentYourUserType = intent.getStringExtra("your_user_type").toString()
+//            intentYourUserName = intent.getStringExtra("your_user_name").toString()
+//            intentYourUserImage = intent.getStringExtra("your_user_image").toString()
+            startActivity(Intent(applicationContext,ChatActivity::class.java)
+                .putExtra("your_user_id",orderUserCustomerId)
+                .putExtra("your_user_type","customer")
+                .putExtra("your_user_name",orderUserCustomerName)
+                .putExtra("your_user_image",orderUserCustomerImage)
+            )
+
+//            Toast.makeText(applicationContext, "chat user_customer_id : $orderUserCustomerId, my_user_id : $userId my_user_type : $userType", Toast.LENGTH_SHORT).show()
+        }
+
+        chatAdmin.setOnClickListener {
+            val adminId = "1" //static
+            startActivity(Intent(applicationContext,ChatActivity::class.java)
+                .putExtra("your_user_id",adminId)
+                .putExtra("your_user_type","admin")
+                .putExtra("your_user_name","Admin")
+                .putExtra("your_user_image","")
+            )
         }
 
     }
@@ -310,6 +335,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                             if (response.isSuccessful) {
 
                                 if (message == "Success") {
+
+                                    runBlocking { addStatusDriver("0") }
 
                                     setMarker(order, null, "ordering")
                                     parentOrdering.visibility = View.VISIBLE
@@ -336,6 +363,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                                     orderId = order?.id
                                     orderUserCustomerId = order?.customer_id
+                                    orderUserCustomerName = order?.customer_name
+                                    orderUserCustomerImage = order?.customer_image
 
                                     var latPickUp = order?.pick_up_latitude?.toDoubleOrNull()
                                     var longPickUp = order?.pick_up_longitude?.toDoubleOrNull()
@@ -420,8 +449,12 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 } else if (statusOrder == "to_pick_off") {
                                     tvStatusOrder.text = "Menuju lokasi pick up"
                                 } else if (statusOrder == "finish") {
-                                    switchStatusDriver.isEnabled = false
+
                                     tvStatusDriver.text = "Loading..."
+
+                                    runBlocking { addStatusDriver("1") }
+
+                                    switchStatusDriver.isEnabled = false
                                     parentOrdering.visibility = View.GONE
                                     parentNotOrdering.visibility = View.VISIBLE
                                     fabDropOffOrder.visibility = View.GONE
