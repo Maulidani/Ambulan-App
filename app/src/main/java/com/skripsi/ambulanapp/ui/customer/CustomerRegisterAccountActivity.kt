@@ -30,7 +30,7 @@ import java.io.File
 
 class CustomerRegisterAccountActivity : AppCompatActivity() {
     private val TAG = "CustomerRegistActivity"
-    private var userType:String? = null
+    private val userType = "customer"
     private lateinit var sharedPref: PreferencesHelper
 
     private val imgBack: ImageView by lazy { findViewById(R.id.imgBack) }
@@ -48,7 +48,6 @@ class CustomerRegisterAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customer_register_account)
 
         sharedPref = PreferencesHelper(applicationContext)
-        userType = sharedPref.getString(PreferencesHelper.PREF_USER_TYPE)
 
         onClick()
     }
@@ -103,7 +102,7 @@ class CustomerRegisterAccountActivity : AppCompatActivity() {
         val partName: RequestBody = name.toRequestBody("text/plain".toMediaTypeOrNull())
         val partPhone: RequestBody = phone.toRequestBody("text/plain".toMediaTypeOrNull())
         val partPassword: RequestBody = password.toRequestBody("text/plain".toMediaTypeOrNull())
-        val partType: RequestBody = userType!!.toRequestBody("text/plain".toMediaTypeOrNull())
+        val partType: RequestBody = userType.toRequestBody("text/plain".toMediaTypeOrNull())
 
         ApiClient.instances.addUser(partType, partName, partPhone, partPassword, partImage!!)
             .enqueue(object : Callback<Model.ResponseModel> {
