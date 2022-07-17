@@ -103,6 +103,7 @@ class AdminAddAccountActivity : AppCompatActivity() {
                 "edit" -> {
                     if (intentUserType == "driver") {
                         tvHead.text = "Edit akun driver ambulan"
+                        btnAddAccount.text = "Edit akun"
                     } else if (intentUserType == "customer") {
                         tvHead.text = "Akun saya"
                         btnAddAccount.text = "Edit akun"

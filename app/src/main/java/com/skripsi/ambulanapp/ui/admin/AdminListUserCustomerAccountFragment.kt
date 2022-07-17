@@ -46,60 +46,65 @@ class AdminListUserCustomerAccountFragment : Fragment(), AdapterListAccount.IUse
     }
 
     private fun getUser(showUserType: String, actionType: String) {
-        loading.visibility = View.VISIBLE
+        if (isAdded) {
+            loading.visibility = View.VISIBLE
 
-        ApiClient.instances.getUser("",showUserType, actionType)
-            .enqueue(object : Callback<Model.ResponseModel> {
-                override fun onResponse(
-                    call: Call<Model.ResponseModel>,
-                    response: Response<Model.ResponseModel>
-                ) {
-                    val responseBody = response.body()
-                    val message = responseBody?.message
-                    val data = responseBody?.data
+            ApiClient.instances.getUser("", showUserType, actionType)
+                .enqueue(object : Callback<Model.ResponseModel> {
+                    override fun onResponse(
+                        call: Call<Model.ResponseModel>,
+                        response: Response<Model.ResponseModel>
+                    ) {
+                        val responseBody = response.body()
+                        val message = responseBody?.message
+                        val data = responseBody?.data
 
-                    if (response.isSuccessful && message == "Success") {
+                        if (response.isSuccessful && message == "Success") {
 
-                        Log.e(TAG, "onResponse: $responseBody")
+                            Log.e(TAG, "onResponse: $responseBody")
 
-                        val adapter =
-                            data?.let {
-                                AdapterListAccount(
-                                    showUserType,
-                                    it,
-                                    this@AdminListUserCustomerAccountFragment
-                                )
+                            val adapter =
+                                data?.let {
+                                    AdapterListAccount(
+                                        showUserType,
+                                        it,
+                                        this@AdminListUserCustomerAccountFragment
+                                    )
+                                }
+
+                            if (activity != null) {
+                                rv.layoutManager = LinearLayoutManager(activity?.applicationContext)
+                                rv.adapter = adapter
                             }
-                        rv.layoutManager = LinearLayoutManager(requireContext())
-                        rv.adapter = adapter
 
-                        if ("${data?.size}" == "0") {
+                            if ("${data?.size}" == "0") {
 //                            Toast.makeText(
 //                                applicationContext, "Tidak ada data",
 //                                Toast.LENGTH_SHORT
 //                            ).show()
+                            }
+
+                        } else {
+                            Toast.makeText(requireContext(), "Gagal", Toast.LENGTH_SHORT)
+                                .show()
+
                         }
 
-                    } else {
-                        Toast.makeText(requireContext(), "Gagal", Toast.LENGTH_SHORT)
-                            .show()
-
+                        loading.visibility = View.GONE
                     }
 
-                    loading.visibility = View.GONE
-                }
+                    override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
+                        Toast.makeText(
+                            requireContext(),
+                            t.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                override fun onFailure(call: Call<Model.ResponseModel>, t: Throwable) {
-                    Toast.makeText(
-                        requireContext(),
-                        t.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        loading.visibility = View.GONE
+                    }
 
-                    loading.visibility = View.GONE
-                }
-
-            })
+                })
+        }
     }
 
     override fun refreshView(onUpdate: Boolean, result: Model.DataModel?) {
