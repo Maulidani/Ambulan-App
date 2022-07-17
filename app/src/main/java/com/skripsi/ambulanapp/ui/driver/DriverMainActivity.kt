@@ -359,6 +359,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                         tvStatusDriver.text = "Loading..."
                                         parentOrdering.visibility = View.GONE
                                         parentNotOrdering.visibility = View.VISIBLE
+                                        fabDropOffOrder.visibility = View.GONE
+                                        fabPickUpOrder.visibility = View.GONE
                                     }
 
                                     orderId = order?.id
@@ -388,6 +390,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                     getHospital()
                                     parentOrdering.visibility = View.GONE
                                     parentNotOrdering.visibility = View.VISIBLE
+                                    fabDropOffOrder.visibility = View.GONE
+                                    fabPickUpOrder.visibility = View.GONE
                                 }
 
                                 Log.e(TAG, "onResponse: $responseBody")
@@ -400,6 +404,8 @@ class DriverMainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 tvStatusDriver.text = "Loading..."
                                 parentOrdering.visibility = View.GONE
                                 parentNotOrdering.visibility = View.VISIBLE
+                                fabDropOffOrder.visibility = View.GONE
+                                fabPickUpOrder.visibility = View.GONE
                             }
 
                             loadingMap.visibility = View.GONE
