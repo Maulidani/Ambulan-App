@@ -97,6 +97,7 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
     private val parentNotOrdering: ConstraintLayout by lazy { findViewById(R.id.parentNotOrdering) }
     private val fabProfile: FloatingActionButton by lazy { findViewById(R.id.fabProfile) }
     private val fabOrderHistory: FloatingActionButton by lazy { findViewById(R.id.fabHistory) }
+    private val fabCallCenter: FloatingActionButton by lazy { findViewById(R.id.fabCallCenter) }
     private val fablogout: FloatingActionButton by lazy { findViewById(R.id.fabLogout) }
     private val rv: RecyclerView by lazy { findViewById(R.id.rvHospital) }
     private val showAllHospital: TextView by lazy { findViewById(R.id.tvShowAll) }
@@ -324,6 +325,17 @@ class CustomerMainActivity : AppCompatActivity(), AdapterListHospital.IUserRecyc
             )
 
 //            Toast.makeText(applicationContext, "chat user_customer_id : $orderUserCustomerId, my_user_id : $userId my_user_type : $userType", Toast.LENGTH_SHORT).show()
+        }
+
+        fabCallCenter.setOnClickListener {
+            Toast.makeText(applicationContext, "Chat dengan Call Center / Admin", Toast.LENGTH_SHORT).show()
+            val adminId = "1" //static
+            startActivity(Intent(applicationContext,ChatActivity::class.java)
+                .putExtra("your_user_id",adminId)
+                .putExtra("your_user_type","admin")
+                .putExtra("your_user_name","Admin")
+                .putExtra("your_user_image","")
+            )
         }
     }
 

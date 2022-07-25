@@ -20,6 +20,7 @@ class ChatController
         // chat
         // customer <-> driver
         // driver <-> admin
+        // customer <-> admin
 
         $from_user_type = $request->from_user_type;
         $to_user_type = $request->to_user_type;
@@ -38,6 +39,10 @@ class ChatController
             $check2 = false;
             if($to_user_type == 'driver') {
                 $check2 = UserDriver::where([
+                    ['id', '=', $to_user_id],
+                ])->exists();
+            } else if($to_user_type == 'customer') {
+                $check2 = UserCustomer::where([
                     ['id', '=', $to_user_id],
                 ])->exists();
             } else {
@@ -63,7 +68,11 @@ class ChatController
                 $check2 = UserDriver::where([
                     ['id', '=', $to_user_id],
                 ])->exists();
-            } else {
+            } else if($to_user_type == 'admin') {
+                $check2 = UserAdmin::where([
+                    ['id', '=', $to_user_id],
+                ])->exists();
+            } else  {
                 return response()->json([
                     'message' => 'Failed',
                     'errors' => true,
@@ -150,13 +159,13 @@ class ChatController
         // chat
         // customer <-> driver
         // driver <-> admin
+        // customer <-> admin
 
         $from_user_type = $request->from_user_type;
         $to_user_type = $request->to_user_type;
         $from_user_id = $request->from_user_id;
         $to_user_id = $request->to_user_id;
 
-      
         $exist1 = false;
         $exist2 = false;
         $exist3 = false;
@@ -168,6 +177,10 @@ class ChatController
             $check2 = false;
             if($to_user_type == 'driver') {
                 $check2 = UserDriver::where([
+                    ['id', '=', $to_user_id],
+                ])->exists();
+            } else if($to_user_type == 'customer') {
+                $check2 = UserCustomer::where([
                     ['id', '=', $to_user_id],
                 ])->exists();
             } else {
@@ -191,6 +204,10 @@ class ChatController
             $check2 = false;
             if($to_user_type == 'driver') {
                 $check2 = UserDriver::where([
+                    ['id', '=', $to_user_id],
+                ])->exists();
+            } else if($to_user_type == 'admin') {
+                $check2 = UserAdmin::where([
                     ['id', '=', $to_user_id],
                 ])->exists();
             } else {
@@ -285,6 +302,7 @@ class ChatController
         // chat
         // customer <-> driver
         // driver <-> admin
+        // customer <-> admin
 
         $from_user_type = $request->from_user_type;
         $from_user_id = $request->from_user_id;
@@ -319,7 +337,7 @@ class ChatController
 
     }
 
-    public function getUserAdminChats(Request $request) // for driver
+    public function getUserAdminChats(Request $request) // for driver , customer
     {     
         $chat = UserAdmin::orderBy('updated_at', 'DESC')
         ->get(['id','name']);

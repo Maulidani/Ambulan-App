@@ -60,7 +60,7 @@
         <entry key="app/src/main/res/layout/activity_admin_main.xml" value="0.21980676328502416" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_customer_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_customer_register_account.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_detail_article.xml" value="0.12" />
         <entry key="app/src/main/res/layout/activity_detail_artikel.xml" value="0.25" />
@@ -81,6 +81,9 @@
         <entry key="app/src/main/res/layout/dashboard_example.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_accounts_list.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_chat_container.xml" value="0.19519927536231885" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_chat_customer.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/fragment_admin_list_chat_driver.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/fragment_admin_list_user_container.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_admin_list_user_customer_account.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/fragment_admin_list_user_driver_account.xml" value="0.19583333333333333" />

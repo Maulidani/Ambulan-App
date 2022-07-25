@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.skripsi.ambulanapp.ui.admin.AdminListChatCustomerFragment
+import com.skripsi.ambulanapp.ui.admin.AdminListChatDriverFragment
 import com.skripsi.ambulanapp.ui.admin.AdminListUserCustomerAccountFragment
 import com.skripsi.ambulanapp.ui.admin.AdminListUserDriverAccountFragment
 
@@ -26,6 +28,13 @@ class AdapterViewPager (
                 return when (position) {
                     0 -> AdminListUserDriverAccountFragment()
                     1 -> AdminListUserCustomerAccountFragment()
+                    else -> Fragment()
+                }
+            }
+            "list_chat" -> {
+                return when (position) {
+                    0 -> AdminListChatDriverFragment()
+                    1 -> AdminListChatCustomerFragment()
                     else -> Fragment()
                 }
             }

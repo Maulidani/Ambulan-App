@@ -29,10 +29,12 @@ import retrofit2.Response
 
 class AdapterUserChat (
     type: String,
+    chatWith: String,
     private val list: List<Model.DataModel>,
 ) :
     RecyclerView.Adapter<AdapterUserChat.ListViewHolder>() {
     val _type = type
+    val _chatWith = chatWith
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -54,7 +56,7 @@ class AdapterUserChat (
                         itemView.context,
                         Intent(itemView.context, ChatActivity::class.java)
                             .putExtra("your_user_id",result.id)
-                            .putExtra("your_user_type","driver")
+                            .putExtra("your_user_type",_chatWith)
                             .putExtra("your_user_name",result.name)
                             .putExtra("your_user_image",result.image),
                         null,

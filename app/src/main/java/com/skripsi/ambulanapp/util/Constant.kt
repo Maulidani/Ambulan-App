@@ -10,7 +10,7 @@ import com.google.android.material.button.MaterialButton
 import com.skripsi.ambulanapp.R
 
 object Constant {
-//            const val BASE_URL = "http://192.168.42.5:8000"
+//            const val BASE_URL = "http://192.168.123.5:8000"
     const val BASE_URL = "http://skripsi-andi-jul.my.id/ambulan-app/public"
 
     fun MaterialButton.setShowProgress(showProgress: Boolean?) {
