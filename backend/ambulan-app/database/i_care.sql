@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 16, 2022 at 01:53 PM
+-- Generation Time: Nov 26, 2022 at 06:53 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -89,7 +89,13 @@ INSERT INTO `chats` (`id`, `from_user_type`, `to_user_type`, `from_user_id`, `to
 (37, 'driver', 'admin', 1, 1, 'kepo banger deh eloo', '2022-07-16 03:18:16', '2022-07-16 03:18:16'),
 (38, 'admin', 'driver', 1, 1, 'gua admin bangsat', '2022-07-16 03:18:53', '2022-07-16 03:18:53'),
 (39, 'driver', 'admin', 3, 1, 'oi', '2022-07-16 03:31:47', '2022-07-16 03:31:47'),
-(40, 'admin', 'driver', 1, 3, 'apa anjing', '2022-07-16 03:36:12', '2022-07-16 03:36:12');
+(40, 'admin', 'driver', 1, 3, 'apa anjing', '2022-07-16 03:36:12', '2022-07-16 03:36:12'),
+(41, 'customer', 'admin', 2, 1, 'hi admin saya customer', '2022-07-25 08:45:57', '2022-07-25 08:45:57'),
+(42, 'admin', 'customer', 1, 2, 'saya admin', '2022-07-25 08:46:21', '2022-07-25 08:46:21'),
+(43, 'customer', 'admin', 3, 1, 'hi admin', '2022-07-25 09:03:32', '2022-07-25 09:03:32'),
+(44, 'customer', 'admin', 3, 1, 'saya adalah customer', '2022-07-25 09:04:00', '2022-07-25 09:04:00'),
+(45, 'admin', 'customer', 1, 3, 'saya admin kenapai rewako??', '2022-07-25 09:32:17', '2022-07-25 09:32:17'),
+(46, 'customer', 'admin', 2, 1, 'ok', '2022-07-25 09:33:19', '2022-07-25 09:33:19');
 
 -- --------------------------------------------------------
 
@@ -225,7 +231,7 @@ CREATE TABLE `user_drivers` (
 --
 
 INSERT INTO `user_drivers` (`id`, `name`, `phone`, `password`, `image`, `latitude`, `longitude`, `status`, `updated_at`, `created_at`) VALUES
-(1, 'iyam ini kaue', '000', 'qqq', '/image/user/1657638344.pngwing.com(1).png', '-5.0988055', '119.5342241', '0', '2022-07-16 03:29:23', '2022-07-10 06:39:02'),
+(1, 'iyam ini kaue', '000', 'qqq', '/image/user/1657638344.pngwing.com(1).png', '-5.0989121', '119.53428', '0', '2022-07-25 09:33:45', '2022-07-10 06:39:02'),
 (3, 'ozan', '123456', 'qwerty', '/image/user/1657638318_pngwing.com(2).png', '-5.0988067', '119.5342223', '1', '2022-07-16 03:35:33', '2022-07-12 07:05:18'),
 (5, 'ozan', '086', 'qwertyuiop', '/image/user/1657652565_pngwing.com(1).png', '0', '0', '0', '2022-07-12 11:02:45', '2022-07-12 11:02:45'),
 (7, 'fhcjcivvd', '0088808888', 'xhxjckvk', '/image/user/1657924050.IMG_20220716_062723701.jpg', NULL, NULL, '0', '2022-07-15 14:27:36', '2022-07-13 06:06:56'),
@@ -295,7 +301,7 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `hospitals`
